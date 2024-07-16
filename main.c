@@ -6,7 +6,7 @@
 /*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 09:52:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/15 15:27:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/07/16 15:23:46 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,51 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <errno.h>
+#include <time.h>
 #include <fcntl.h>
+#include <sys/wait.h>
+#include <errno.h>
 
 int	main(void)
 {
-	if (mkfifo("myfifo1", 0777) == -1)
+	int pid = fork();
+
+	if (pid == -1)
+		exit(EXIT_FAILURE);
+	if (pid == 0)
 	{
-		if (errno != EEXIST)
+		int	fd = open("ping_result.txt", O_WRONLY | O_CREAT, 0777);
+		if (fd == -1)
+			exit(EXIT_FAILURE);
+		printf("The fd to pingResult: %d\n", fd);
+		int fd0 = dup2(fd, STDOUT_FILENO);
+		close(fd);
+		char	*arg[] = {
+			"/usr/bin/ping",
+			"-c",
+			"3",
+			"google.com",
+			NULL
+		};
+		int err = execv("/usr/bin/ping", arg);
+		if (err == -1)
 		{
-			printf("Could not create fifo file\n");
+			printf("Error when executing command\n");
 			exit(EXIT_FAILURE);
 		}
 	}
-
-	int	fd = open("myfifo1", O_WRONLY);
-	int	x = 97;
-	write(fd, &x, sizeof(x));
-	close(fd);
+	else
+	{
+		int	wait_status;
+		wait(&wait_status);
+		if (WIFEXITED(wait_status))
+		{
+			int status_code = WEXITSTATUS(wait_status);
+			if (status_code == 0)
+				printf("Success\n");
+			else
+				printf("Failure with status code: %d\n", status_code);
+		}
+	}
 	return (0);
 }
