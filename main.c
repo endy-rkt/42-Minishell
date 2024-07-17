@@ -6,7 +6,7 @@
 /*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 09:52:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/16 15:23:46 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/07/17 10:47:03 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,44 +21,30 @@
 
 int	main(void)
 {
-	int pid = fork();
-
-	if (pid == -1)
+	int	fd[2];
+	if (pipe(fd) < 0)
 		exit(EXIT_FAILURE);
-	if (pid == 0)
+	int pid1 = fork();
+	if (pid1 == -1)
+		exit(EXIT_FAILURE);
+	if (pid1 == 0)
 	{
-		int	fd = open("ping_result.txt", O_WRONLY | O_CREAT, 0777);
-		if (fd == -1)
-			exit(EXIT_FAILURE);
-		printf("The fd to pingResult: %d\n", fd);
-		int fd0 = dup2(fd, STDOUT_FILENO);
-		close(fd);
-		char	*arg[] = {
-			"/usr/bin/ping",
-			"-c",
-			"3",
-			"google.com",
-			NULL
-		};
-		int err = execv("/usr/bin/ping", arg);
-		if (err == -1)
-		{
-			printf("Error when executing command\n");
-			exit(EXIT_FAILURE);
-		}
+		//ping
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		execlp("ping", "ping", "-c" , "3", "google.com", NULL);
 	}
 	else
 	{
-		int	wait_status;
-		wait(&wait_status);
-		if (WIFEXITED(wait_status))
-		{
-			int status_code = WEXITSTATUS(wait_status);
-			if (status_code == 0)
-				printf("Success\n");
-			else
-				printf("Failure with status code: %d\n", status_code);
-		}
+		//grep
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[1]);
+		close(fd[0]);
+		execlp("grep", "grep", "rtt", NULL);
 	}
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(pid1, NULL, 0);
 	return (0);
 }
