@@ -6,7 +6,7 @@
 /*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 09:52:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/17 10:47:03 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:42:52 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,29 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <errno.h>
+#define PROCESS_NB 3
 
 int	main(void)
 {
-	int	fd[2];
-	if (pipe(fd) < 0)
-		exit(EXIT_FAILURE);
-	int pid1 = fork();
-	if (pid1 == -1)
-		exit(EXIT_FAILURE);
-	if (pid1 == 0)
+	int	pipes[PROCESS_NB + 1][2];
+	for (int i = 0; i < PROCESS_NB; i++)
 	{
-		//ping
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		execlp("ping", "ping", "-c" , "3", "google.com", NULL);
+		if (pipe(pipes[i]) == -1)
+			exit(EXIT_FAILURE);
 	}
-	else
+	int	pids[PROCESS_NB];
+	for (int i = 0; i < PROCESS_NB; i++)
 	{
-		//grep
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[1]);
-		close(fd[0]);
-		execlp("grep", "grep", "rtt", NULL);
+		pids[i] = fork();
+		if (pids[i] == -1)
+			exit(EXIT_FAILURE);
+		if (pids[i] == 0)
+		{
+			
+			break;
+		}
 	}
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid1, NULL, 0);
+	for (int i = 0; i < PROCESS_NB; i++)
+		wait(NULL);
 	return (0);
 }
