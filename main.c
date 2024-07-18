@@ -6,7 +6,7 @@
 /*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 09:52:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/18 14:36:58 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:33:06 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,59 +15,57 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <time.h>
 
-pthread_mutex_t mutexFuel;
-pthread_cond_t condFuel;
-int fuel = 0;
+// chefs = threads
+// stove = shared data (+mutex)
 
-void* fuel_filling(void* arg) {
-    for (int i = 0; i < 5; i++) {
-        pthread_mutex_lock(&mutexFuel);
-        fuel += 15;
-        printf("Filled fuel... %d\n", fuel);
-        pthread_mutex_unlock(&mutexFuel);
-        pthread_cond_signal(&condFuel);
-        sleep(1);
-    }
-}
+pthread_mutex_t stoveMutex[4];
+int stoveFuel[4] = { 100, 100, 100, 100 };
 
-void* car(void* arg) {
-    pthread_mutex_lock(&mutexFuel);
-    while (fuel < 40) {
-        printf("No fuel. Waiting...\n");
-        pthread_cond_wait(&condFuel, &mutexFuel);
-        // Equivalent to:
-        // pthread_mutex_unlock(&mutexFuel);
-        // wait for signal on condFuel
-        // pthread_mutex_lock(&mutexFuel);
-    }
-    fuel -= 40;
-    printf("Got fuel. Now left: %d\n", fuel);
-    pthread_mutex_unlock(&mutexFuel);
-}
-
-int main(int argc, char* argv[]) {
-    pthread_t th[2];
-    pthread_mutex_init(&mutexFuel, NULL);
-    pthread_cond_init(&condFuel, NULL);
-    for (int i = 0; i < 2; i++) {
-        if (i == 1) {
-            if (pthread_create(&th[i], NULL, &fuel_filling, NULL) != 0) {
-                perror("Failed to create thread");
+void* routine(void* args) {
+    for (int i = 0; i < 4; i++) {
+        if (pthread_mutex_trylock(&stoveMutex[i]) == 0) {
+            int fuelNeeded = (rand() % 30);
+            if (stoveFuel[i] - fuelNeeded < 0) {
+                printf("No more fuel... going home\n");
+            } else {
+                stoveFuel[i] -= fuelNeeded;
+                usleep(500000);
+                printf("Fuel left %d\n", stoveFuel[i]);
             }
+            pthread_mutex_unlock(&stoveMutex[i]);
+            break;
         } else {
-            if (pthread_create(&th[i], NULL, &car, NULL) != 0) {
-                perror("Failed to create thread");
+            if (i == 3) {
+                printf("No stove available yet, waiting...\n");
+                usleep(300000);
+                i = 0;
             }
         }
     }
+}
 
-    for (int i = 0; i < 2; i++) {
+int main(int argc, char* argv[]) {
+    srand(time(NULL));
+    pthread_t th[10];
+    for (int i = 0; i < 4; i++) {
+        pthread_mutex_init(&stoveMutex[i], NULL);
+    }
+    for (int i = 0; i < 10; i++) {
+        if (pthread_create(&th[i], NULL, &routine, NULL) != 0) {
+            perror("Failed to create thread");
+        }
+    }
+
+    for (int i = 0; i < 10; i++) {
         if (pthread_join(th[i], NULL) != 0) {
             perror("Failed to join thread");
         }
     }
-    pthread_mutex_destroy(&mutexFuel);
-    pthread_cond_destroy(&condFuel);
+    for (int i = 0; i < 4; i++) {
+        pthread_mutex_destroy(&stoveMutex[i]);
+    }
     return 0;
 }
+
