@@ -6,44 +6,68 @@
 /*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 09:52:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/18 11:11:07 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/07/18 14:36:58 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <time.h>
-#include <fcntl.h>
-#include <sys/wait.h>
 #include <errno.h>
-#include <pthread.h>
 
-int	primes[10] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+pthread_mutex_t mutexFuel;
+pthread_cond_t condFuel;
+int fuel = 0;
 
-void	*routine(void *arg)
-{
-	int	index = *(int *)arg;
-	printf("%d ", primes[index]);
-	free(arg);
+void* fuel_filling(void* arg) {
+    for (int i = 0; i < 5; i++) {
+        pthread_mutex_lock(&mutexFuel);
+        fuel += 15;
+        printf("Filled fuel... %d\n", fuel);
+        pthread_mutex_unlock(&mutexFuel);
+        pthread_cond_signal(&condFuel);
+        sleep(1);
+    }
 }
 
-int	main(void)
-{
-	pthread_t	th[10];
+void* car(void* arg) {
+    pthread_mutex_lock(&mutexFuel);
+    while (fuel < 40) {
+        printf("No fuel. Waiting...\n");
+        pthread_cond_wait(&condFuel, &mutexFuel);
+        // Equivalent to:
+        // pthread_mutex_unlock(&mutexFuel);
+        // wait for signal on condFuel
+        // pthread_mutex_lock(&mutexFuel);
+    }
+    fuel -= 40;
+    printf("Got fuel. Now left: %d\n", fuel);
+    pthread_mutex_unlock(&mutexFuel);
+}
 
-	for (int i = 0; i < 10; i++)
-	{
-		int	*tmp = malloc(sizeof(int));
-		*tmp = i;
-		if (pthread_create(th + i, NULL, &routine, tmp) != 0)
-			exit(EXIT_FAILURE);
-	}
-	for (int i = 0; i < 10; i++)
-	{
-		if (pthread_join(th[i], NULL) != 0)
-			exit(EXIT_FAILURE);
-	}
-	return (0);
+int main(int argc, char* argv[]) {
+    pthread_t th[2];
+    pthread_mutex_init(&mutexFuel, NULL);
+    pthread_cond_init(&condFuel, NULL);
+    for (int i = 0; i < 2; i++) {
+        if (i == 1) {
+            if (pthread_create(&th[i], NULL, &fuel_filling, NULL) != 0) {
+                perror("Failed to create thread");
+            }
+        } else {
+            if (pthread_create(&th[i], NULL, &car, NULL) != 0) {
+                perror("Failed to create thread");
+            }
+        }
+    }
+
+    for (int i = 0; i < 2; i++) {
+        if (pthread_join(th[i], NULL) != 0) {
+            perror("Failed to join thread");
+        }
+    }
+    pthread_mutex_destroy(&mutexFuel);
+    pthread_cond_destroy(&condFuel);
+    return 0;
 }
