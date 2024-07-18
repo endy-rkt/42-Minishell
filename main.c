@@ -6,7 +6,7 @@
 /*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 09:52:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/17 15:42:52 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:11:07 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,32 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <errno.h>
-#define PROCESS_NB 3
+#include <pthread.h>
+
+int	primes[10] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+
+void	*routine(void *arg)
+{
+	int	index = *(int *)arg;
+	printf("%d ", primes[index]);
+	free(arg);
+}
 
 int	main(void)
 {
-	int	pipes[PROCESS_NB + 1][2];
-	for (int i = 0; i < PROCESS_NB; i++)
+	pthread_t	th[10];
+
+	for (int i = 0; i < 10; i++)
 	{
-		if (pipe(pipes[i]) == -1)
+		int	*tmp = malloc(sizeof(int));
+		*tmp = i;
+		if (pthread_create(th + i, NULL, &routine, tmp) != 0)
 			exit(EXIT_FAILURE);
 	}
-	int	pids[PROCESS_NB];
-	for (int i = 0; i < PROCESS_NB; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		pids[i] = fork();
-		if (pids[i] == -1)
+		if (pthread_join(th[i], NULL) != 0)
 			exit(EXIT_FAILURE);
-		if (pids[i] == 0)
-		{
-			
-			break;
-		}
 	}
-	for (int i = 0; i < PROCESS_NB; i++)
-		wait(NULL);
 	return (0);
 }
