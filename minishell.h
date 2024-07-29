@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/29 08:54:17 by trazanad         ###   ########.fr       */
+/*   Created: 2024/07/29 08:52:38 by trazanad          #+#    #+#             */
+/*   Updated: 2024/07/29 08:53:30 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef MINISHELL_H
 
-int	main(int argc, char *argv[], char *envp[])
-{
-	return (0);
-}
+# define MINISHELL_H
+
+#endif
