@@ -6,12 +6,14 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:38 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/29 08:53:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/07/30 09:30:18 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 
 # define MINISHELL_H
+
+# include "header.h"
 
 #endif

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/30 08:47:33 by trazanad         ###   ########.fr       */
+/*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
+/*   Updated: 2024/07/30 12:04:39 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "lexer.h"
 
-int	main(int argc, char *argv[], char *envp[])
+t_token	*lex(char *input)
 {
-	return (0);
+	
 }

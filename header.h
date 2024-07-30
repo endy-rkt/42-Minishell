@@ -1,18 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/30 08:47:33 by trazanad         ###   ########.fr       */
+/*   Created: 2024/07/30 09:21:35 by trazanad          #+#    #+#             */
+/*   Updated: 2024/07/30 09:29:51 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef HEADER_H
 
-int	main(int argc, char *argv[], char *envp[])
-{
-	return (0);
-}
+# define HEADER_H
+
+# include <stdio.h>
+
+# include <stdlib.h>
+
+# include <unistd.h>
+
+# include <fcntl.h>
+
+# include <signal.h>
+
+# include <errno.h>
+
+# include <sys/types.h>
+
+# include <sys/stat.h>
+
+# include <dirent.h>
+
+# include <termios.h>
+
+# include <readline/readline.h>
+
+# include <readline/history.h>
+
+#endif

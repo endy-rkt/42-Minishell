@@ -1,18 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/07/30 08:47:33 by trazanad         ###   ########.fr       */
+/*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
+/*   Updated: 2024/07/30 10:16:46 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef LEXER_H
 
-int	main(int argc, char *argv[], char *envp[])
+# define LEXER_H
+
+# include "../header.h"
+
+typedef enum {
+    TK_CMD,
+    TK_WORD,
+    TK_PIPE,
+	TK_QUOTED,
+    TK_REDIR_IN,
+    TK_REDIR_OUT,
+    TK_REDIR_OUT2,
+    TK_HDOC_START,
+    TK_HDOC_END,
+    TK_HDOC_TXT,
+} token_type;
+
+typedef struct s_token
 {
-	return (0);
-}
+	token_type	type;
+	char		*value;
+}	t_token;
+
+#endif
