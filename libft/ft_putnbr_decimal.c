@@ -1,43 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   ft_putnbr_decimal.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 09:21:35 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:39:37 by trazanad         ###   ########.fr       */
+/*   Created: 2024/03/08 11:10:38 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 12:05:59 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADER_H
+#include "libft.h"
 
-# define HEADER_H
+int	ft_putnbr_decimal(long nb)
+{
+	int	len;
 
-# include <stdio.h>
-
-# include <stdlib.h>
-
-# include <unistd.h>
-
-# include <fcntl.h>
-
-# include <signal.h>
-
-# include <errno.h>
-
-# include <sys/types.h>
-
-# include <sys/stat.h>
-
-# include <dirent.h>
-
-# include <termios.h>
-
-# include <readline/readline.h>
-
-# include <readline/history.h>
-
-# include "./libft/libft.h"
-
-#endif
+	len = 0;
+	if (nb < 0)
+	{
+		len++;
+		ft_putchar_fd('-', 1);
+		len += ft_putnbr_positve_base(-nb, DECIMALS);
+	}
+	else
+		len += ft_putnbr_positve_base(nb, DECIMALS);
+	return (len);
+}

@@ -1,43 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   ft_retire_space.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 09:21:35 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:39:37 by trazanad         ###   ########.fr       */
+/*   Created: 2024/08/02 11:46:26 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 12:06:41 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADER_H
+#include "libft.h"
 
-# define HEADER_H
+char	*ft_retire_space(char *str)
+{
+	int		i;
+	int		len;
+	char	*new_str;
 
-# include <stdio.h>
-
-# include <stdlib.h>
-
-# include <unistd.h>
-
-# include <fcntl.h>
-
-# include <signal.h>
-
-# include <errno.h>
-
-# include <sys/types.h>
-
-# include <sys/stat.h>
-
-# include <dirent.h>
-
-# include <termios.h>
-
-# include <readline/readline.h>
-
-# include <readline/history.h>
-
-# include "./libft/libft.h"
-
-#endif
+	if (!str)
+		return (NULL);
+	i = 0;
+	len = ft_strlen(str) - 1;
+	if (len < 0)
+		return (str);
+	while (ft_isspace(str[i]))
+		i++;
+	while (ft_isspace(str[len]))
+		len--;
+	new_str = ft_substr(str, i, len - i + 1);
+	return (new_str);
+}

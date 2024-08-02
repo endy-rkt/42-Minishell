@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:35:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/02 12:11:49 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ int	handle_simple_char(char *str, t_token **tk)
 t_token	*lex(char *input)
 {
 	int		i;
+	char	*str;
 	t_token	*tk;
 
+	str = ft_retire_space(input);
+	if (!str)
+		return (NULL);
 	tk = NULL;
 	i = 0;
-	while (ft_isspace(input[i]))
-		i++;
 	while (input[i])
 	{
 		if (is_operator(input[i]))
@@ -42,5 +44,6 @@ t_token	*lex(char *input)
 			//handle_non_operator
 		}
 	}
+	free(str);
 	return (tk);
 }
