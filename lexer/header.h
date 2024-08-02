@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:35 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 09:33:40 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:09:28 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 
 # include <readline/readline.h>
 
-# include <readline/history.h>'
+# include <readline/history.h>
 
 # include <string.h> //0
 

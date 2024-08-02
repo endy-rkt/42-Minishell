@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 08:54:53 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 09:34:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:17:26 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	tk_clear(t_token **tk)
 		while (tmp)
 		{
 			tk_next = tmp->next;
+			if (tmp->value)
+				free(tmp->value);
 			free(tmp);
 			tmp = tk_next;
 		}
