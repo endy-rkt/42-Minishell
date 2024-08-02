@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   char_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/01 11:00:51 by trazanad         ###   ########.fr       */
+/*   Created: 2024/08/02 08:51:18 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 09:21:17 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "lexer.h"
 
-int	main(int argc, char *argv[], char *envp[])
+int	is_operator(char c)
 {
-	return (0);
+	return (c == '>' || c == '<' || c == '|' || c == '&');
 }
