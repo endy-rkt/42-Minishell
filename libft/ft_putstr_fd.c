@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:34:34 by trazanad         ###   ########.fr       */
+/*   Created: 2024/02/26 08:26:39 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 11:09:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(/*int argc, char *argv[], char *envp[]*/void)
+int	ft_putstr_fd(char *s, int fd)
 {
-	t_token	*tk;
-	t_token *tmp;
+	int	len;
 
-	tk = NULL;
-	if (!tk)
-		tk = create_token("abc", TK_WORD, tk_last(tk));
-	tmp = create_token("tmp", TK_WORD, tk_last(tk));
-	tk->next = tmp;
-	tk_print(tk);
-	tk_clear(&tk);
-	return (0);
-	return (0);
+	len = ft_strlen(s);
+	if (fd > -1 && ft_strlen(s) > 0)
+		write(fd, s, len);
+	return (len);
 }

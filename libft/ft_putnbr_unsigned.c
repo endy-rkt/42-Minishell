@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putnbr_unsigned.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:34:34 by trazanad         ###   ########.fr       */
+/*   Created: 2024/03/08 11:18:59 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 11:09:40 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(/*int argc, char *argv[], char *envp[]*/void)
+int	ft_putnbr_unsigned(long nb)
 {
-	t_token	*tk;
-	t_token *tmp;
+	long	max;
 
-	tk = NULL;
-	if (!tk)
-		tk = create_token("abc", TK_WORD, tk_last(tk));
-	tmp = create_token("tmp", TK_WORD, tk_last(tk));
-	tk->next = tmp;
-	tk_print(tk);
-	tk_clear(&tk);
-	return (0);
-	return (0);
+	if (nb < 0)
+	{
+		max = UNSIGNED_MAXS;
+		nb = max + nb;
+	}
+	return (ft_putnbr_decimal(nb));
 }

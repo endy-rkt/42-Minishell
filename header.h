@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:35 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 10:09:32 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:35:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,7 @@
 # include <readline/history.h>
 
 # include <string.h> //0
+
+# include "./libft/libft.h"
 
 #endif

@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:34:34 by trazanad         ###   ########.fr       */
+/*   Created: 2024/06/02 17:19:17 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 11:09:56 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(/*int argc, char *argv[], char *envp[]*/void)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	t_token	*tk;
-	t_token *tmp;
+	int	i;
+	int	diff;
+	int	count;
 
-	tk = NULL;
-	if (!tk)
-		tk = create_token("abc", TK_WORD, tk_last(tk));
-	tmp = create_token("tmp", TK_WORD, tk_last(tk));
-	tk->next = tmp;
-	tk_print(tk);
-	tk_clear(&tk);
-	return (0);
+	i = 0;
+	count = ft_strlen(s1);
+	if (ft_strlen(s1) < ft_strlen(s2))
+		count = ft_strlen(s2);
+	while (count >= 0)
+	{
+		diff = (unsigned char) s1[i] - (unsigned char) s2[i];
+		if (diff != 0)
+			return (diff);
+		i++;
+		count--;
+	}
 	return (0);
 }

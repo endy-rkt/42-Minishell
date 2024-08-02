@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:34:34 by trazanad         ###   ########.fr       */
+/*   Created: 2024/02/20 09:34:43 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 11:10:15 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(/*int argc, char *argv[], char *envp[]*/void)
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	t_token	*tk;
-	t_token *tmp;
+	size_t	n;
 
-	tk = NULL;
-	if (!tk)
-		tk = create_token("abc", TK_WORD, tk_last(tk));
-	tmp = create_token("tmp", TK_WORD, tk_last(tk));
-	tk->next = tmp;
-	tk_print(tk);
-	tk_clear(&tk);
-	return (0);
-	return (0);
+	n = ft_strlen(src);
+	if (size == 0)
+		return (n);
+	if (size > n)
+	{
+		ft_memcpy(dst, src, n);
+		dst[n] = '\0';
+	}
+	else
+	{
+		ft_memcpy(dst, src, size - 1);
+		dst[size - 1] = '\0';
+	}
+	return (n);
 }

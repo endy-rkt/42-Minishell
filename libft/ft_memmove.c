@@ -1,46 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:35:30 by trazanad         ###   ########.fr       */
+/*   Created: 2024/02/21 09:22:45 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 11:08:59 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "libft.h"
 
-int handle_operator(char *str, t_token **tk)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
+	unsigned char	*tmp_dest;
+	unsigned char	*tmp_src;
 
-}
-
-int	handle_simple_char(char *str, t_token **tk)
-{
-
-}
-
-t_token	*lex(char *input)
-{
-	int		i;
-	t_token	*tk;
-
-	tk = NULL;
-	i = 0;
-	while (ft_isspace(input[i]))
-		i++;
-	while (input[i])
+	if (!src && !dest)
+		return (0);
+	tmp_dest = (unsigned char *)dest;
+	tmp_src = (unsigned char *)src;
+	if (dest <= src)
 	{
-		if (is_operator(input[i]))
-		{
-			//handle_operator
-		}
-		else
-		{
-			//handle_non_operator
-		}
+		while (n--)
+			*tmp_dest++ = *tmp_src++;
 	}
-	return (tk);
+	else if (dest > src)
+	{
+		tmp_dest += n - 1;
+		tmp_src += n - 1;
+		while (n--)
+			*tmp_dest-- = *tmp_src--;
+	}
+	return (dest);
 }

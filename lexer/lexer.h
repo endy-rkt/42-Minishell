@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 10:04:09 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:32:09 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+int		is_operator(char c);
 t_token	*create_token(char *value, token_type type, t_token *tk_prev);
 t_token	*tk_last(t_token *tk);
 void	tk_add_back(t_token **tk, t_token *tk_new);

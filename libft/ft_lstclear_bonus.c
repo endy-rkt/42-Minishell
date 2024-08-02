@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:34:34 by trazanad         ###   ########.fr       */
+/*   Created: 2024/02/28 08:31:33 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 11:08:29 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(/*int argc, char *argv[], char *envp[]*/void)
+void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	t_token	*tk;
-	t_token *tmp;
+	t_list	*tmp;
+	t_list	*next;
 
-	tk = NULL;
-	if (!tk)
-		tk = create_token("abc", TK_WORD, tk_last(tk));
-	tmp = create_token("tmp", TK_WORD, tk_last(tk));
-	tk->next = tmp;
-	tk_print(tk);
-	tk_clear(&tk);
-	return (0);
-	return (0);
+	if (lst && *lst)
+	{
+		tmp = *lst;
+		while (tmp)
+		{
+			next = tmp -> next;
+			ft_lstdelone(tmp, del);
+			tmp = next;
+		}
+		*lst = 0;
+	}
 }

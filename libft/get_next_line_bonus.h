@@ -1,43 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 09:21:35 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 10:09:28 by trazanad         ###   ########.fr       */
+/*   Created: 2024/03/25 08:26:08 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 11:10:54 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADER_H
+#ifndef GET_NEXT_LINE_BONUS_H
 
-# define HEADER_H
+# define GET_NEXT_LINE_BONUS_H
 
-# include <stdio.h>
+# ifndef BUFFER_SIZE
 
-# include <stdlib.h>
+#  define BUFFER_SIZE 100
 
-# include <unistd.h>
+# endif
 
-# include <fcntl.h>
-
-# include <signal.h>
-
-# include <errno.h>
-
-# include <sys/types.h>
-
-# include <sys/stat.h>
-
-# include <dirent.h>
-
-# include <termios.h>
-
-# include <readline/readline.h>
-
-# include <readline/history.h>
-
-# include <string.h> //0
+char	*get_next_line(int fd);
 
 #endif

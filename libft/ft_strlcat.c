@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/02 10:03:01 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 10:12:51 by trazanad         ###   ########.fr       */
+/*   Created: 2024/02/26 08:34:46 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/02 11:10:12 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "libft.h"
 
-int	main(void)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	t_token	*tk;
-	t_token *tmp;
+	size_t	i;
+	size_t	j;
+	size_t	dlen;
+	size_t	slen;
 
-	tk = NULL;
-	if (!tk)
-		tk = create_token("abc", TK_WORD, tk_last(tk));
-	tmp = create_token("tmp", TK_WORD, tk_last(tk));
-	tk->next = tmp;
-	tk_print(tk);
-	tk_clear(&tk);
-	return (0);
+	i = 0;
+	j = 0;
+	while (dst[j] != '\0')
+		j++;
+	dlen = j;
+	slen = ft_strlen(src);
+	if (size == 0 || size <= dlen)
+		return (slen + size);
+	while (src [i] != '\0' && i < size - dlen - 1)
+	{
+		dst[j] = src[i];
+		i++;
+		j++;
+	}
+	dst[j] = '\0';
+	return (dlen + slen);
 }
