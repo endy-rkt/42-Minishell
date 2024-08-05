@@ -6,20 +6,88 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 12:15:35 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/05 16:39:35 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-int handle_operator(char *str, int i, t_token **tk)
+int	handle_operator(char *str, t_token **tk)
 {
+	int		len;
+	char	*value;
+	t_token	*tk_tmp;
 
+	return (len);
 }
 
-int	handle_simple_char(char *str, int i, t_token **tk)
+int	handle_digit(char *str, t_token **tk)
 {
+	int		len;
+	int		redir_nb;
+	char	*value;
+	t_token	*tk_tmp;
 
+	len = 0;
+	redir_nb = 0;
+	while (ft_isdigit(str[len]))
+		len++;
+	while (str[len] == '<' || str[len] == '>')
+	{
+		len++;
+		redir_nb++;
+	}
+	if (redir_nb == 0)
+	{
+		while (str[len] && !ft_isspace(str[len]) && !is_operator(str[len]))
+		{
+			while (str[len] != '\'' && str[len] != '\"' && str[len])
+				len++;
+			if (str[len] == '\'' || str[len] == '\"')
+				len += idx_of_first(str + len, str[len]);
+		}
+		value = ft_substr(str, 0, len);
+		tk_tmp = tk_create(value, TK_WORD, tk_last(*tk));
+		tk_last(*tk)->next = tk_tmp;
+	}
+	else
+	{
+		
+	}
+	return (len);
+}
+
+int	handle_char(char *str, t_token **tk)
+{
+	int		len;
+	char	*value;
+	t_token	*tk_tmp;
+
+	len = 0;
+	while (str[len] && !ft_isspace(str[len]) && !is_operator(str[len]))
+	{
+		while (str[len] != '\'' && str[len] != '\"' && str[len])
+			len++;
+		if (str[len] == '\'' || str[len] == '\"')
+			len += idx_of_first(str + len, str[len]);
+	}
+	value = ft_substr(str, 0, len);
+	tk_tmp = tk_create(value, TK_WORD, tk_last(*tk));
+	tk_last(*tk)->next = tk_tmp;
+	return (len);
+}
+
+int	create_tk_list(char *str, t_token **tk)
+{
+	int	len;
+
+	if (is_operator(str[0]))
+		len += handle_operator(str, tk);
+	else if (ft_isdigit(str[0]))
+		len += handle_digit(str, tk);
+	else
+		len += handle_char(str, tk);
+	return (len);
 }
 
 t_token	*lex(char *input)
@@ -33,13 +101,8 @@ t_token	*lex(char *input)
 		return (NULL);
 	i = 0;
 	tk = NULL;
-	while (input[i])
-	{
-		if (is_operator(input[i]))
-			i += handle_operator(str, i, &tk);
-		else
-			i += handle_simple_char(str, i, &tk);
-	}
+	while (str[i])
+		i += create_tk_list(str + i, &tk);
 	free(str);
 	return (tk);
 }

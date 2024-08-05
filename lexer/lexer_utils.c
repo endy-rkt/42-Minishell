@@ -6,13 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 08:54:53 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:40:00 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/05 13:50:55 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-t_token	*create_token(char *value, token_type type, t_token *tk_prev)
+t_token	*tk_create(char *value, token_type type, t_token *tk_prev)
 {
 	t_token	*tk;
 
