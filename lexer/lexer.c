@@ -6,7 +6,7 @@
 /*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/06 00:21:45 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/06 00:32:32 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ int	handle_operator(char *str, t_token **tk)
 	{
 		if (str[len + 1] == '|')
 		{
-			value = ft_substr(str, 0, len + 1);
+			value = ft_substr(str, 0, len + 2);
 			tk_tmp = tk_create(value, TK_OR, tk_last(*tk));
 			tk_last(*tk)->next = tk_tmp;
 		}
 		else
 		{
-			value = ft_substr(str, 0, len);
+			value = ft_substr(str, 0, len + 1);
 			tk_tmp = tk_create(value, TK_PIPE, tk_last(*tk));
 			tk_last(*tk)->next = tk_tmp;
 		}
@@ -38,12 +38,13 @@ int	handle_operator(char *str, t_token **tk)
 	{
 		if (str[len + 1] == '&')
 		{
-			value = ft_substr(str, 0, len + 1);
+			value = ft_substr(str, 0, len + 2);
 			tk_tmp = tk_create(value, TK_AND, tk_last(*tk));
 			tk_last(*tk)->next = tk_tmp;
 		}
 		else
 		{
+			len++;
 			while (str[len] && !ft_isspace(str[len]) && !is_operator(str[len]))
 			{
 				while (str[len] != '\'' && str[len] != '\"' && str[len])
@@ -51,7 +52,7 @@ int	handle_operator(char *str, t_token **tk)
 				if (str[len] == '\'' || str[len] == '\"')
 					len += idx_of_first(str + len, str[len]);
 			}
-			value = ft_substr(str, 0, len + 1);
+			value = ft_substr(str, 0, len);
 			tk_tmp = tk_create(value, TK_AND, tk_last(*tk));
 			tk_last(*tk)->next = tk_tmp;
 		}
