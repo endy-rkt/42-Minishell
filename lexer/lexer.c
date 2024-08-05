@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/05 16:39:35 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/06 00:21:45 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,59 @@ int	handle_operator(char *str, t_token **tk)
 	char	*value;
 	t_token	*tk_tmp;
 
+	len = 0;
+	if (str[len] == '|')
+	{
+		if (str[len + 1] == '|')
+		{
+			value = ft_substr(str, 0, len + 1);
+			tk_tmp = tk_create(value, TK_OR, tk_last(*tk));
+			tk_last(*tk)->next = tk_tmp;
+		}
+		else
+		{
+			value = ft_substr(str, 0, len);
+			tk_tmp = tk_create(value, TK_PIPE, tk_last(*tk));
+			tk_last(*tk)->next = tk_tmp;
+		}
+	}
+	else if (str[len] == '&')
+	{
+		if (str[len + 1] == '&')
+		{
+			value = ft_substr(str, 0, len + 1);
+			tk_tmp = tk_create(value, TK_AND, tk_last(*tk));
+			tk_last(*tk)->next = tk_tmp;
+		}
+		else
+		{
+			while (str[len] && !ft_isspace(str[len]) && !is_operator(str[len]))
+			{
+				while (str[len] != '\'' && str[len] != '\"' && str[len])
+					len++;
+				if (str[len] == '\'' || str[len] == '\"')
+					len += idx_of_first(str + len, str[len]);
+			}
+			value = ft_substr(str, 0, len + 1);
+			tk_tmp = tk_create(value, TK_AND, tk_last(*tk));
+			tk_last(*tk)->next = tk_tmp;
+		}
+	}
+	else
+	{
+		while (str[len] == '<' || str[len] == '>')
+			len++;
+		while (str[len] && !ft_isspace(str[len]) && !is_operator(str[len]))
+		{
+			while (str[len] != '\'' && str[len] != '\"' && str[len])
+				len++;
+			if (str[len] == '\'' || str[len] == '\"')
+				len += idx_of_first(str + len, str[len]);
+		}
+		value = ft_substr(str, 0, len);
+		tk_tmp = tk_create(value, TK_REDIR, tk_last(*tk));
+		tk_last(*tk)->next = tk_tmp;
+	}
 	return (len);
 }
 
@@ -37,23 +90,19 @@ int	handle_digit(char *str, t_token **tk)
 		len++;
 		redir_nb++;
 	}
+	while (str[len] && !ft_isspace(str[len]) && !is_operator(str[len]))
+	{
+		while (str[len] != '\'' && str[len] != '\"' && str[len])
+			len++;
+		if (str[len] == '\'' || str[len] == '\"')
+			len += idx_of_first(str + len, str[len]);
+	}
+	value = ft_substr(str, 0, len);
 	if (redir_nb == 0)
-	{
-		while (str[len] && !ft_isspace(str[len]) && !is_operator(str[len]))
-		{
-			while (str[len] != '\'' && str[len] != '\"' && str[len])
-				len++;
-			if (str[len] == '\'' || str[len] == '\"')
-				len += idx_of_first(str + len, str[len]);
-		}
-		value = ft_substr(str, 0, len);
 		tk_tmp = tk_create(value, TK_WORD, tk_last(*tk));
-		tk_last(*tk)->next = tk_tmp;
-	}
 	else
-	{
-		
-	}
+		tk_tmp = tk_create(value, TK_REDIR, tk_last(*tk));
+	tk_last(*tk)->next = tk_tmp;
 	return (len);
 }
 
