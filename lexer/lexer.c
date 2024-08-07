@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/07 00:09:02 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:01:30 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int	take_word_len(char *str, int i)
 {
 	while (str[i] && !ft_isspace(str[i]) && !is_operator(str[i]))
 	{
-		// while (str[i] != '\'' && str[i] != '\"' && str[i])
-		// 	i++;
 		if (str[i] == '\'' || str[i] == '\"')
 			i += idx_of_first(str + i, str[i]);
 		else
@@ -47,7 +45,7 @@ int	handle_operator(char *str, t_token **tk)
 	if (str[len] == '|')
 	{
 		len++;
-		if (str[len + 1] == '|')
+		if (str[len] == '|')
 		{
 			len++;
 			add_token(tk, TK_OR, str, len);
@@ -58,7 +56,7 @@ int	handle_operator(char *str, t_token **tk)
 	else if (str[len] == '&')
 	{
 		len++;
-		if (str[len + 1] == '&')
+		if (str[len] == '&')
 		{
 			len++;
 			add_token(tk, TK_AND, str, len);
@@ -68,6 +66,11 @@ int	handle_operator(char *str, t_token **tk)
 			len += take_word_len(str, len);	
 			add_token(tk, TK_WORD, str, len);
 		}
+	}
+	else if (str[len] == '*')
+	{
+		len++;
+		add_token(tk, TK_WILDCARD, str, len);
 	}
 	else
 	{
@@ -101,11 +104,21 @@ int	handle_digit(char *str, t_token **tk)
 	return (len);
 }
 
+int	handle_parenthesis(char *str, t_token **tk)
+{
+	token_type type;
+
+	if (str[0] == '(')
+		type = TK_L_PAREN;
+	else
+		type = TK_R_PAREN;
+	add_token(tk, type, str, 1);
+	return (1);
+}
+
 int	handle_char(char *str, t_token **tk)
 {
 	int		len;
-	char	*value;
-	t_token	*tk_tmp;
 
 	len = 0;
 	len += take_word_len(str, len);
@@ -120,10 +133,14 @@ int	create_tk_list(char *str, t_token **tk)
 	len = 0;
 	while (ft_isspace(str[len]))
 		len++;
+	if (str[len] == '\0')
+		return (0);
 	if (is_operator(str[len]))
 		len += handle_operator(str + len, tk);
 	else if (ft_isdigit(str[len]))
 		len += handle_digit(str + len, tk);
+	else if (str[len] == '(' || str[len] == ')')
+		len += handle_parenthesis(str + len, tk);
 	else
 		len += handle_char(str + len, tk);
 	return (len);

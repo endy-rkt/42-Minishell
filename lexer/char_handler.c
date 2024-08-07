@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 08:51:18 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/05 16:01:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/07 11:05:59 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_operator(char c)
 {
-	return (c == '<' || c == '>' || c == '|' || c == '&');
+	return (c == '<' || c == '>' || c == '|' || c == '&' || c == '*');
 }
 
 int	idx_of_last(char *str, char c)
