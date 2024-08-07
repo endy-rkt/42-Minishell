@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/07 12:01:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:33:45 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	add_token(t_token **tk, token_type type, char *str, int len)
 	char	*value;
 	t_token	*tk_tmp;
 
+	if (len <= 0 || !str)
+		return ;
 	value = ft_substr(str, 0, len);
 	tk_tmp = tk_create(value, type, tk_last(*tk));
 	if (!(*tk))
@@ -27,14 +29,26 @@ void	add_token(t_token **tk, token_type type, char *str, int len)
 
 int	take_word_len(char *str, int i)
 {
-	while (str[i] && !ft_isspace(str[i]) && !is_operator(str[i]))
+	int	check_in;
+	int	tmp;
+
+	check_in = 0;
+	tmp = 0;
+	while (str[i] && !ft_isspace(str[i]) && !is_operator(str[i]) && !ft_strchr("()", str[i]))
 	{
 		if (str[i] == '\'' || str[i] == '\"')
-			i += idx_of_first(str + i, str[i]);
+		{
+			tmp += idx_of_first(str + i, str[i]);
+			i += tmp;
+			check_in += tmp;
+		}
 		else
+		{
 			i++;
+			check_in++;
+		}
 	}
-	return (i);
+	return (check_in);
 }
 
 int	handle_operator(char *str, t_token **tk)
@@ -63,7 +77,7 @@ int	handle_operator(char *str, t_token **tk)
 		}
 		else
 		{
-			len += take_word_len(str, len);	
+			len += take_word_len(str, len);//	
 			add_token(tk, TK_WORD, str, len);
 		}
 	}
@@ -76,7 +90,7 @@ int	handle_operator(char *str, t_token **tk)
 	{
 		while (str[len] == '<' || str[len] == '>')
 			len++;
-		len += take_word_len(str, len);
+		len += take_word_len(str, len);//
 		add_token(tk, TK_REDIR, str, len);
 	}
 	return (len);
@@ -96,7 +110,7 @@ int	handle_digit(char *str, t_token **tk)
 		len++;
 		redir_nb++;
 	}
-	len += take_word_len(str, len);
+	len += take_word_len(str, len);//
 	if (redir_nb == 0)
 		add_token(tk, TK_WORD, str, len);
 	else

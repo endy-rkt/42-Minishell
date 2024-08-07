@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/07 11:52:39 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:44:17 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	main(int argc, char *argv[]/*, char *envp[]void*/)
 	t_token	*tk;
 	char	*str;
 
+	printf("%s\n",argv[1]);
 	if (argc < 1)
 		return (0);
 	//str = ft_strdup(argv[1]);

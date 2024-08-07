@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 08:54:53 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/05 13:50:55 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:21:27 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_token	*tk_create(char *value, token_type type, t_token *tk_prev)
 	tk = malloc(sizeof(t_token));
 	if (!tk)
 		return (NULL);
-	tk->value = ft_strdup(value);
+	tk->value = value;
 	tk->type = type;
 	tk->prev = tk_prev;
 	tk->next = NULL;
