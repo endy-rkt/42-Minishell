@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/06 15:37:33 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:18:10 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,14 @@
 
 int	main(int argc, char *argv[]/*, char *envp[]void*/)
 {
-	int		len;
-	char	*value;
-	int 	redir_nb;
+	t_token	*tk;
 	char	*str;
 
 	if (argc < 1)
 		return (0);
-	len = 0;
-	str = ft_strdup(argv[1]);
-	len = 0;
-	
-	ft_printf("---%s---\n", value);
-	free(value);
+	//str = ft_strdup(argv[1]);
+	tk = lex(argv[1]);
+	tk_print(tk);
+	tk_clear(&tk);
 	return (0);
 }

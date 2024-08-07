@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/06 14:54:27 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/07 00:09:02 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,22 @@ void	add_token(t_token **tk, token_type type, char *str, int len)
 
 	value = ft_substr(str, 0, len);
 	tk_tmp = tk_create(value, type, tk_last(*tk));
-	tk_last(*tk)->next = tk_tmp;
+	if (!(*tk))
+		*tk = tk_tmp;
+	else
+		tk_last(*tk)->next = tk_tmp;
 }
 
 int	take_word_len(char *str, int i)
 {
 	while (str[i] && !ft_isspace(str[i]) && !is_operator(str[i]))
 	{
-		while (str[i] != '\'' && str[i] != '\"' && str[i])
-			i++;
+		// while (str[i] != '\'' && str[i] != '\"' && str[i])
+		// 	i++;
 		if (str[i] == '\'' || str[i] == '\"')
 			i += idx_of_first(str + i, str[i]);
+		else
+			i++;
 	}
 	return (i);
 }
@@ -41,20 +46,27 @@ int	handle_operator(char *str, t_token **tk)
 	len = 0;
 	if (str[len] == '|')
 	{
+		len++;
 		if (str[len + 1] == '|')
-			add_token(&tk, TK_OR, str, len + 2);
+		{
+			len++;
+			add_token(tk, TK_OR, str, len);
+		}
 		else
-			add_token(&tk, TK_PIPE, str, len + 1);
+			add_token(tk, TK_PIPE, str, len);
 	}
 	else if (str[len] == '&')
 	{
+		len++;
 		if (str[len + 1] == '&')
-			add_token(&tk, TK_AND, str, len + 2);
-		else
 		{
 			len++;
+			add_token(tk, TK_AND, str, len);
+		}
+		else
+		{
 			len += take_word_len(str, len);	
-			add_token(&tk, TK_WORD, str, len);
+			add_token(tk, TK_WORD, str, len);
 		}
 	}
 	else
@@ -62,7 +74,7 @@ int	handle_operator(char *str, t_token **tk)
 		while (str[len] == '<' || str[len] == '>')
 			len++;
 		len += take_word_len(str, len);
-		add_token(&tk, TK_REDIR, str, len);
+		add_token(tk, TK_REDIR, str, len);
 	}
 	return (len);
 }
@@ -83,9 +95,9 @@ int	handle_digit(char *str, t_token **tk)
 	}
 	len += take_word_len(str, len);
 	if (redir_nb == 0)
-		add_token(&tk, TK_WORD, str, len);
+		add_token(tk, TK_WORD, str, len);
 	else
-		add_token(&tk, TK_REDIR, str, len);
+		add_token(tk, TK_REDIR, str, len);
 	return (len);
 }
 
@@ -97,7 +109,7 @@ int	handle_char(char *str, t_token **tk)
 
 	len = 0;
 	len += take_word_len(str, len);
-	add_token(&tk, TK_WORD, str, len);
+	add_token(tk, TK_WORD, str, len);
 	return (len);
 }
 
@@ -105,12 +117,15 @@ int	create_tk_list(char *str, t_token **tk)
 {
 	int	len;
 
-	if (is_operator(str[0]))
-		len += handle_operator(str, tk);
-	else if (ft_isdigit(str[0]))
-		len += handle_digit(str, tk);
+	len = 0;
+	while (ft_isspace(str[len]))
+		len++;
+	if (is_operator(str[len]))
+		len += handle_operator(str + len, tk);
+	else if (ft_isdigit(str[len]))
+		len += handle_digit(str + len, tk);
 	else
-		len += handle_char(str, tk);
+		len += handle_char(str + len, tk);
 	return (len);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/06 15:37:02 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:16:30 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ int		idx_of_last(char *str, char c);
 int		idx_of_first(char *str, char c);
 void	add_token(t_token **tk, token_type type, char *str, int len);
 int		take_word_len(char *str, int i);
+t_token	*lex(char *input);
 
 #endif

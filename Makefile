@@ -14,7 +14,7 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS = #-Wall -Wextra -Werror #-g
+CFLAGS = -g#-Wall -Wextra -Werror #-g
 
 LIBFT_PATH = ./libft
 
