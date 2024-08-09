@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 08:54:53 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/07 13:21:27 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:12:04 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,21 @@ void	tk_print(t_token *tk) //0
 	t_token	*tmp;
 
 	if (tk)
+	{
+		if (!tk->next)
 		printf("value:{%s} type:{%d}\n", tk->value, tk->type);
+		else
+		printf("value:{%s} type:{%d} next:{%s}\n", tk->value, tk->type, tk->next->value);
+	}
 	else
 		return ;
 	tmp = tk->next;
 	while (tmp)
 	{
-		printf("value:{%s} type:{%d}\n", tmp->value, tmp->type);
+		if (!tmp->next)
+			printf("value:{%s} type:{%d}\n", tmp->value, tmp->type);
+		else
+			printf("value:{%s} type:{%d} next:{%s} prev:{%s}\n", tmp->value, tmp->type, tmp->next->value, tmp->prev->value);
 		tmp = tmp->next;
 	}
 }

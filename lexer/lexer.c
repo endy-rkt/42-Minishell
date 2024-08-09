@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/07 15:33:45 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:22:55 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	take_word_len(char *str, int i)
 int	handle_operator(char *str, t_token **tk)
 {
 	int		len;
+	int		redir_nb;
 
 	len = 0;
 	if (str[len] == '|')
@@ -88,8 +89,17 @@ int	handle_operator(char *str, t_token **tk)
 	}
 	else
 	{
+		redir_nb = 0;
 		while (str[len] == '<' || str[len] == '>')
+		{
 			len++;
+			redir_nb++;
+		}
+		if (redir_nb == 1)
+		{
+			add_token(tk, TK_REDIR, str, len);
+			return (len);
+		}
 		len += take_word_len(str, len);//
 		add_token(tk, TK_REDIR, str, len);
 	}
@@ -109,6 +119,11 @@ int	handle_digit(char *str, t_token **tk)
 	{
 		len++;
 		redir_nb++;
+	}
+	if (redir_nb == 1)
+	{
+		add_token(tk, TK_REDIR, str, len);
+		return (len);
 	}
 	len += take_word_len(str, len);//
 	if (redir_nb == 0)
