@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 08:31:15 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:22:39 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/11 14:08:50 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "../minishell.h"
 
 char	*ft_get_one_line(char	*remining_str)
 {
@@ -99,10 +100,17 @@ char	*get_next_line(int fd)
 		free(remining_str[fd]);
 		return (0);
 	}
+	if (fd == 0)
+		ft_printf(">> ");
 	remining_str[fd] = ft_read_buf(fd, remining_str[fd]);
 	if (!remining_str[fd])
 		return (0);
 	line = ft_get_one_line(remining_str[fd]);
 	remining_str[fd] = ft_renew_remining_str(remining_str[fd]);
+	if (strcmp(line, "exit\n") == 0)
+	{
+		free(line);
+		return (0);
+	}
 	return (line);
 }

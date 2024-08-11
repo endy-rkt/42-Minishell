@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 08:54:53 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/09 10:12:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/11 14:48:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	tk_print(t_token *tk) //0
 	if (tk)
 	{
 		if (!tk->next)
-		printf("value:{%s} type:{%d}\n", tk->value, tk->type);
+			printf("value:{%s} type:{%d}\n", tk->value, tk->type);
 		else
 		printf("value:{%s} type:{%d} next:{%s}\n", tk->value, tk->type, tk->next->value);
 	}
@@ -85,7 +85,7 @@ void	tk_print(t_token *tk) //0
 	while (tmp)
 	{
 		if (!tmp->next)
-			printf("value:{%s} type:{%d}\n", tmp->value, tmp->type);
+			printf("value:{%s} type:{%d} prev:{%s}\n", tmp->value, tmp->type, tmp->prev->value);
 		else
 			printf("value:{%s} type:{%d} next:{%s} prev:{%s}\n", tmp->value, tmp->type, tmp->next->value, tmp->prev->value);
 		tmp = tmp->next;

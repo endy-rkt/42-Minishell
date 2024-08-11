@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 10:29:42 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/09 10:31:58 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:22:59 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,7 @@
 
 # include "../header.h"
 
+void	handle_input();
+void	handle_input0(void (*process_input)(char*));
 
 #endif

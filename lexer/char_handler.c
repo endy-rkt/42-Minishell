@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   char_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 08:51:18 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/07 15:26:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/11 14:33:59 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ int	idx_of_first(char *str, char c)
 {
 	int	i;
 
-	i = 1;
+	i = 0;
+	if (str[0] == 0)
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == c)
-			return (i + 1);
+			return (i + 2);
 		i++;
 	}
 	return (1);

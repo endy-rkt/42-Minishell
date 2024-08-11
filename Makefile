@@ -1,4 +1,4 @@
-SRCS = main.c lexer/char_handler.c lexer/lexer_utils.c lexer/lexer.c
+SRCS = main.c lexer/char_handler.c lexer/lexer_utils.c lexer/lexer.c input/input.c
 
 BONUS_SRCS = main.c
 

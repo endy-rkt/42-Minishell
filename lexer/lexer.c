@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/09 10:22:55 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/11 14:50:30 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ int	take_word_len(char *str, int i)
 	int	tmp;
 
 	check_in = 0;
-	tmp = 0;
 	while (str[i] && !ft_isspace(str[i]) && !is_operator(str[i]) && !ft_strchr("()", str[i]))
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			tmp += idx_of_first(str + i, str[i]);
+			tmp = 0;
+			tmp += idx_of_first(str + i + 1, str[i]);
 			i += tmp;
 			check_in += tmp;
 		}
@@ -100,7 +100,8 @@ int	handle_operator(char *str, t_token **tk)
 			add_token(tk, TK_REDIR, str, len);
 			return (len);
 		}
-		len += take_word_len(str, len);//
+		if (str[len - 1] == '<' && str[len - 2] == '<')
+			len += take_word_len(str, len);//
 		add_token(tk, TK_REDIR, str, len);
 	}
 	return (len);
@@ -125,7 +126,8 @@ int	handle_digit(char *str, t_token **tk)
 		add_token(tk, TK_REDIR, str, len);
 		return (len);
 	}
-	len += take_word_len(str, len);//
+	if (!(str[len - 1] == '>' && str[len - 2] == '>'))
+		len += take_word_len(str, len);//
 	if (redir_nb == 0)
 		add_token(tk, TK_WORD, str, len);
 	else

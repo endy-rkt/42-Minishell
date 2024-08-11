@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:38 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:33:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:26:03 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,7 @@
 # include "header.h"
 
 # include "./lexer/lexer.h"
+
+# include "./input/input.h"
 
 #endif
