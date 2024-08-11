@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/07 15:07:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/11 23:17:03 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ typedef enum {
 	TK_AND,
 	TK_WILDCARD,
 	TK_L_PAREN,
-	TK_R_PAREN
+	TK_R_PAREN,
+	TK_SEMICOLON
 } token_type;
 
 typedef struct s_token

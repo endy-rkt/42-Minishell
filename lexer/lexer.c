@@ -6,7 +6,7 @@
 /*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/11 14:50:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/12 00:11:43 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,24 @@ int	handle_operator(char *str, t_token **tk)
 	else if (str[len] == '*')
 	{
 		len++;
+		while (str[len] == '*' || str[len] == '/')
+			len++;
+		if (is_operator(str[len]) || ft_isspace(str[len]) || str[len] == 0)
 		add_token(tk, TK_WILDCARD, str, len);
+		else
+		{
+			while (ft_strchr("()", str[len]))
+				len++;
+			len += take_word_len(str, len);
+			while (!ft_isspace(str[len]) && str[len] && (!is_operator(str[len]) || str[len] == '*'))
+				len++;
+			add_token(tk, TK_WORD, str, len);
+		}
+	}
+	else if (str[len] == ';')
+	{
+		len++;
+		add_token(tk, TK_SEMICOLON, str, len);
 	}
 	else
 	{
