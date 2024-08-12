@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 11:21:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:33:38 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	handle_operator(char *str, t_token **tk)
 	}
 	else if (ft_strchr("()", str[len]))
 	{
-		if (str[0] == '(')
+		if (str[len] == '(')
 			add_token(tk, TK_L_PAREN, str, 1);
 		else
 			add_token(tk, TK_R_PAREN, str, 1);
