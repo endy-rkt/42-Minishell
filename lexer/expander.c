@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 11:37:42 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:44:52 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,9 @@ void    expand_token(t_token **tk)
 
 void    expand(t_token  **tk)
 {
-    t_token **tk_tmp;
-
-    if (!*tk)
-        return ;
-    expand_token(tk);
-    *tk_tmp = (*tk)->next;
-    while (*tk_tmp)
-    {
-        expand_token(tk_tmp);
-        *tk_tmp = (*tk_tmp)->next;
-    }
+	if (*tk)
+		expand_token(tk);
+	if ((*tk)->next)
+		expand(&((*tk)->next));
 }
 
