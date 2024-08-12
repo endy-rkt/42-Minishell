@@ -14,7 +14,9 @@
 
 int	is_operator(char c)
 {
-	return (c == '<' || c == '>' || c == '|' || c == '&' || c == '*' || c == ';');
+	if (ft_strchr("()<>|&;", c))
+		return (1);
+	return (0);
 }
 
 int	idx_of_last(char *str, char c)

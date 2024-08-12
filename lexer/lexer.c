@@ -33,7 +33,7 @@ int	take_word_len(char *str, int i)
 	int	tmp;
 
 	check_in = 0;
-	while (str[i] && !ft_isspace(str[i]) && !is_operator(str[i]) && !ft_strchr("()", str[i]))
+	while (str[i] && !ft_isspace(str[i]) && !is_operator(str[i]))
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
@@ -82,22 +82,13 @@ int	handle_operator(char *str, t_token **tk)
 			add_token(tk, TK_WORD, str, len);
 		}
 	}
-	else if (str[len] == '*')
+	else if (ft_strchr("()", str[len]))
 	{
-		len++;
-		while (str[len] == '*' || str[len] == '/')
-			len++;
-		if (is_operator(str[len]) || ft_isspace(str[len]) || str[len] == 0)
-		add_token(tk, TK_WILDCARD, str, len);
+		if (str[0] == '(')
+			add_token(tk, TK_L_PAREN, str, 1);
 		else
-		{
-			while (ft_strchr("()", str[len]))
-				len++;
-			len += take_word_len(str, len);
-			while (!ft_isspace(str[len]) && str[len] && (!is_operator(str[len]) || str[len] == '*'))
-				len++;
-			add_token(tk, TK_WORD, str, len);
-		}
+			add_token(tk, TK_R_PAREN, str, 1);
+		len++;
 	}
 	else if (str[len] == ';')
 	{
@@ -152,18 +143,6 @@ int	handle_digit(char *str, t_token **tk)
 	return (len);
 }
 
-int	handle_parenthesis(char *str, t_token **tk)
-{
-	token_type type;
-
-	if (str[0] == '(')
-		type = TK_L_PAREN;
-	else
-		type = TK_R_PAREN;
-	add_token(tk, type, str, 1);
-	return (1);
-}
-
 int	handle_char(char *str, t_token **tk)
 {
 	int		len;
@@ -187,8 +166,6 @@ int	create_tk_list(char *str, t_token **tk)
 		len += handle_operator(str + len, tk);
 	else if (ft_isdigit(str[len]))
 		len += handle_digit(str + len, tk);
-	else if (str[len] == '(' || str[len] == ')')
-		len += handle_parenthesis(str + len, tk);
 	else
 		len += handle_char(str + len, tk);
 	return (len);
