@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 11:21:11 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:51:48 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ int		idx_of_last(char *str, char c);
 int		idx_of_first(char *str, char c);
 void	add_token(t_token **tk, token_type type, char *str, int len);
 int		take_word_len(char *str, int i);
-t_token	*lex(char *input);
+int		expand(t_token  **tk);
 
 #endif
