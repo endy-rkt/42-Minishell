@@ -3,102 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 17:17:17 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/13 00:08:52 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-//if begin with wilcard then error
-int	expand_word(t_token **tk)
+void	expand_word(t_token	**tk)
 {
+
+}
+
+void	expand_redir(t_token **tk)
+{
+	int		i;
+	char	*tmp;
 	char	*value;
 
-	value = (*tk)->value;
-}
-
-int	expand_pipe(t_token **tk)
-{
-	if (!(*tk)->prev)
-		return (1);
-	if ((*tk)->next)
-	{
-		if ((*tk)->next->type == TK_PIPE || (*tk)->next->type == TK_OR || (*tk)->next->type == TK_AND 
-			|| (*tk)->next->type == TK_R_PAREN || (*tk)->next->type == TK_WILDCARD || (*tk)->next->type == TK_SEMICOLON)
-			return (1);
-	}
-	return (0);
-}
-
-//if last token is redir not heredoc then error
-int	expand_redir(t_token **tk)
-{
+	tmp = (*tk)->value;
+	while (tmp[i] == '0')
+		i++;
+	value = ft_substr(tmp + i, 0, ft_strlen(tmp + i) + 1);
+	free(tmp);
+	while (ft_isdigit(value[i]))
+		i++;
 	
 }
 
-int	expand_or_and(t_token **tk)
+void	expand_token(t_token **tk)
 {
-	if (!(*tk)->prev)
-		return (1);
-	if ((*tk)->next)
-	{
-		if ((*tk)->next->type == TK_PIPE || (*tk)->next->type == TK_OR || (*tk)->next->type == TK_AND || (*tk)->next->type == TK_WILDCARD)
-			return (1);
-	}
-	return (0);	
-}
-
-int	expand_lparen(t_token **tk)
-{
-	if (!(*tk)->next)
-		return (1);
-	if ((*tk)->next->type == TK_PIPE || (*tk)->next->type == TK_AND || (*tk)->next->type == TK_OR)
-		return (1);
-	return (0);	
-}
-
-int	expand_rparen(t_token **tk)
-{
-	if (!(*tk)->prev)
-		return (1);
-	return (0);	
-}
-
-int	expand_token(t_token **tk)
-{
-	int	error_checked;
-
-	error_checked = 0;
-    if ((*tk)->type == TK_PIPE)
-		error_checked = expand_pipe(tk);
-    else if ((*tk)->type == TK_REDIR)
-		error_checked = expand_redir(tk);
-    else if ((*tk)->type == TK_L_PAREN)
-		error_checked = expand_lparen(tk);
-    else if ((*tk)->type == TK_R_PAREN)
-		error_checked = expand_rparen(tk);
-    else if ((*tk)->type == TK_OR || (*tk)->type == TK_AND)
-		error_checked = expand_or_and(tk);
-    else;//word
-		error_checked = expand_word(tk);
-	return (error_checked);
-}
-
-/*
-	need to clear list if error_checked
-*/
-int	expand(t_token  **tk)
-{
-	int	error_checked;
-
-	error_checked = 0;
 	if (*tk)
-		error_checked = expand_token(tk);
-	if ((*tk)->next && !error_checked)
-		error_checked = expand(&((*tk)->next));
-	return (error_checked);
+	{
+		if ((*tk)->type == TK_WORD)
+			expand_word(tk);
+		if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_OUT 
+			|| (*tk)->type == TK_REDIR_OUT2  || (*tk)->type == TK_HEREDOC)
+			expand_redir(tk);
+		if ((*tk)->next)
+			expand_token(&((*tk)->next));
+	}
 }
 
+void	expand(t_token  **tk)
+{
+	if (!*tk)
+		return ;
+	expand_token(tk);
+	if(input_error(*tk))
+		tk_clear(tk);
+}

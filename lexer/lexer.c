@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 11:33:38 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/13 00:30:23 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,21 @@ int	handle_operator(char *str, t_token **tk)
 		}
 		if (redir_nb == 1)
 		{
-			add_token(tk, TK_REDIR, str, len);
+			if (str[len - 1] == '>')
+				add_token(tk, TK_REDIR_OUT, str, len);
+			else
+				add_token(tk, TK_REDIR_IN, str, len);
 			return (len);
 		}
 		if (str[len - 1] == '<' && str[len - 2] == '<')
+		{
+			while (ft_isspace(str[len]))
+				len++;
 			len += take_word_len(str, len);//
-		add_token(tk, TK_REDIR, str, len);
+			add_token(tk, TK_HEREDOC, str, len);
+		}
+		else
+			add_token(tk, TK_REDIR_OUT2, str, len);
 	}
 	return (len);
 }
@@ -131,15 +140,27 @@ int	handle_digit(char *str, t_token **tk)
 	}
 	if (redir_nb == 1)
 	{
-		add_token(tk, TK_REDIR, str, len);
+		if (str[len - 1] == '>')
+		add_token(tk, TK_REDIR_OUT, str, len);
+		else
+		add_token(tk, TK_REDIR_IN, str, len);
 		return (len);
 	}
-	if (!(str[len - 1] == '>' && str[len - 2] == '>'))
-		len += take_word_len(str, len);//
 	if (redir_nb == 0)
+	{
+		len += take_word_len(str, len);
 		add_token(tk, TK_WORD, str, len);
+		return (len);
+	}
+	if (str[len - 1] == '<' && str[len - 2] == '<')
+	{
+		while (ft_isspace(str[len]))
+			len++;
+		len += take_word_len(str, len);//
+		add_token(tk, TK_HEREDOC, str, len);
+	}
 	else
-		add_token(tk, TK_REDIR, str, len);
+		add_token(tk, TK_REDIR_OUT2, str, len);
 	return (len);
 }
 

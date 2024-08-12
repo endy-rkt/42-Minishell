@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 16:51:48 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/13 00:24:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 typedef enum {
     TK_WORD,
     TK_PIPE,
-	TK_REDIR,
     TK_REDIR_IN,
     TK_REDIR_OUT,
     TK_REDIR_OUT2,
@@ -50,6 +49,8 @@ int		idx_of_last(char *str, char c);
 int		idx_of_first(char *str, char c);
 void	add_token(t_token **tk, token_type type, char *str, int len);
 int		take_word_len(char *str, int i);
-int		expand(t_token  **tk);
+t_token	*lex(char *input);
+int		input_error(t_token *tk);
+void	expand(t_token  **tk);
 
 #endif

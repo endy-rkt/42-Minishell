@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 11:22:21 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/13 00:25:05 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	print_type()
 	token_type type []={
 	TK_WORD,//0
     TK_PIPE,//1
-	TK_REDIR,//2
     TK_REDIR_IN,//3
     TK_REDIR_OUT,//4
     TK_REDIR_OUT2,//5
