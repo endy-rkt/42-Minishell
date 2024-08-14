@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/14 16:43:39 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:47:59 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void	expand_word(t_token	**tk)
 	new_value[0] = '\0';
 	while (value[i])
 	{
-		printf("cond=%c\n", value[i]);
 		if (value[i] == '\'')
 		{
 			i++;
@@ -141,7 +140,6 @@ void	expand_word(t_token	**tk)
 			new_value = ft_strjoin(new_value, tmp);//0
 			free(tmp);
 		}
-		printf("aft=%c\n", value[i]);
 	}
 	free(value);
 	(*tk)->value = new_value;
