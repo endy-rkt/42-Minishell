@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/13 00:30:23 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/14 09:45:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ int	handle_operator(char *str, t_token **tk)
 		}
 		if (str[len - 1] == '<' && str[len - 2] == '<')
 		{
+			if (str[len] == '-')
+				len++;
 			while (ft_isspace(str[len]))
 				len++;
 			len += take_word_len(str, len);//
@@ -154,6 +156,8 @@ int	handle_digit(char *str, t_token **tk)
 	}
 	if (str[len - 1] == '<' && str[len - 2] == '<')
 	{
+		if (str[len] == '-')
+			len++;
 		while (ft_isspace(str[len]))
 			len++;
 		len += take_word_len(str, len);//

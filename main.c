@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/13 00:25:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/14 10:33:03 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	lex_test(char *input)
 	t_token	*tk;
 
 	tk = lex(input);
+	expand(&tk);
 	tk_print(tk);
 	tk_clear(&tk);
 }
