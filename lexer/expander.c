@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/15 09:25:53 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:35:54 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*my_getenv(char *var)
 {
 	char	*str;
 
+	if (!var)
+		return ("");
 	str = getenv(var);
 	if (!str)
 		return ("");
@@ -28,27 +30,32 @@ int	format_params(char *value, char **new_value, int i, int *j)
 	char	*tmp;
 	char	*param_value;
 
-	if (ft_isspace(value[i + 1]) || value[i+1]==0 || value[i+1] == '\'')
+	if (ft_isspace(value[i + 1]) || value[i+1]==0)
 	{
 			*new_value = ft_strjoin(*new_value, "$");//0
 			*j = *j + 1;
+			i++;
+			return (i);
 	}
 	else if (value[i+1] == '?')
 	{
 		*new_value = ft_strjoin(*new_value, "$?");// ---> expand #?
 		*j = *j + 2;
-		i++;
-	}
-	i++;
-	if (!(ft_isalpha(value[i]) || value[i] == '_'))
-	{
-		if (!ft_isspace(value[i]) && value[i] && value[i] != '\'' && value[i] != '\"')
-			i++;
+		i += 2;
 		return (i);
 	}
+	else if (value[i] == '\'' || value[i] == '\"' )
+		return (i);
+	i++;
 	tmp = malloc(ft_strlen(value) + 1);
 	k = 0;
-	while (ft_isalpha(value[i]) || value[i] == '_')
+	while (ft_isalpha(value[i]) || value[i] == '_' )
+	{
+		tmp[k] = value[i];
+		k++;
+		i++;
+	}
+	if (!(ft_isalpha(value[i]) || value[i] == '_') && value[i] != '\'' && value[i] != '\"' && value[i])
 	{
 		tmp[k] = value[i];
 		k++;
@@ -62,35 +69,31 @@ int	format_params(char *value, char **new_value, int i, int *j)
 	return (i);
 }
 
-int	format_quoted(char *value, char **new_value, char c, int i)
+int	format_quoted(char *value, char **new_value, int i, int *j)
 {
-	int		j;
-	int		end;
+	int		k;
+	char	*tmp;
 
 	i++;
-	if (c == '\"')
-		while (value[i] != c)
-		{
-			if (value[i] == '$')
-				i = format_params(value, new_value, i, &j);
-			else
-			{
-		j = ft_strlen(*new_value);
-				*new_value[j] = value[i];
-				i++;
-			}
-		}
-	else
+	while (value[i] != '\"' && value[i])
 	{
-		j = ft_strlen(*new_value);
-		while (value[i] != c)
+		if (value[i] == '$')
+			i = format_params(value, new_value, i, j);
+		else
 		{
-			*new_value[j] = value[i];
+			k = 0;
+			tmp = malloc(ft_strlen(value) + 1);
+			tmp[0] = 0;
+			tmp[k] = value[i];
+			k++;
 			i++;
-			j++;
-		}		
-	}	
-	if (c == value[i])
+			tmp[k] = 0;
+			*j = *j + ft_strlen(tmp);
+			*new_value = ft_strjoin(*new_value, tmp);//0
+			free(tmp);
+		}
+	}
+	if ('\"' == value[i])
 		i++;
 	return (i);
 }
@@ -130,7 +133,7 @@ void	expand_word(t_token	**tk)
 				i++;
 		}
 		else if (value[i] == '\"')
-			i = format_quoted(value, &new_value, value[i], i);
+			i = format_quoted(value, &new_value, i, &j);
 		else if (value[i] == '$')
 			i = format_params(value, &new_value, i, &j);
 		else
@@ -146,6 +149,7 @@ void	expand_word(t_token	**tk)
 			new_value = ft_strjoin(new_value, tmp);//0
 			free(tmp);
 		}
+		printf("value i=%d\n",i);
 	}
 	free(value);
 	(*tk)->value = new_value;
@@ -211,6 +215,8 @@ void	expand_token(t_token **tk)
 		if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_OUT 
 			|| (*tk)->type == TK_REDIR_OUT2  || (*tk)->type == TK_HEREDOC)
 			expand_redir(tk);
+		if ((*tk)->type == TK_L_PAREN);
+		if ((*tk)->type == TK_R_PAREN);
 		if ((*tk)->next)
 			expand_token(&((*tk)->next));
 	}
