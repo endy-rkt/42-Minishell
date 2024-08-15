@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/14 16:47:59 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/15 09:25:53 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,16 @@ int	format_params(char *value, char **new_value, int i, int *j)
 	char	*tmp;
 	char	*param_value;
 
-	if (ft_isspace(value[i + 1]) || value[i+1]==0 || value[i+1] == '\'' || value[i+1] == '\"')
+	if (ft_isspace(value[i + 1]) || value[i+1]==0 || value[i+1] == '\'')
 	{
-		*new_value = ft_strjoin(*new_value, "$");//0
-		*j = *j + 1;
+			*new_value = ft_strjoin(*new_value, "$");//0
+			*j = *j + 1;
+	}
+	else if (value[i+1] == '?')
+	{
+		*new_value = ft_strjoin(*new_value, "$?");// ---> expand #?
+		*j = *j + 2;
+		i++;
 	}
 	i++;
 	if (!(ft_isalpha(value[i]) || value[i] == '_'))
