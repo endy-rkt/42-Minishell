@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/16 13:41:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:56:22 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	expand_params(char *value, char **new_value, int i)
 		free(tmp);
 		return (i + 1);
 	}
-	else if (value[i] == '$' || ft_isdigit(value[i]))
+	else if (ft_strchr("$!#*@-", value[i]) || ft_isdigit(value[i]))
 	{
 		tmp = join_char(tmp, value[i]);
 		*new_value = ft_strjoin(*new_value, my_getenv(tmp));
