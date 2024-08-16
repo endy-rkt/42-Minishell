@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/14 09:45:21 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:20:37 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,15 @@ int	take_word_len(char *str, int i)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			tmp = 0;
-			tmp += idx_of_first(str + i + 1, str[i]);
-			i += tmp;
-			check_in += tmp;
+			if (str[i + 1] == '\0')
+				return (check_in + 1);
+			else
+			{
+				tmp = 0;
+				tmp += idx_of_first(str + i + 1, str[i]);
+				i += tmp;
+				check_in += tmp;
+			}
 		}
 		else
 		{
@@ -202,6 +207,10 @@ t_token	*lex(char *input)
 	char	*str;
 	t_token	*tk;
 
+	if (input[0] == '\n')
+		return (NULL);
+	if ((input[0] == '\'' || input[0] == '\"') && input[1] == '\0')
+		return (NULL); //error
 	str = ft_retire_space(input);
 	if (!str)
 		return (NULL);

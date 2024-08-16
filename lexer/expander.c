@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/15 15:35:54 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/16 10:57:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,76 +24,98 @@ char	*my_getenv(char *var)
 	return (str);
 }
 
-int	format_params(char *value, char **new_value, int i, int *j)
+char	*join_char(char *new_value, char c)
 {
-	int		k;
 	char	*tmp;
-	char	*param_value;
+	char	*str;
 
-	if (ft_isspace(value[i + 1]) || value[i+1]==0)
-	{
-			*new_value = ft_strjoin(*new_value, "$");//0
-			*j = *j + 1;
-			i++;
-			return (i);
-	}
-	else if (value[i+1] == '?')
-	{
-		*new_value = ft_strjoin(*new_value, "$?");// ---> expand #?
-		*j = *j + 2;
-		i += 2;
-		return (i);
-	}
-	else if (value[i] == '\'' || value[i] == '\"' )
-		return (i);
-	i++;
-	tmp = malloc(ft_strlen(value) + 1);
-	k = 0;
-	while (ft_isalpha(value[i]) || value[i] == '_' )
-	{
-		tmp[k] = value[i];
-		k++;
-		i++;
-	}
-	if (!(ft_isalpha(value[i]) || value[i] == '_') && value[i] != '\'' && value[i] != '\"' && value[i])
-	{
-		tmp[k] = value[i];
-		k++;
-		i++;
-	}
-	tmp[k] ='\0';
-	param_value = my_getenv(tmp);
-	*j = *j + ft_strlen(param_value);
-	*new_value = ft_strjoin(*new_value, param_value);//0
+	tmp = malloc(2);
+	if (!tmp)
+		return (NULL);
+	tmp[0] = c;
+	tmp[1] = '\0';
+	str = ft_strjoin(new_value, tmp);
 	free(tmp);
+	return (str);
+}
+
+int	expand_single_quote(char *value, char **new_value, int i)
+{
+	i++;
+	while (value[i] && value[i] != '\'')
+	{
+		*new_value = join_char(*new_value, value[i]);
+		i++;
+	}
+	if (value[i] == '\'')
+		i++;
 	return (i);
 }
 
-int	format_quoted(char *value, char **new_value, int i, int *j)
+int	expand_params(char *value, char **new_value, int i)
 {
-	int		k;
+	int		j;
 	char	*tmp;
 
 	i++;
-	while (value[i] != '\"' && value[i])
+	tmp = ft_strdup("");
+	if (value[i] == '\0' || ft_isspace(value[i]))
+	{
+		*new_value = ft_strjoin(*new_value, "$");
+		return (i);
+	}
+	else if (value[i] == '\'' || value[i] == '\"')
+		return (i);
+	else if (value[i] == '?')//to handle dude //0
+	{
+		tmp = join_char(tmp, value[i]);
+		*new_value = ft_strjoin(*new_value, tmp);//0
+		free(tmp);
+		return (i + 1);
+	}
+	else if (value[i] == '$' || !(ft_isalpha(value[i]) || value[i] == '_'))
+	{
+		tmp = join_char(tmp, value[i]);
+		*new_value = ft_strjoin(*new_value, my_getenv(tmp));
+		free(tmp);
+		return (i + 1);
+	}
+	else
+	{
+		while (ft_isalpha(value[i]) || value[i] == '_')
+		{
+			tmp = join_char(tmp, value[i]);
+			i++;
+		}
+		while (ft_isdigit(value[i]))
+		{
+			tmp = join_char(tmp, value[i]);
+			i++;
+		}
+		*new_value = ft_strjoin(*new_value, my_getenv(tmp));
+		free(tmp);
+		return (i);
+	}
+}
+
+int		expand_double_quote(char *value, char **new_value, int i)
+{
+	i++;
+	while (value[i] && value[i] != '\"')
 	{
 		if (value[i] == '$')
-			i = format_params(value, new_value, i, j);
+		{
+			if (value[i + 1] == '\'')
+				*new_value = ft_strjoin(*new_value, "$");
+			i = expand_params(value, new_value, i);
+		}
 		else
 		{
-			k = 0;
-			tmp = malloc(ft_strlen(value) + 1);
-			tmp[0] = 0;
-			tmp[k] = value[i];
-			k++;
+			*new_value = join_char(*new_value, value[i]);
 			i++;
-			tmp[k] = 0;
-			*j = *j + ft_strlen(tmp);
-			*new_value = ft_strjoin(*new_value, tmp);//0
-			free(tmp);
 		}
 	}
-	if ('\"' == value[i])
+	if (value[i] == '\"')
 		i++;
 	return (i);
 }
@@ -101,55 +123,25 @@ int	format_quoted(char *value, char **new_value, int i, int *j)
 void	expand_word(t_token	**tk)
 {
 	int		i;
-	int		k;
-	int		j;
-	char 	*tmp;
 	char	*value;
 	char	*new_value;
 
 	i = 0;
 	value = (*tk)->value;
-	new_value = malloc(ft_strlen(value) + 1);
-	new_value[0] = '\0';
+	new_value = ft_strdup("");
 	while (value[i])
 	{
 		if (value[i] == '\'')
-		{
-			i++;
-			while (value[i] != '\'' && value[i])
-			{
-			k = 0;
-			tmp = malloc(ft_strlen(value) + 1);
-			tmp[0] = 0;
-			tmp[k] = value[i];
-			k++;
-			i++;
-			tmp[k] = 0;
-				j += ft_strlen(tmp);
-			new_value = ft_strjoin(new_value, tmp);//0
-			free(tmp);
-			}
-			if (value[i] == '\'')
-				i++;
-		}
+			i = expand_single_quote(value, &new_value, i);
 		else if (value[i] == '\"')
-			i = format_quoted(value, &new_value, i, &j);
+			i = expand_double_quote(value, &new_value, i);
 		else if (value[i] == '$')
-			i = format_params(value, &new_value, i, &j);
+			i = expand_params(value, &new_value, i);
 		else
 		{
-			k = 0;
-			tmp = malloc(ft_strlen(value) + 1);
-			tmp[0] = 0;
-			tmp[k] = value[i];
-			k++;
+			new_value = join_char(new_value, value[i]);
 			i++;
-			tmp[k] = 0;
-			j += ft_strlen(tmp);
-			new_value = ft_strjoin(new_value, tmp);//0
-			free(tmp);
 		}
-		printf("value i=%d\n",i);
 	}
 	free(value);
 	(*tk)->value = new_value;
