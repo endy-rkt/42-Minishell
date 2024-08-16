@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/16 10:57:25 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/16 12:31:57 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ int	expand_params(char *value, char **new_value, int i)
 
 	i++;
 	tmp = ft_strdup("");
-	if (value[i] == '\0' || ft_isspace(value[i]))
+	if (value[i] == '\'' || value[i] == '\"')
+		return (i);
+	else if (value[i] == '\0' || ft_isspace(value[i]))
 	{
 		*new_value = ft_strjoin(*new_value, "$");
 		return (i);
 	}
-	else if (value[i] == '\'' || value[i] == '\"')
-		return (i);
 	else if (value[i] == '?')//to handle dude //0
 	{
 		tmp = join_char(tmp, value[i]);
@@ -82,12 +82,7 @@ int	expand_params(char *value, char **new_value, int i)
 	}
 	else
 	{
-		while (ft_isalpha(value[i]) || value[i] == '_')
-		{
-			tmp = join_char(tmp, value[i]);
-			i++;
-		}
-		while (ft_isdigit(value[i]))
+		while (ft_isalpha(value[i]) || value[i] == '_' || ft_isdigit(value[i]))
 		{
 			tmp = join_char(tmp, value[i]);
 			i++;
