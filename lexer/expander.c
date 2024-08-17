@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/16 15:32:47 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/17 09:31:17 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,8 +210,8 @@ void	expand_token(t_token **tk)
 		if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_OUT 
 			|| (*tk)->type == TK_REDIR_OUT2  || (*tk)->type == TK_HEREDOC)
 			expand_redir(tk);
-		if ((*tk)->type == TK_L_PAREN);
-		if ((*tk)->type == TK_R_PAREN);
+		// if ((*tk)->type == TK_L_PAREN);
+		// if ((*tk)->type == TK_R_PAREN);
 		if ((*tk)->next)
 			expand_token(&((*tk)->next));
 	}

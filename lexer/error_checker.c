@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_checker.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 22:46:18 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/13 00:24:08 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/17 09:32:42 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int	pipe_error(t_token *tk)
 		return (1);
 	if (tk->next)
 	{
-		if (tk->next->type == TK_PIPE || tk->next->type == TK_OR || tk->next->type == TK_AND 
-			|| tk->next->type == TK_R_PAREN || tk->next->type == TK_SEMICOLON)
+		if (tk->next->type == TK_PIPE || tk->next->type == TK_OR || tk->next->type == TK_AND) //|| tk->next->type == TK_R_PAREN || tk->next->type == TK_SEMICOLON
 			return (1);
 	}
 	return (0);
@@ -52,28 +51,28 @@ int	or_and_error(t_token *tk)
 	if (tk->next)
 	{
 		if (tk->next->type == TK_PIPE || tk->next->type == TK_OR 
-			|| tk->next->type == TK_AND || tk->next->type == TK_SEMICOLON)
+			|| tk->next->type == TK_AND) //|| tk->next->type == TK_SEMICOLON
 			return (1);
 	}
 	return (0);	
 }
 
-int	lparen_error(t_token *tk)
-{
-	if (!tk->next)
-		return (1);
-	if (tk->next->type == TK_PIPE || tk->next->type == TK_AND 
-		|| tk->next->type == TK_OR || tk->next->type == TK_SEMICOLON)
-		return (1);
-	return (0);	
-}
+// int	lparen_error(t_token *tk)
+// {
+// 	if (!tk->next)
+// 		return (1);
+// 	if (tk->next->type == TK_PIPE || tk->next->type == TK_AND 
+// 		|| tk->next->type == TK_OR || tk->next->type == TK_SEMICOLON)
+// 		return (1);
+// 	return (0);	
+// }
 
-int	rparen_error(t_token *tk)
-{
-	if (!tk->prev)
-		return (1);
-	return (0);	
-}
+// int	rparen_error(t_token *tk)
+// {
+// 	if (!tk->prev)
+// 		return (1);
+// 	return (0);	
+// }
 
 int	input_error(t_token *tk)
 {
@@ -87,10 +86,10 @@ int	input_error(t_token *tk)
 		error_checked = redir_error(tk);
 	else if (tk->type == TK_HEREDOC)
 		error_checked = heredoc_error(tk);
-    else if (tk->type == TK_L_PAREN)
-		error_checked = lparen_error(tk);
-    else if (tk->type == TK_R_PAREN)
-		error_checked = rparen_error(tk);
+    // else if (tk->type == TK_L_PAREN)
+	// 	error_checked = lparen_error(tk);
+    // else if (tk->type == TK_R_PAREN)
+	// 	error_checked = rparen_error(tk);
     else if (tk->type == TK_OR || tk->type == TK_AND)
 		error_checked = or_and_error(tk);
 	if (!error_checked && tk->next)
