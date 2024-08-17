@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 08:31:15 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 11:22:56 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/17 09:50:32 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ char	*ft_get_one_line(char	*remining_str)
 	while (remining_str[i] && remining_str[i] != '\n')
 		i++;
 	str = (char *)malloc(i + 2);
+	if (!str)
+		return (NULL);
 	i = 0;
 	while (remining_str[i] && remining_str[i] != '\n')
 	{

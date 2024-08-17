@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/17 09:30:03 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/17 11:13:14 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,7 @@ typedef enum {
     TK_REDIR_OUT2,
     TK_HEREDOC,
 	TK_OR,
-	TK_AND//,
-	// TK_WILDCARD,
-	// TK_L_PAREN,
-	// TK_R_PAREN,
-	// TK_SEMICOLON
+	TK_AND
 } token_type;
 
 typedef struct s_token
@@ -50,7 +46,7 @@ int		idx_of_first(char *str, char c);
 void	add_token(t_token **tk, token_type type, char *str, int len);
 int		take_word_len(char *str, int i);
 t_token	*lex(char *input);
-int		input_error(t_token *tk);
-void	expand(t_token  **tk);
+int		input_error(t_token **tk);
+int		expand(t_token  **tk);
 
 #endif

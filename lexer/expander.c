@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/17 09:31:17 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/17 11:14:42 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,8 @@ void	expand_redir(t_token **tk)
 	while (value[i] == '0')
 		i++;
 	new_value = malloc(ft_strlen(value) + 1);
+	if (!new_value)
+		return ;
 	while ((ft_isdigit(value[i]) || ft_strchr("<>", value[i])) && value[i])
 	{
 		new_value[j] = value[i];
@@ -210,18 +212,20 @@ void	expand_token(t_token **tk)
 		if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_OUT 
 			|| (*tk)->type == TK_REDIR_OUT2  || (*tk)->type == TK_HEREDOC)
 			expand_redir(tk);
-		// if ((*tk)->type == TK_L_PAREN);
-		// if ((*tk)->type == TK_R_PAREN);
 		if ((*tk)->next)
 			expand_token(&((*tk)->next));
 	}
 }
 
-void	expand(t_token  **tk)
+int	expand(t_token  **tk)
 {
 	if (!*tk)
-		return ;
+		return (1);
 	expand_token(tk);
-	// if(input_error(*tk))
-	// 	tk_clear(tk);
+	if(input_error(tk))
+	{
+		printf("Error\n");
+		return (1);
+	}
+	return (0);
 }

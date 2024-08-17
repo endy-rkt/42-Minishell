@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/17 09:30:56 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/17 10:27:27 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,19 +87,6 @@ int	handle_operator(char *str, t_token **tk)
 			add_token(tk, TK_WORD, str, len);
 		}
 	}
-	// else if (ft_strchr("()", str[len]))
-	// {
-	// 	if (str[len] == '(')
-	// 		add_token(tk, TK_L_PAREN, str, 1);
-	// 	else
-	// 		add_token(tk, TK_R_PAREN, str, 1);
-	// 	len++;
-	// }
-	// else if (str[len] == ';')
-	// {
-	// 	len++;
-	// 	add_token(tk, TK_SEMICOLON, str, len);
-	// }
 	else
 	{
 		redir_nb = 0;
@@ -111,7 +98,11 @@ int	handle_operator(char *str, t_token **tk)
 		if (redir_nb == 1)
 		{
 			if (str[len - 1] == '>')
-				add_token(tk, TK_REDIR_OUT, str, len);
+			{
+			add_token(tk, TK_REDIR_OUT, str, len);
+			if (str[len] == '|')
+				len++;
+			}
 			else
 				add_token(tk, TK_REDIR_IN, str, len);
 			return (len);
@@ -148,7 +139,11 @@ int	handle_digit(char *str, t_token **tk)
 	if (redir_nb == 1)
 	{
 		if (str[len - 1] == '>')
-		add_token(tk, TK_REDIR_OUT, str, len);
+		{
+			add_token(tk, TK_REDIR_OUT, str, len);
+			if (str[len] == '|')
+				len++;
+		}
 		else
 		add_token(tk, TK_REDIR_IN, str, len);
 		return (len);
@@ -209,8 +204,11 @@ t_token	*lex(char *input)
 
 	if (input[0] == '\n')
 		return (NULL);
-	if ((input[0] == '\'' || input[0] == '\"') && input[1] == '\0')
-		return (NULL); //error
+	if ((input[0] == '\'' || input[0] == '\"') && input[1] == '\n')
+	{
+		ft_putstr_fd("Error: invalid input\n", 2);
+		return (NULL);
+	}
 	str = ft_retire_space(input);
 	if (!str)
 		return (NULL);

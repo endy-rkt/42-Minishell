@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/17 09:34:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/17 11:14:16 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,11 @@ void	print_type()
 
 void	lex_test(char *input)
 {
+	int		input_error;
 	t_token	*tk;
 
 	tk = lex(input);
-	expand(&tk);
+	input_error = expand(&tk);
 	tk_print(tk);
 	tk_clear(&tk);
 }
