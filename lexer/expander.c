@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/17 11:14:42 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/20 11:12:00 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,13 @@ void	expand_word(t_token	**tk)
 		else
 		{
 			new_value = join_char(new_value, value[i]);
+			if (value[i] == '=')
+			{
+				(*tk)->type = TK_ASSIGN;
+				if (i != 0)
+					if (value[i - 1] == '\'' || value[i - 1] == '\"')
+						(*tk)->type = TK_ASSIGN_Q;
+			}
 			i++;
 		}
 	}
@@ -207,7 +214,7 @@ void	expand_token(t_token **tk)
 {
 	if (*tk)
 	{
-		if ((*tk)->type == TK_WORD)
+		if ((*tk)->type == TK_WORD || (*tk)->type == TK_ASSIGN || (*tk)->type == TK_ASSIGN_Q)
 			expand_word(tk);
 		if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_OUT 
 			|| (*tk)->type == TK_REDIR_OUT2  || (*tk)->type == TK_HEREDOC)

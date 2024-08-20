@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 22:46:18 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/17 11:21:28 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/20 11:13:50 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,22 @@ int	separator_error(t_token **tk)
 	return (0);
 }
 
+int	assign_error(t_token **tk)
+{
+	char	*value;
+
+	if ((*tk)->prev)
+		if ((*tk)->prev->type == TK_WORD || (*tk)->prev->type == TK_ASSIGN 
+			|| (*tk)->prev->type == TK_ASSIGN_Q)
+			return (0);
+	if ((*tk)->type == TK_ASSIGN_Q)
+		return (1);
+	value = (*tk)->value;
+	if (value[0] == '=')
+		return (1);
+	return (0);
+}
+
 int	input_error(t_token **tk)
 {
 	int	error_checked;
@@ -124,6 +140,8 @@ int	input_error(t_token **tk)
 		error_checked = redir_error(tk);
 	else if ((*tk)->type == TK_HEREDOC)
 		error_checked = heredoc_error(tk);
+	else if ((*tk)->type == TK_ASSIGN || (*tk)->type == TK_ASSIGN_Q)
+		error_checked = assign_error(tk);
 	if (!error_checked && (*tk)->next)
 		return (input_error(&((*tk)->next)));
 	return (error_checked);
