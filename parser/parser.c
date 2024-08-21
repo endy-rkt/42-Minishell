@@ -6,9 +6,11 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:09:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/20 10:09:26 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/21 13:58:06 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+static t_assign	*assgin_lst = NULL;
 
