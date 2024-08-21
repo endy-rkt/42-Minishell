@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   char_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 08:51:18 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/17 09:30:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:20:56 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_operator(char c)
 {
-	if (ft_strchr("<>|&", c)) //();
+	if (ft_strchr("<>|", c)) //()&;
 		return (1);
 	return (0);
 }

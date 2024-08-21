@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/17 10:27:27 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:21:41 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,27 +65,7 @@ int	handle_operator(char *str, t_token **tk)
 	if (str[len] == '|')
 	{
 		len++;
-		if (str[len] == '|')
-		{
-			len++;
-			add_token(tk, TK_OR, str, len);
-		}
-		else
-			add_token(tk, TK_PIPE, str, len);
-	}
-	else if (str[len] == '&')
-	{
-		len++;
-		if (str[len] == '&')
-		{
-			len++;
-			add_token(tk, TK_AND, str, len);
-		}
-		else
-		{
-			len += take_word_len(str, len);//	
-			add_token(tk, TK_WORD, str, len);
-		}
+		add_token(tk, TK_PIPE, str, len);
 	}
 	else
 	{
