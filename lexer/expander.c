@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/20 11:12:00 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/21 11:00:08 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,26 @@ int		expand_double_quote(char *value, char **new_value, int i)
 	return (i);
 }
 
+void	verify_assign(t_token **tk)
+{
+	int		i;
+	char	*value;
+
+	value = (*tk)->value;
+	if (!ft_strchr(value, '='))
+		return ;
+	i = 0;
+	if (ft_isdigit(value[i]) || value[0] == '=')
+		return ;
+	while (value[i] && value[i] != '=')
+	{
+		if (!(ft_isalnum(value[i]) || value[i] == '_'))
+			return ;
+		i++;
+	}
+	(*tk)->type = TK_ASSIGN;
+}
+
 void	expand_word(t_token	**tk)
 {
 	int		i;
@@ -143,13 +163,6 @@ void	expand_word(t_token	**tk)
 		else
 		{
 			new_value = join_char(new_value, value[i]);
-			if (value[i] == '=')
-			{
-				(*tk)->type = TK_ASSIGN;
-				if (i != 0)
-					if (value[i - 1] == '\'' || value[i - 1] == '\"')
-						(*tk)->type = TK_ASSIGN_Q;
-			}
 			i++;
 		}
 	}
@@ -214,8 +227,11 @@ void	expand_token(t_token **tk)
 {
 	if (*tk)
 	{
-		if ((*tk)->type == TK_WORD || (*tk)->type == TK_ASSIGN || (*tk)->type == TK_ASSIGN_Q)
+		if ((*tk)->type == TK_WORD || (*tk)->type == TK_ASSIGN)
+		{
+			verify_assign(tk);
 			expand_word(tk);
+		}
 		if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_OUT 
 			|| (*tk)->type == TK_REDIR_OUT2  || (*tk)->type == TK_HEREDOC)
 			expand_redir(tk);
