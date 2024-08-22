@@ -1,28 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 10:09:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/22 07:21:03 by trazanad         ###   ########.fr       */
+/*   Created: 2024/08/21 23:36:00 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/22 07:07:00 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	parse_cmd(t_token *tk)
+void	clear_redir(void *redir)
 {
-	t_cmd	*cmd;
-	t_token	*tmp;
+	t_redir	*tmp;
 
-	cmd = create_cmd(tk);
-	tmp = tk->next;
-	while (tmp)
-	{
-		if (tmp->type != TK_PIPE)
-			cmd_add_back(&cmd, create_cmd(tmp));
-		tmp = tmp->next;
-	}
+	tmp = (t_redir *)redir;
+	free(tmp->str);
+	free(tmp);
 }
+
+void	clear_assign(void *assign)
+{
+	char	*str;
+
+	str = (char *)assign;
+	free(str);
+}
+
+t_redir	*create_redir(char *str, token_type type, int is_last)
+{
+	t_redir	*redir;
+
+	redir = malloc(sizeof(redir));
+	if (!redir)
+		return (NULL);
+	redir->is_last = is_last;
+	redir->str = str;
+	redir->type = type;
+	return (redir);
+}
+

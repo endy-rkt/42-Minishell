@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/21 09:12:18 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/22 00:10:00 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ typedef enum {
     TK_REDIR_OUT,
     TK_REDIR_OUT2,
     TK_HEREDOC,
-	TK_OR,
-	TK_AND
-} token_type;
+}	token_type;
 
 typedef struct s_token
 {
