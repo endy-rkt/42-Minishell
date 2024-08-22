@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:07:30 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/22 08:54:00 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/23 00:01:09 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,17 @@ typedef struct s_cmd
 	t_list			*redir;
 	struct s_cmd	*next;
 }	t_cmd;
+
+typedef enum {
+	NODE_CMD,
+	NODE_PIPELINE,
+}	node_type;
+
+typedef struct s_ast
+{
+
+	struct s_ast	*left_node;
+	struct s_ast	*right_node;
+}	t_ast;
 
 #endif

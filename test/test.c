@@ -1,14 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 10:09:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/23 00:06:40 by trazanad         ###   ########.fr       */
+/*   Created: 2024/08/22 23:52:07 by trazanad          #+#    #+#             */
+/*   Updated: 2024/08/22 23:55:54 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../header.h"
 
+int main(void)
+{
+	char	*a;
+	char	*b;
+	char 	*tmp;
+
+	a = strdup("texta");
+	b = strdup("textb");
+	tmp = a;
+	a = b;
+	printf("a=%s\n tmp=%s\n", a, tmp);
+}
