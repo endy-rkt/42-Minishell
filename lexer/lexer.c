@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/21 23:21:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/22 10:44:00 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	handle_operator(char *str, t_token **tk)
 			add_token(tk, TK_HEREDOC, str, len);
 		}
 		else
-			add_token(tk, TK_REDIR_OUT2, str, len);
+			add_token(tk, TK_REDIR_APPEND, str, len);
 	}
 	return (len);
 }
@@ -144,7 +144,7 @@ int	handle_digit(char *str, t_token **tk)
 		add_token(tk, TK_HEREDOC, str, len);
 	}
 	else
-		add_token(tk, TK_REDIR_OUT2, str, len);
+		add_token(tk, TK_REDIR_APPEND, str, len);
 	return (len);
 }
 

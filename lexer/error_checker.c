@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_checker.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 22:46:18 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/21 23:24:14 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/22 08:55:44 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,10 @@ int	redir_error(t_token **tk)
 
 	if (!(*tk)->next)
 		return (1);
-	if ((*tk)->next->type == TK_REDIR_IN || (*tk)->next->type == TK_REDIR_OUT || (*tk)->next->type == TK_REDIR_OUT2 || (*tk)->next->type == TK_HEREDOC || (*tk)->next->type == TK_PIPE)
+	if ((*tk)->next->type == TK_REDIR_IN || (*tk)->next->type == TK_REDIR_OUT || (*tk)->next->type == TK_REDIR_APPEND 
+		|| (*tk)->next->type == TK_HEREDOC || (*tk)->next->type == TK_PIPE)
 		return (1);
-	if ((*tk)->type == TK_REDIR_OUT2)
+	if ((*tk)->type == TK_REDIR_APPEND)
 		return (redir_out2_error(tk));
 	return (0);
 }
@@ -119,7 +120,7 @@ int	input_error(t_token **tk)
     if ((*tk)->type == TK_PIPE)
 		error_checked = pipe_error(tk);
     else if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_OUT 
-			|| (*tk)->type == TK_REDIR_OUT2)
+			|| (*tk)->type == TK_REDIR_APPEND)
 		error_checked = redir_error(tk);
 	else if ((*tk)->type == TK_HEREDOC)
 		error_checked = heredoc_error(tk);

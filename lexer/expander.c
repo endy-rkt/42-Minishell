@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/21 11:00:08 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/22 08:55:44 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ void	expand_token(t_token **tk)
 			expand_word(tk);
 		}
 		if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_OUT 
-			|| (*tk)->type == TK_REDIR_OUT2  || (*tk)->type == TK_HEREDOC)
+			|| (*tk)->type == TK_REDIR_APPEND  || (*tk)->type == TK_HEREDOC)
 			expand_redir(tk);
 		if ((*tk)->next)
 			expand_token(&((*tk)->next));

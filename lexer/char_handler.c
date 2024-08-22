@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   char_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananarivo.mg>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 08:51:18 by trazanad          #+#    #+#             */
 /*   Updated: 2024/08/21 23:20:56 by trazanad         ###   ########.fr       */
