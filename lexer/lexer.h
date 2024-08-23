@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/22 08:55:44 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/23 09:40:16 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef enum {
 	TK_ASSIGN,
     TK_PIPE,
     TK_REDIR_IN,
+    TK_REDIR_IN2,
     TK_REDIR_OUT,
     TK_REDIR_APPEND,
     TK_HEREDOC,

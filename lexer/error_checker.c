@@ -6,13 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 22:46:18 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/22 08:55:44 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/23 09:44:40 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-void	redir_out2_to_in(t_token **tk)
+void	redir_out2_to_in2(t_token **tk)
 {
 	int		i;
 	char	*value;
@@ -33,7 +33,7 @@ void	redir_out2_to_in(t_token **tk)
 	new_value[i] = '\0';
 	free(value);
 	(*tk)->value = new_value;
-	(*tk)->type = TK_REDIR_IN;
+	(*tk)->type = TK_REDIR_IN2;
 }
 
 int	redir_out2_error(t_token **tk)
@@ -57,7 +57,7 @@ int	redir_out2_error(t_token **tk)
 	if (redir_nb > 2 || redir_value[1] == '<')
 		return (1);
 	if (redir_value[0] == '<' && redir_value[1] == '>')
-		redir_out2_to_in(tk);
+		redir_out2_to_in2(tk);
 	return (0);
 }
 
@@ -69,7 +69,7 @@ int	redir_error(t_token **tk)
 
 	if (!(*tk)->next)
 		return (1);
-	if ((*tk)->next->type == TK_REDIR_IN || (*tk)->next->type == TK_REDIR_OUT || (*tk)->next->type == TK_REDIR_APPEND 
+	if ((*tk)->next->type == TK_REDIR_IN || (*tk)->next->type == TK_REDIR_IN2 || (*tk)->next->type == TK_REDIR_OUT || (*tk)->next->type == TK_REDIR_APPEND 
 		|| (*tk)->next->type == TK_HEREDOC || (*tk)->next->type == TK_PIPE)
 		return (1);
 	if ((*tk)->type == TK_REDIR_APPEND)
@@ -119,7 +119,7 @@ int	input_error(t_token **tk)
 	error_checked = 0;
     if ((*tk)->type == TK_PIPE)
 		error_checked = pipe_error(tk);
-    else if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_OUT 
+    else if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_IN2 || (*tk)->type == TK_REDIR_OUT 
 			|| (*tk)->type == TK_REDIR_APPEND)
 		error_checked = redir_error(tk);
 	else if ((*tk)->type == TK_HEREDOC)
