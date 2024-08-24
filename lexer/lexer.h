@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/23 09:40:16 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/24 12:57:53 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ int		take_word_len(char *str, int i);
 t_token	*lex(char *input);
 int		input_error(t_token **tk);
 int		expand(t_token  **tk);
+int		is_redir(t_token *tk);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:38 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 11:22:06 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/24 09:30:05 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,7 @@
 # include "./lexer/lexer.h"
 
 # include "./input/input.h"
+
+# include "./parser/parser.h"
 
 #endif

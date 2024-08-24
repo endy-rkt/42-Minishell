@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 22:46:18 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/23 09:44:40 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/24 12:59:18 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ int	redir_error(t_token **tk)
 
 	if (!(*tk)->next)
 		return (1);
-	if ((*tk)->next->type == TK_REDIR_IN || (*tk)->next->type == TK_REDIR_IN2 || (*tk)->next->type == TK_REDIR_OUT || (*tk)->next->type == TK_REDIR_APPEND 
-		|| (*tk)->next->type == TK_HEREDOC || (*tk)->next->type == TK_PIPE)
+	if (is_redir(*tk) || (*tk)->next->type == TK_HEREDOC || (*tk)->next->type == TK_PIPE)
 		return (1);
 	if ((*tk)->type == TK_REDIR_APPEND)
 		return (redir_out2_error(tk));
@@ -119,8 +118,7 @@ int	input_error(t_token **tk)
 	error_checked = 0;
     if ((*tk)->type == TK_PIPE)
 		error_checked = pipe_error(tk);
-    else if ((*tk)->type == TK_REDIR_IN || (*tk)->type == TK_REDIR_IN2 || (*tk)->type == TK_REDIR_OUT 
-			|| (*tk)->type == TK_REDIR_APPEND)
+    else if (is_redir(*tk))
 		error_checked = redir_error(tk);
 	else if ((*tk)->type == TK_HEREDOC)
 		error_checked = heredoc_error(tk);

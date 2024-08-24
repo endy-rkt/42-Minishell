@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 08:54:53 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/23 00:07:10 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/24 12:57:41 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ t_token	*tk_create(char *value, token_type type, t_token *tk_prev)
 	tk->prev = tk_prev;
 	tk->next = NULL;
 	return (tk);
+}
+
+int	is_redir(t_token *tk)
+{
+	return (tk->type == TK_REDIR_IN || tk->type == TK_REDIR_IN2 || tk->type == TK_REDIR_OUT || tk->type == TK_REDIR_APPEND);
 }
 
 t_token	*tk_last(t_token *tk)

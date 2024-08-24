@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:07:30 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/23 10:49:08 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/24 15:33:48 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 
 typedef struct s_redir
 {
-	int			is_last;
+	int			fd;
+	char		*file;//delimiter
 	token_type	type;
-	char		*str;
 }	t_redir;
 
 typedef struct s_cmd
@@ -30,6 +30,10 @@ typedef struct s_cmd
 	char			**args; //args[0] == cmd_name
 	t_list			*assign;
 	t_list			*redir;
+	t_redir			*input;
+	t_redir			*output;
+	// char			*test;
+	struct s_cmd	*next;
 }	t_cmd;
 
 typedef enum {
@@ -44,9 +48,14 @@ typedef struct s_ast
 	struct s_ast	*right_node;
 }	t_ast;
 
-void	clear_args(char	***args);
-void	clear_redir(void *redir);
-void	clear_assign(void *assign);
-t_redir	*create_redir(char *str, token_type type, int is_last);
+// void	clear_args(char	***args);
+// void	clear_redir(void *redir);
+// void	clear_assign(void *assign);
+// t_redir	*create_redir(char *str, token_type type, int is_last);
+t_cmd	*parser_test(t_token *tk);
+void	print_single_cmd(t_cmd *cmd);
+void	cmd_addback(t_cmd **cmd, t_cmd *new_cmd);
+t_cmd	*cmd_last(t_cmd *cmd);
+t_cmd	*cmd_create(t_token *tk);
 
 #endif
