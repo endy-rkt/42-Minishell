@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:07:30 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/25 00:11:43 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/25 00:54:44 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef enum {
 typedef struct s_ast
 {
 	t_cmd			*cmd;
+	int				node_type;
 	struct s_ast	*left_node;
 	struct s_ast	*right_node;
 }	t_ast;
@@ -56,5 +57,6 @@ void	print_single_cmd(t_cmd *cmd);
 void	cmd_addback(t_cmd **cmd, t_cmd *new_cmd);
 t_cmd	*cmd_last(t_cmd *cmd);
 t_cmd	*cmd_create(t_token	**tk);
+t_ast	*create_ast(t_token	*tk);
 
 #endif
