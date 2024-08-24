@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 23:36:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/24 09:54:01 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/25 00:34:59 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,13 @@ t_cmd	*parser_test(t_token *tk)
 	{
 		if (tk->type != TK_PIPE)
 		{
-			new_cmd = cmd_create(tk);
-			while (tk)
-			{
+			new_cmd = cmd_create(&tk);
+			while (tk != NULL && tk->type != TK_PIPE)
 				tk = tk->next;
-				if (tk)
-					if (tk->type == TK_PIPE)
-						break;
-			}
 		}
 		else
 		{
-			new_cmd = cmd_create(tk);
+			new_cmd = cmd_create(&tk);
 			tk = tk->next;
 		}
 		cmd_addback(&cmd, new_cmd);
