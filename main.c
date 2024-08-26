@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/24 09:31:56 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/26 10:23:18 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ void	lex_test(char *input)
 {
 	int		input_error;
 	t_token	*tk;
-	t_cmd	*cmd;
+	t_ast	*ast;
 
 	tk = lex(input);
 	input_error = expand(&tk);
 	tk_print(tk);
-	cmd = parser_test(tk);
-	print_single_cmd(cmd);
+	ast = create_ast(tk);
+	print_ast(ast);
 	tk_clear(&tk);
 }
 

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:09:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/25 00:55:43 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/26 10:39:07 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_ast	*parse_pipeline(t_cmd **cmd)
 	t_ast	*right_node;
 
 	left_node = create_node(*cmd, NULL, NULL, NODE_CMD);
+	*cmd = (*cmd)->next;
 	while (left_node != NULL && *cmd)
 	{
 		if (cmd_pipe(*cmd))
@@ -45,9 +46,8 @@ t_ast	*parse_pipeline(t_cmd **cmd)
 		if (!*cmd)
 			break ;
 		right_node = create_node(*cmd, NULL, NULL, NODE_CMD);
+		*cmd = (*cmd)->next;
 		tmp = create_node(NULL, left_node, right_node, NODE_PIPELINE);
-		if (!tmp)
-			return (left_node);
 		left_node = tmp;
 	}
 	return (left_node);
@@ -67,3 +67,21 @@ t_ast	*create_ast(t_token	*tk)
 	return (ast);
 }
 
+void	print_ast(t_ast *ast)
+{
+	static int i=0;
+	
+	if (ast)
+	{
+		if (ast->node_type == NODE_CMD)
+			print_one_cmd(ast->cmd);
+		if (ast->node_type == NODE_PIPELINE)
+		{
+			printf("left pipe: %d\n", i);
+			print_ast(ast->left_node);
+			printf("right pipe: %d\n", i);
+			print_ast(ast->right_node);
+			i++;
+		}
+	}	
+}

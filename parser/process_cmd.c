@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 09:46:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/25 00:22:27 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/26 10:15:31 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	take_redir(t_token **tk, t_cmd **cmd)
 	redir->fd = ft_atoi(tk_value);
 	redir->type = (*tk)->type;
 	*tk = (*tk)->next;
+	redir->file = NULL;
 	if ((*tk) != NULL && ((*tk)->type == TK_WORD || (*tk)->type == TK_ASSIGN))
 		redir->file = ft_strdup((*tk)->value);
 	ft_lstadd_back(&((*cmd)->redir), ft_lstnew(redir));
@@ -163,9 +164,11 @@ void	cmd_addvalue(t_token **tk, t_cmd **cmd)
 
 	args_size = size_of_args(*tk);
 	args = malloc(sizeof(char *) * (args_size + 1));
+	printf("size:%d\n",args_size);
 	if (!args)
 		return ;
 	(*cmd)->args = args;
+	(*cmd)->args[0] = NULL;
 	cmd_part1(tk, cmd);
 	cmd_part2(tk, cmd);
 }
@@ -221,10 +224,9 @@ void	cmd_clear(t_cmd **cmd)
 	}
 }
 
-
-void	print_single_cmd(t_cmd *cmd)
+void	print_one_cmd(t_cmd *cmd)
 {
-	while (cmd)
+	if (cmd)
 	{
 		printf("----------------------------------------------------------------\n");
 		if (!cmd->args && !cmd->assign && !cmd->redir)
@@ -235,7 +237,7 @@ void	print_single_cmd(t_cmd *cmd)
 		{
 			int i =0;
 			printf("args:\t");
-			while (cmd->args[i])
+			while (cmd->args[i] != NULL)
 			{
 				printf("{%s}\t", cmd->args[i]);
 				i++;
@@ -269,6 +271,14 @@ void	print_single_cmd(t_cmd *cmd)
 		// printf("args:%s\n");
 		// printf("assign:%s\n");
 		// printf("redir:%s\n");
+	}
+}
+
+void	print_single_cmd(t_cmd *cmd)
+{
+	while (cmd)
+	{
+		print_one_cmd(cmd);
 		cmd = cmd->next;
 	}
 }

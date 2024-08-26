@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 22:46:18 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/24 12:59:18 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/26 10:05:40 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	redir_error(t_token **tk)
 
 	if (!(*tk)->next)
 		return (1);
-	if (is_redir(*tk) || (*tk)->next->type == TK_HEREDOC || (*tk)->next->type == TK_PIPE)
+	if (is_redir((*tk)->next) || (*tk)->next->type == TK_HEREDOC || (*tk)->next->type == TK_PIPE)
 		return (1);
 	if ((*tk)->type == TK_REDIR_APPEND)
 		return (redir_out2_error(tk));
