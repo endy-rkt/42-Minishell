@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:09:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/26 10:39:07 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:16:20 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,12 @@ void	print_ast(t_ast *ast)
 			print_one_cmd(ast->cmd);
 		if (ast->node_type == NODE_PIPELINE)
 		{
-			printf("left pipe: %d\n", i);
+			printf("************************\n");
+			printf("left:\n");
 			print_ast(ast->left_node);
-			printf("right pipe: %d\n", i);
+			printf("right:\n");
 			print_ast(ast->right_node);
-			i++;
+			printf("************************\n");
 		}
 	}	
 }
