@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:07:30 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/26 10:18:52 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/02 08:54:35 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@ typedef struct s_cmd
 {
 	char			**args; //args[0] == cmd_name
 	t_list			*assign;
-	t_list			*redir;
-	t_redir			*input;
-	t_redir			*output;
+	t_list			*redir_in;
+	t_list			*redir_out;
 	struct s_cmd	*next;
 }	t_cmd;
 
