@@ -6,15 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:07:30 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/02 08:54:35 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:58:30 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 
 # define PARSER_H
-
-# include "../header.h"
 
 # include "../lexer/lexer.h"
 

@@ -1,4 +1,4 @@
-SRCS = main.c lexer/char_handler.c lexer/lexer_utils.c lexer/lexer.c  lexer/expander.c  lexer/error_checker.c input/input.c parser/process_cmd.c parser/parser_utils.c parser/parser.c
+SRCS = main.c lexer/char_handler.c lexer/lexer_utils.c lexer/lexer.c  lexer/expander.c  lexer/error_checker.c input/input.c parser/process_cmd.c parser/parser_utils.c parser/parser.c executor/executor.c executor/executor_utils.c
 
 BONUS_SRCS = main.c
 

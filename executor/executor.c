@@ -1,45 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 09:21:35 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/02 15:40:03 by trazanad         ###   ########.fr       */
+/*   Created: 2024/09/02 14:57:30 by trazanad          #+#    #+#             */
+/*   Updated: 2024/09/02 15:35:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADER_H
+#include "executor.h"
 
-# define HEADER_H
-
-# include <stdio.h>
-
-# include <stdlib.h>
-
-# include <unistd.h>
-
-# include <fcntl.h>
-
-# include <signal.h>
-
-# include <errno.h>
-
-# include <sys/types.h>
-
-# include <sys/wait.h>
-
-# include <sys/stat.h>
-
-# include <dirent.h>
-
-# include <termios.h>
-
-# include <readline/readline.h>
-
-# include <readline/history.h>
-
-# include "./libft/libft.h"
-
-#endif
+void	execute_ast(t_ast *ast)
+{
+	if (ast == NULL)
+		return ;
+	if (ast->node_type == NODE_CMD && ast->cmd != NULL)
+		execute_cmd(ast->cmd);
+	else
+	{
+		//execute_pipe;
+	}
+}
