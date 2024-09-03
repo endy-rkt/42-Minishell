@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 10:32:46 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 11:21:49 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:56:24 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	handle_input0(void (*process_input)(char*))
 	no_exit = 1;
 	while (no_exit)
 	{
+		ft_printf(">>");
 		input = get_next_line(0);
 		if (!input)
 			return ;
