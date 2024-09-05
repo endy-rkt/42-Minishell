@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 15:01:49 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/03 17:50:22 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:12:19 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,11 +146,13 @@ int	fd_stdout(t_cmd *cmd)
 	return (fd);// to close after
 }
 
-int	execute_cmd(t_cmd *cmd)
+int	execute_cmd(t_ast *ast, int fd_0, int fd_1)
 {
 	int		pid;
 	char	*path;
+	t_cmd	*cmd;
 
+	cmd = ast->cmd;
 	path = ft_strdup("/bin/");
 	if (cmd->args != NULL && cmd->args[0] != NULL)
 		path = ft_strjoin(path, cmd->args[0]);
@@ -167,9 +169,16 @@ int	execute_cmd(t_cmd *cmd)
 	{
 		dup2(fd_stdin(cmd), STDIN_FILENO);
 		dup2(fd_stdout(cmd), STDOUT_FILENO);
+		dup2(fd_0, STDIN_FILENO);
+		dup2(fd_1, STDOUT_FILENO);
 		execve(path, cmd->args, NULL);
 	}
 	free(path);
 	wait(NULL);
 	return (0);
+}
+
+int execute_pipe(t_ast *ast)
+{
+	
 }
