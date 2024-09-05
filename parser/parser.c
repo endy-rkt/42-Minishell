@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:09:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/02 08:57:02 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/05 10:30:22 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	cmd_pipe(t_cmd *cmd)
 {
+	if (cmd == NULL)
+		return (1);
 	return (!cmd->args && !cmd->assign && !cmd->redir_in && !cmd->redir_out);
 }
 

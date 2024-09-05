@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:07:30 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/02 14:58:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/05 10:17:24 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ t_cmd	*cmd_create(t_token	**tk);
 t_ast	*create_ast(t_token	*tk);
 void	print_ast(t_ast *ast);
 t_ast	*create_ast(t_token	*tk);
+int		cmd_pipe(t_cmd *cmd);
 
 #endif
