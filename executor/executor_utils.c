@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 15:01:49 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/05 10:53:37 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:26:42 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,59 +17,6 @@ void	free_ast(t_ast **ast)
 	
 }
 
-void	launch_heredoc(t_redir *rd)
-{
-	int		i;
-	char	*delimiter;
-	char	*input;
-
-	i = 0;
-	delimiter = rd->file;
-	while (delimiter[i] == '<' || ft_isdigit(delimiter[i]))
-		i++;
-	delimiter = delimiter + i;
-	printf("delimiter:%s\n", delimiter);
-	while (1)
-	{
-		input = NULL;
-		ft_printf("heredoc>");
-		input = get_next_line(0);
-		if (ft_strncmp(input, delimiter, ft_strlen(delimiter)) == 0)
-			break ;
-		free(input);
-	}
-}
-
-int	handle_heredoc(t_redir *rd)
-{
-	int		i;
-	char	*delimiter;
-	char	*input;
-	char	*value;
-	int		fd;
-
-	i = 0;
-	delimiter = rd->file;
-	while (delimiter[i] == '<' || ft_isdigit(delimiter[i]))
-		i++;
-	delimiter = delimiter + i;
-	fd = open(".hdoc_tmp", O_RDWR | O_TRUNC |O_CREAT, 0777);
-	value = ft_strdup("");
-	while (1)
-	{
-		input = NULL;
-		ft_printf("heredoc>");
-		input = get_next_line(0);
-		if (ft_strncmp(input, delimiter, ft_strlen(delimiter)) == 0)
-			break ;
-		value = ft_strjoin(value, input);
-		free(input);
-	}
-	write(fd, value, ft_strlen(value));
-	free(value);
-	close(fd);
-	return (fd);
-}
 
 int	fd_stdin(t_cmd *cmd)
 {
@@ -86,14 +33,12 @@ int	fd_stdin(t_cmd *cmd)
 	while (lst_redir != last_redir)
 	{
 		rd = lst_redir->content;
-		if (rd->type == TK_HEREDOC)
-			launch_heredoc(rd);
-		else if (rd->type == TK_REDIR_IN2)
+		if (rd->type == TK_REDIR_IN2)
 		{
 			fd = open(rd->file,  O_RDWR | O_CREAT, 0777);
 			close(fd);
 		}
-		else
+		else if (rd->type == TK_REDIR_IN)
 		{
 			fd = open(rd->file, O_RDONLY);
 			if (fd == -1)
@@ -111,12 +56,6 @@ int	fd_stdin(t_cmd *cmd)
 		if (fd == -1)
 			exit(EXIT_FAILURE);
 	}
-	else
-	{
-		handle_heredoc(rd);
-		fd = open(".hdoc_tmp", O_RDONLY, 0777);
-	}
-	printf("fd=%d\n",fd);
 	return (fd);// to close after
 }
 

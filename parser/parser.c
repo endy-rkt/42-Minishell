@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 10:09:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/05 10:30:22 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:10:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_ast	*parse_pipeline(t_cmd **cmd)
 	t_ast	*left_node;
 	t_ast	*right_node;
 
+	process_heredoc(cmd);
 	left_node = create_node(*cmd, NULL, NULL, NODE_CMD);
 	*cmd = (*cmd)->next;
 	while (left_node != NULL && *cmd)
