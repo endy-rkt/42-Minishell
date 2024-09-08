@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 09:46:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/02 09:27:11 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/08 09:50:18 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ void	cmd_addvalue(t_token **tk, t_cmd **cmd)
 
 	args_size = size_of_args(*tk);
 	args = malloc(sizeof(char *) * (args_size + 1));
-	printf("size:%d\n",args_size);
+	// printf("size:%d\n",args_size);
 	if (!args)
 		return ;
 	(*cmd)->args = args;

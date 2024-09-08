@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/06 13:19:11 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/08 09:20:54 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,16 @@ void	lex_test(char *input)
 	tk_clear(&tk);
 }
 
+void handle_sigint(int sig)
+{
+    (void)sig;
+    // Print a new prompt after catching Ctrl+C
+    write(STDOUT_FILENO, "\n>>", 3);
+}
+
 int	main(void/*, char *envp[]void*/)
 {
+	signal(SIGINT, handle_sigint);
 	handle_input0(lex_test);
 	return (0);
 }

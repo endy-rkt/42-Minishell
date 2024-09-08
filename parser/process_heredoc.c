@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:47:09 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/06 13:18:28 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/08 09:13:18 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,17 +103,21 @@ void    process_heredoc(t_cmd **cmd)
 {
     int     i;
     char    *file;
+	char	*str;
     t_cmd *tmp;
 
     i = 0;
     tmp = *cmd;
+	str = NULL;
     file = ft_strdup(".tmp");
     while (tmp)
     {
-        file = ft_strjoin(file, ft_itoa(i));
+		str = ft_itoa(i);
+        file = ft_strjoin(file, str);
         process_heredoc_cmd(&tmp, file);
         i++;
         tmp = tmp->next;
+		free(str);
     }
     free(file);
 }

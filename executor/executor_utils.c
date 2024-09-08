@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 15:01:49 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/06 13:26:42 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/08 09:50:31 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,13 +106,14 @@ int	execute_cmd(t_ast *ast, int fd_0, int fd_1)
 		exit(EXIT_FAILURE);
 	if (pid == 0)
 	{
+		 signal(SIGINT, SIG_DFL);
 		dup2(fd_0, STDIN_FILENO);
 		dup2(fd_1, STDOUT_FILENO);
 		dup2(fd_stdin(cmd), STDIN_FILENO);
 		dup2(fd_stdout(cmd), STDOUT_FILENO);
 		execve(path, cmd->args, NULL);
 	}
-	printf("path=%s\n",path);
+	// printf("path=%s\n",path);
 	free(path);
 	return (0);
 }
@@ -140,58 +141,96 @@ void	no_pipe_cmd(t_ast *ast, int fd_0, int fd_1)
 }
 
 
-
 int execute_pipe(t_ast *ast)
 {
-	int	fd[2];
-	int pid1, pid2;
+    int fd[2];
+    int pid1, pid2;
 
-	if (pipe(fd) < 0)
-		exit(EXIT_FAILURE);
+    // Create a pipe
+    if (pipe(fd) < 0)
+    {
+        perror("pipe failed");
+        exit(EXIT_FAILURE);
+    }
 
-	pid1 = fork();
-	if (pid1 == -1)
-		exit(EXIT_FAILURE);
+    // Fork the first process
+    pid1 = fork();
+    if (pid1 == -1)
+    {
+        perror("fork failed");
+        exit(EXIT_FAILURE);
+    }
 
-	if (pid1 == 0) 
-	{
-		close(fd[0]); 
-		if (ast->left_node)
-		{
-			dup2(fd[1], STDOUT_FILENO);
-			close(fd[1]); 
-			if (ast->left_node->node_type == NODE_CMD && ast->left_node->cmd != NULL)
-				no_pipe_cmd(ast->left_node, STDIN_FILENO, STDOUT_FILENO);
-			else
-				execute_pipe(ast->left_node);
-		}
-		exit(0);
-	}
-	
-	pid2 = fork();
-	if (pid2 == -1)
-		exit(EXIT_FAILURE);
+    if (pid1 == 0) 
+    {
+        // Child process for the left command
+		 signal(SIGINT, SIG_DFL);
+        close(fd[0]);  // Close unused read end
+        if (dup2(fd[1], STDOUT_FILENO) == -1)
+        {
+            perror("dup2 failed");
+            exit(EXIT_FAILURE);
+        }
+        close(fd[1]);  // Close after duplication
+        
+        if (ast->left_node)
+        {
+            if (ast->left_node->node_type == NODE_CMD && ast->left_node->cmd != NULL)
+                no_pipe_cmd(ast->left_node, STDIN_FILENO, STDOUT_FILENO);
+            else
+                execute_pipe(ast->left_node);
+        }
+        exit(EXIT_SUCCESS);
+    }
 
-	if (pid2 == 0)
-	{
-		close(fd[1]); 
-		dup2(fd[0], STDIN_FILENO); 
-		close(fd[0]);
-		if (ast->right_node)
-		{
-			if (ast->right_node->node_type == NODE_CMD && ast->right_node->cmd != NULL)
-				no_pipe_cmd(ast->right_node, STDIN_FILENO, STDOUT_FILENO);
-			else
-				execute_pipe(ast->right_node); 
-		}
-		exit(0);
-	}
+    // Fork the second process
+    pid2 = fork();
+    if (pid2 == -1)
+    {
+        perror("fork failed");
+        exit(EXIT_FAILURE);
+    }
 
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid1, NULL, 0); 
-	waitpid(pid2, NULL, 0);
+    if (pid2 == 0)
+    {
+        // Child process for the right command
+		signal(SIGINT, SIG_DFL);
+        close(fd[1]);  // Close unused write end
+        if (dup2(fd[0], STDIN_FILENO) == -1)
+        {
+            perror("dup2 failed");
+            exit(EXIT_FAILURE);
+        }
+        close(fd[0]);  // Close after duplication
 
-	return 0;
+        if (ast->right_node)
+        {
+            if (ast->right_node->node_type == NODE_CMD && ast->right_node->cmd != NULL)
+                no_pipe_cmd(ast->right_node, STDIN_FILENO, STDOUT_FILENO);
+            else
+                execute_pipe(ast->right_node);
+        }
+        exit(EXIT_SUCCESS);
+    }
+
+    // Close parent’s pipe ends
+    close(fd[0]);
+    close(fd[1]);
+
+    // Wait for both child processes
+    if (waitpid(pid1, NULL, 0) == -1)
+    {
+        perror("waitpid failed for pid1");
+        exit(EXIT_FAILURE);
+    }
+
+    if (waitpid(pid2, NULL, 0) == -1)
+    {
+        perror("waitpid failed for pid2");
+        exit(EXIT_FAILURE);
+    }
+
+    return 0;
 }
+
 
