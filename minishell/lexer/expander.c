@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 16:06:59 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:45:57 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	expand_redir(t_token **tk)
 	new_value = malloc(ft_strlen(value) + 1);
 	if (!new_value)
 		return ;
-	while ((ft_isdigit(value[i]) || ft_strchr("<>", value[i])) && value[i])
+	while (ft_strchr("<>", value[i]) && value[i])
 	{
 		new_value[j] = value[i];
 		i++;

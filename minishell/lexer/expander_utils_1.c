@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:38:39 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 16:06:19 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:12:50 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,6 @@ char	*join_char(char *new_value, char c)
 	str = ft_strjoin(new_value, tmp);
 	free(tmp);
 	return (str);
-}
-
-int	format_delimiter(char *value, char *new_value, int i, int j)
-{
-	char	tmp;
-
-	tmp = 0;
-	if (value[i] == '-')
-		i++;
-	while (ft_isspace(value[i]))
-		i++;
-	while (value[i])
-	{
-		if ((value[i] == '\'' || value[i] == '\"') && tmp == 0)
-			tmp = value[i];
-		else if (value[i] == tmp && tmp != 0)
-			tmp = 0;
-		else
-		{
-			new_value[j] = value[i];
-			j++;
-		}
-		i++;
-	}
-	return (j);
 }
 
 int	expand_single_quote(char *value, char **new_value, int i)

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:14:39 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 16:26:44 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:48:15 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct s_token
 
 typedef struct s_redir
 {
-	int			fd;
 	char		*file;
 	token_type	type;
 }	t_redir;

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 16:49:38 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:12:14 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	parse(t_sh_params **sh_params, char *input)
 		return ;
 	tk_error = check_tk_error(&tk, sh_params);
 	expand(&tk, *sh_params);
-	cmd = create_cmd_list(&tk, sh_params);//expand delimiter and process_heredoc, free tk
+	cmd = create_cmd_list(&tk, sh_params);
 	tk_clear(&tk);
 	if (tk_error)
 	{

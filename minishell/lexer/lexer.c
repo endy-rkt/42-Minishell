@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:35:10 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 15:08:44 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:43:13 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ static int	create_tk_list(char *str, t_token **tk)
 		return (0);
 	if (is_operator(str[len]))
 		len += handle_operator(str + len, tk);
-	else if (ft_isdigit(str[len]))
-		len += handle_digit(str + len, tk);
 	else
 		len += handle_char(str + len, tk);
 	return (len);

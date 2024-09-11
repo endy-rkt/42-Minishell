@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:11:30 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 15:20:14 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:47:08 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ static int	heredoc_error(t_token **tk)
 	i = 0;
 	redir_nb = 0;
 	value = (*tk)->value;
-	while (ft_isdigit(value[i]))
-		i++;
 	while (value[i] == '<' || value[i] == '>')
 	{
 		if (value[i] == '>')

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:47:54 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 15:04:49 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:43:44 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,6 @@ static int	handle_redir(char *str, t_token **tk, int len)
 	}
 	else
 		add_token(tk, TK_REDIR_APPEND, str, len);
-	return (len);
-}
-
-int	handle_digit(char *str, t_token **tk)
-{
-	int		len;
-	int		redir_nb;
-
-	len = 0;
-	redir_nb = 0;
-	while (ft_isdigit(str[len]))
-		len++;
-	if (str[len] != '<' && str[len] != '>')
-	{
-		len += take_word_len(str, len);
-		add_token(tk, TK_WORD, str, len);
-		return (len);
-	}
-	else
-		len += handle_redir(str, tk, len);
 	return (len);
 }
 

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 14:30:38 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:26:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_sh_params	*init_sh_params(char **envp)
 {
 	t_sh_params	*sh_params;
 
-	sh_params = malloc(t_sh_params);
+	sh_params = malloc(sizeof(t_sh_params));
 	if (!sh_params)
 		return (NULL);
 	sh_params->ast = NULL;
@@ -38,6 +38,7 @@ int	run_shell(char *input, char **envp)
 	if (sh_params->exit_status == 0)
 		execute(&sh_params);
 	exit_status = sh_params->exit_status;
+	close_fd(sh_params);
 	delete_tmp_file(sh_params->tmp_file);
 	free_sh_params(&sh_params);
 	sh_params = NULL;
