@@ -6,11 +6,17 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 22:46:18 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/09 09:23:11 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:46:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+
+int	my_perror(int status, char *str)
+{
+	ft_putstr_fd(str, 2);
+	return (status);
+}
 
 void	redir_out2_to_in2(t_token **tk)
 {
@@ -54,8 +60,10 @@ int	redir_out2_error(t_token **tk)
 		i++;
 		redir_nb++;
 	}
-	if (redir_nb > 2 || redir_value[1] == '<')
-		return (1);
+	if (redir_value[1] == '<')
+		return (my_perror(2, "minishell: syntax error near unexpected token `<'"));
+	if (redir_nb > 2)
+		return (my_perror(2, "minishell: syntax error near unexpected token `>'"));
 	if (redir_value[0] == '<' && redir_value[1] == '>')
 		redir_out2_to_in2(tk);
 	return (0);
@@ -95,18 +103,18 @@ int	heredoc_error(t_token **tk)
 		redir_nb++;
 	}
 	if (redir_nb > 2 || !value[i])
-		return (1);
+		return (my_perror(2, "minishell: syntax error near unexpected token `<'"));
 	return (0);
 }
 
 int	pipe_error(t_token **tk)
 {
 	if (!(*tk)->prev)
-		return (1);
+		return (my_perror(2, "minishell: syntax error near unexpected token `|'"));
 	if ((*tk)->next)
 	{
 		if ((*tk)->next->type == TK_PIPE)
-			return (1);
+			return (my_perror(2, "minishell: syntax error near unexpected token `|'"));
 	}
 	return (0);
 }

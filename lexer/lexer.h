@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/03 16:02:22 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 10:48:23 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,6 @@
 # define LEXER_H
 
 # include "../header.h"
-
-typedef enum {
-    TK_WORD,
-	TK_ASSIGN,
-    TK_PIPE,
-    TK_REDIR_IN, // error if no fd
-    TK_REDIR_IN2, // create and read
-    TK_REDIR_OUT, //create and write
-    TK_REDIR_APPEND, //create and append
-    TK_HEREDOC,
-}	token_type;
-
-typedef struct s_token
-{
-	char			*value;
-	token_type		type;
-	struct s_token	*prev;
-	struct s_token	*next;
-}	t_token;
 
 int		is_operator(char c);
 t_token	*tk_create(char *value, token_type type, t_token *tk_prev);

@@ -6,12 +6,11 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:47:09 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/08 09:13:18 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:52:56 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
 
 void	launch_heredoc(t_redir *rd)
 {

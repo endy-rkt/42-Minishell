@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/08 09:20:54 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:03:28 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,33 @@ void	print_type()
 
 }
 
+t_sh_params	*init_sh_params(t_ast *ast, t_list *tmp_file, char **my_envp, char **my_export)
+{
+	t_sh_params	*init_params;
+
+	init_params = malloc(sizeof(t_sh_params));
+	if (!init_params)
+		return (NULL);
+	init_params->ast = ast;
+	init_params->exit_status = 0;
+	init_params->tmp_file = tmp_file;
+	init_params->my_envp = my_envp;
+	init_params->my_export = my_export;
+	return (init_params);
+}
 
 void	lex_test(char *input)
 {
 	int		input_error;
 	t_token	*tk;
+	t_sh_params	*sh_params;
 	t_ast	*ast;
 
 	tk = lex(input);
 	input_error = expand(&tk);
-	//tk_print(tk);
+	tk_print(tk);
 	ast = create_ast(tk);
+	sh_params = init_sh_params(ast, NULL, NULL, NULL);
 	// print_ast(ast);
 	// printf("------------cmd---------------------\n");
 	execute_ast(ast);

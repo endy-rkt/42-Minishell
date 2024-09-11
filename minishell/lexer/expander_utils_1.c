@@ -1,0 +1,88 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_utils_1.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/11 15:38:39 by trazanad          #+#    #+#             */
+/*   Updated: 2024/09/11 16:06:19 by trazanad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "lexer.h"
+
+char	*join_char(char *new_value, char c)
+{
+	char	*tmp;
+	char	*str;
+
+	tmp = malloc(2);
+	if (!tmp)
+		return (NULL);
+	tmp[0] = c;
+	tmp[1] = '\0';
+	str = ft_strjoin(new_value, tmp);
+	free(tmp);
+	return (str);
+}
+
+int	format_delimiter(char *value, char *new_value, int i, int j)
+{
+	char	tmp;
+
+	tmp = 0;
+	if (value[i] == '-')
+		i++;
+	while (ft_isspace(value[i]))
+		i++;
+	while (value[i])
+	{
+		if ((value[i] == '\'' || value[i] == '\"') && tmp == 0)
+			tmp = value[i];
+		else if (value[i] == tmp && tmp != 0)
+			tmp = 0;
+		else
+		{
+			new_value[j] = value[i];
+			j++;
+		}
+		i++;
+	}
+	return (j);
+}
+
+int	expand_single_quote(char *value, char **new_value, int i)
+{
+	i++;
+	while (value[i] && value[i] != '\'')
+	{
+		*new_value = join_char(*new_value, value[i]);
+		i++;
+	}
+	if (value[i] == '\'')
+		i++;
+	return (i);
+}
+
+int	expand_double_quote(char *value, char **new_value, int i, t_sh_params *sh_params)
+{
+	i++;
+	while (value[i] && value[i] != '\"')
+	{
+		if (value[i] == '$')
+		{
+			if (value[i + 1] == '\'')
+				*new_value = ft_strjoin(*new_value, "$");
+			i = expand_params(value, new_value, i, sh_params);
+		}
+		else
+		{
+			*new_value = join_char(*new_value, value[i]);
+			i++;
+		}
+	}
+	if (value[i] == '\"')
+		i++;
+	return (i);
+}

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 15:01:49 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/08 09:50:31 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:08:52 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	fd_stdout(t_cmd *cmd)
 	return (fd);// to close after
 }
 
-int	execute_cmd(t_ast *ast, int fd_0, int fd_1)
+int	execute_cmd(t_ast *ast, char **my_envp, int fd_0, int fd_1)
 {
 	int		pid;
 	char	*path;
@@ -141,7 +141,7 @@ void	no_pipe_cmd(t_ast *ast, int fd_0, int fd_1)
 }
 
 
-int execute_pipe(t_ast *ast)
+int execute_pipe(t_ast *ast, char **my_envp)
 {
     int fd[2];
     int pid1, pid2;
@@ -178,7 +178,7 @@ int execute_pipe(t_ast *ast)
             if (ast->left_node->node_type == NODE_CMD && ast->left_node->cmd != NULL)
                 no_pipe_cmd(ast->left_node, STDIN_FILENO, STDOUT_FILENO);
             else
-                execute_pipe(ast->left_node);
+                execute_pipe(ast->left_node, my_envp);
         }
         exit(EXIT_SUCCESS);
     }
@@ -208,7 +208,7 @@ int execute_pipe(t_ast *ast)
             if (ast->right_node->node_type == NODE_CMD && ast->right_node->cmd != NULL)
                 no_pipe_cmd(ast->right_node, STDIN_FILENO, STDOUT_FILENO);
             else
-                execute_pipe(ast->right_node);
+                execute_pipe(ast->right_node, my_envp);
         }
         exit(EXIT_SUCCESS);
     }

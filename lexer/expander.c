@@ -6,13 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/02 14:57:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:51:44 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-char	*my_getenv(char *var)
+char	*my_getenv(char *var, t_sh_params *sh_params)
 {
 	char	*str;
 
@@ -52,7 +52,7 @@ int	expand_single_quote(char *value, char **new_value, int i)
 	return (i);
 }
 
-int	expand_params(char *value, char **new_value, int i)
+int	expand_params(char *value, char **new_value, int i, t_sh_params *sh_params)
 {
 	int		j;
 	char	*tmp;
@@ -76,7 +76,7 @@ int	expand_params(char *value, char **new_value, int i)
 	else if (ft_strchr("$!#*@-", value[i]) || ft_isdigit(value[i]))
 	{
 		tmp = join_char(tmp, value[i]);
-		*new_value = ft_strjoin(*new_value, my_getenv(tmp));
+		*new_value = ft_strjoin(*new_value, my_getenv(tmp, sh_params));
 		free(tmp);
 		return (i + 1);
 	}
@@ -95,13 +95,13 @@ int	expand_params(char *value, char **new_value, int i)
 			tmp = join_char(tmp, value[i]);
 			i++;
 		}
-		*new_value = ft_strjoin(*new_value, my_getenv(tmp));
+		*new_value = ft_strjoin(*new_value, my_getenv(tmp, sh_params));
 		free(tmp);
 		return (i);
 	}
 }
 
-int		expand_double_quote(char *value, char **new_value, int i)
+int		expand_double_quote(char *value, char **new_value, int i, t_sh_params *sh_params)
 {
 	i++;
 	while (value[i] && value[i] != '\"')
@@ -110,7 +110,7 @@ int		expand_double_quote(char *value, char **new_value, int i)
 		{
 			if (value[i + 1] == '\'')
 				*new_value = ft_strjoin(*new_value, "$");
-			i = expand_params(value, new_value, i);
+			i = expand_params(value, new_value, i, sh_params);
 		}
 		else
 		{
@@ -143,7 +143,7 @@ void	verify_assign(t_token **tk)
 	(*tk)->type = TK_ASSIGN;
 }
 
-void	expand_word(t_token	**tk)
+void	expand_word(t_token	**tk, t_sh_params *sh_params)
 {
 	int		i;
 	char	*value;
@@ -157,9 +157,9 @@ void	expand_word(t_token	**tk)
 		if (value[i] == '\'')
 			i = expand_single_quote(value, &new_value, i);
 		else if (value[i] == '\"')
-			i = expand_double_quote(value, &new_value, i);
+			i = expand_double_quote(value, &new_value, i, sh_params);
 		else if (value[i] == '$')
-			i = expand_params(value, &new_value, i);
+			i = expand_params(value, &new_value, i, sh_params);
 		else
 		{
 			new_value = join_char(new_value, value[i]);
@@ -221,31 +221,34 @@ void	expand_redir(t_token **tk)
 	(*tk)->value = new_value;
 }
 
-void	expand_token(t_token **tk)
+void	expand_token(t_token **tk, t_sh_params *sh_params)
 {
 	if (*tk)
 	{
 		if ((*tk)->type == TK_WORD || (*tk)->type == TK_ASSIGN)
 		{
 			verify_assign(tk);
-			expand_word(tk);
+			expand_word(tk, sh_params);
 		}
-		if (is_redir(*tk))
+		if (is_redir(*tk) || (*tk)->type == TK_HEREDOC)
 			expand_redir(tk);
 		if ((*tk)->next)
-			expand_token(&((*tk)->next));
+			expand_token(&((*tk)->next), sh_params);
 	}
 }
 
-int	expand(t_token  **tk)
+//before expand create state
+int	expand(t_token  **tk, t_sh_params *sh_params)	//check expand
 {
 	if (!*tk)
 		return (1);
-	expand_token(tk);
-	if(input_error(tk))
-	{
-		printf("Error\n");
-		return (1);
-	}
-	return (0);
+	expand_token(tk, sh_params);
+	sh_params->exit_status = 0;
+	sh_params->exit_status = input_error(tk);
+	// if(input_error(tk))
+	// {
+	// 	printf("Error\n");
+	// 	return (1);
+	// }
+	return (sh_params->exit_status);
 }
