@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:35:14 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 16:59:02 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:14:08 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	change_heredoc(t_cmd **cmd, char *file, t_sh_params **sh_params)
 	t_redir	**redir;
 	t_list	**tmp_file;
 
-	redir = &((*cmd)->redir_in);
+	redir = &((*cmd)->redir);
 	free((*redir)->file);
 	(*redir)->file = ft_strdup(file);
 	(*redir)->type = TK_REDIR_IN;

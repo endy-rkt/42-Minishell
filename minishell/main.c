@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 17:26:25 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/12 09:26:36 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	run_shell(char *input, char **envp)
 	sh_params = init_sh_params(envp);
 	parse(&sh_params, input);
 	if (sh_params->exit_status == 0)
-		execute(&sh_params);
+		execute(&sh_params);// bad file , cmd not found , built 
 	exit_status = sh_params->exit_status;
 	close_fd(sh_params);
 	delete_tmp_file(sh_params->tmp_file);

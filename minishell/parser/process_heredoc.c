@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 17:00:57 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:11:48 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,19 @@ static void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char file, t_sh_param
 
 static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **sh_params)
 {
-    t_list	*last_redir;
     t_list	*lst_redir;
 
-    lst_redir = (*cmd)->redir_in;
+    lst_redir = (*cmd)->redir;
     if (lst_redir == NULL)
         return ;
-    last_redir = ft_lstlast(lst_redir);
-    while (lst_redir != last_redir)
+    while (lst_redir != NULL)
     {
-        tmp_heredoc(lst_redir, *sh_params);
+		if (last_redir_in(lst_redir))
+		    stored_heredoc(cmd, lst_redir, file, sh_params);
+		else
+        	tmp_heredoc(lst_redir, *sh_params);
         lst_redir = lst_redir->next;
     }
-    stored_heredoc(cmd, lst_redir, file, sh_params);
 }
 
 void    process_heredoc(t_cmd **cmd, t_sh_params **sh_params)

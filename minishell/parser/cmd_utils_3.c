@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:36:46 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 17:01:07 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/12 10:49:01 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,10 @@ void	free_one_cmd(t_cmd **cmd)
 {
 	free_args((*cmd)->args);
 	ft_lstclear(&((*cmd)->assign), free_assign);
-	ft_lstclear(&((*cmd)->redir_in), free_redir);
-	ft_lstclear(&((*cmd)->redir_out), free_redir);
+	ft_lstclear(&((*cmd)->redir), free_redir);
 	(*cmd)->args = NULL;
 	(*cmd)->assign = NULL;
-	(*cmd)->redir_in = NULL;
-	(*cmd)->redir_out = NULL;
+	(*cmd)->redir = NULL;
 }
 
 int	size_of_args(t_token *tk)

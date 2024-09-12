@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executer.h                                         :+:      :+:    :+:   */
+/*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/11 17:03:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/12 10:28:16 by trazanad         ###   ########.fr       */
+/*   Created: 2024/09/12 10:16:45 by trazanad          #+#    #+#             */
+/*   Updated: 2024/09/12 10:20:27 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTER_H
+#include "../header.h"
 
-# define EXECUTER_H
+int main(int argc , char **argv)
+{
+	int fd;
+	char 	str[6];
 
-# include "../header.h"
-
-void	execute(t_sh_params **sh_params);
-int		handle_stdin(t_cmd *cmd);
-int		handle_stdout(t_cmd *cmd);
-
-#endif
+	fd = open(argv[1], O_WRONLY | O_CREAT, 0777);
+	write(fd, "test", 5);
+	read(fd, str, 5);
+	printf("fd=%d,text=%s\n", fd ,str);
+	close(fd);
+	return (0);
+}

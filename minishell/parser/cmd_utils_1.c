@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:23:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 16:29:23 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/12 10:47:56 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ t_cmd	*cmd_initiate(void)
 	if (!cmd)
 		return (NULL);
 	cmd->args = NULL;
-	cmd->redir_in = NULL;
-	cmd->redir_out = NULL;
+	cmd->redir = NULL;
 	cmd->assign = NULL;
 	cmd->next = NULL;
 	return (cmd);
@@ -72,7 +71,7 @@ int	cmd_is_pipe(t_cmd *cmd)
 {
 	if (cmd == NULL)
 		return (1);
-	return (!cmd->args && !cmd->assign && !cmd->redir_in && !cmd->redir_out);
+	return (!cmd->args && !cmd->assign && !cmd->redir);
 }
 
 void	print_one_cmd(t_cmd *cmd)
@@ -80,7 +79,7 @@ void	print_one_cmd(t_cmd *cmd)
 	if (cmd)
 	{
 		printf("----------------------------------------------------------------\n");
-		if (!cmd->args && !cmd->assign && !cmd->redir_in && !cmd->redir_out)
+		if (!cmd->args && !cmd->assign && !cmd->redir)
 		{
 			printf("pipe\n");
 		}
@@ -106,28 +105,15 @@ void	print_one_cmd(t_cmd *cmd)
 			}
 			printf("\n");
 		}
-		if (cmd->redir_in)
+		if (cmd->redir)
 		{
-			t_list *redir= cmd->redir_in;
+			t_list *redir= cmd->redir;
 			t_redir *tmp;
-			printf("redir_in:\t");
+			printf("redir:\t");
 			while (redir)
 			{
 				tmp = (t_redir *)redir->content;
-				printf("{%s}{%d}{%d}\t", tmp->file, tmp->fd, tmp->type);
-				redir = redir->next;
-			}
-			printf("\n");
-		}
-		if (cmd->redir_out)
-		{
-			t_list *redir= cmd->redir_out;
-			t_redir *tmp;
-			printf("redir_out:\t");
-			while (redir)
-			{
-				tmp = (t_redir *)redir->content;
-				printf("{%s}{%d}{%d}\t", tmp->file, tmp->fd, tmp->type);
+				printf("{%s}{%d}{%d}\t", tmp->file, tmp->type);
 				redir = redir->next;
 			}
 			printf("\n");

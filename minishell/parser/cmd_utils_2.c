@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 15:50:15 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/12 10:48:26 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static int	add_redir(t_token **tk, t_cmd **cmd, int type)
 	if ((*tk) != NULL && ((*tk)->type == TK_WORD || (*tk)->type == TK_ASSIGN))
 		redir->file = ft_strdup((*tk)->value);
 	if (type == TK_REDIR_OUT || type == TK_REDIR_APPEND)
-		ft_lstadd_back(&((*cmd)->redir_out), ft_lstnew(redir));
+		ft_lstadd_back(&((*cmd)->redir), ft_lstnew(redir));
 	else
-		ft_lstadd_back(&((*cmd)->redir_in), ft_lstnew(redir));
+		ft_lstadd_back(&((*cmd)->redir), ft_lstnew(redir));
 	return (1);
 }
 
@@ -62,7 +62,7 @@ int	take_heredoc(t_token **tk, t_cmd **cmd)
 		i++;
 	heredoc->file = ft_strdup(tk_value + i);
 	heredoc->type = TK_HEREDOC;
-	ft_lstadd_back(&((*cmd)->redir_in), ft_lstnew(heredoc));
+	ft_lstadd_back(&((*cmd)->redir), ft_lstnew(heredoc));
 	return (1);
 }
 

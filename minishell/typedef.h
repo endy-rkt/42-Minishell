@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:14:39 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 15:48:15 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:06:12 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ typedef enum {
     TK_REDIR_IN2, 
     TK_REDIR_OUT,
     TK_REDIR_APPEND,
-    TK_HEREDOC,
-    TK_HEREDOC2,
+    TK_HEREDOC
 }	token_type;
 
 typedef struct s_token
@@ -48,8 +47,7 @@ typedef struct s_cmd
 {
 	char			**args;
 	t_list			*assign;
-	t_list			*redir_in;
-	t_list			*redir_out;
+	t_list			*redir;
 	struct s_cmd	*next;
 }	t_cmd;
 

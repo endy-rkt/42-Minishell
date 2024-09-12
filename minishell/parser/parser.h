@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:44 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 16:59:15 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:14:35 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ void    process_heredoc(t_cmd **cmd, t_sh_params **sh_params);
 void	change_heredoc(t_cmd **cmd, char *file, t_sh_params **sh_params);
 char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *sh_params);
 char	*take_delim(t_redir *rd);
+int		last_redir_in(t_list *lst_redir);
+int		last_redir_out(t_list *lst_redir);
 
 #endif
