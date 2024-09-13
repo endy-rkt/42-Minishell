@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:14:39 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/12 11:06:12 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_ast
 	struct s_ast	*right_node;
 }	t_ast;
 
-typedef struct s_sh_params
+typedef struct s_shell_params
 {
 	t_ast	*ast;
 	t_list	*tmp_file;

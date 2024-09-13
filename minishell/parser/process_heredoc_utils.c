@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:35:14 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/12 12:14:08 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*take_delim(t_redir *rd)
 	return (new_delim);
 }
 
-char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *sh_params)
+char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *shell_params)
 {
 	int		i;
 	char	*delimiter;
@@ -63,7 +63,7 @@ char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *sh_params)
 	while (input[i])
 	{
 		if (input[i] == '$' && !(ft_strchr("\'\"", input[i + 1])))
-			i = expand_params(input, &new_input, i, sh_params);
+			i = expand_params(input, &new_input, i, shell_params);
 		else
 		{
 			new_input = join_char(new_input, input[i]);
@@ -74,7 +74,7 @@ char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *sh_params)
 	return (new_input);
 }
 
-void	change_heredoc(t_cmd **cmd, char *file, t_sh_params **sh_params)
+void	change_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params)
 {
 	t_redir	**redir;
 	t_list	**tmp_file;
@@ -83,6 +83,22 @@ void	change_heredoc(t_cmd **cmd, char *file, t_sh_params **sh_params)
 	free((*redir)->file);
 	(*redir)->file = ft_strdup(file);
 	(*redir)->type = TK_REDIR_IN;
-	tmp_file = &((*sh_params)->tmp_file);
+	tmp_file = &((*shell_params)->tmp_file);
 	ft_lstadd_back(tmp_file, ft_lstnew(file));
+}
+
+int	last_redir_in(t_list *lst_redir)
+{
+	t_list	*tmp;
+	t_redir *redir;
+
+	tmp = lst_redir->next;
+	while (tmp)
+	{
+		redir = tmp->content;
+		if (redir->type == TK_HEREDOC || redir->type == TK_REDIR_IN || redir->type == TK_REDIR_IN2)
+			return (0);
+		tmp = tmp->next;
+	}
+	return (1);
 }

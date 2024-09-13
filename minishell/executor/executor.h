@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.h                                            :+:      :+:    :+:   */
+/*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/09 10:29:42 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 11:09:26 by trazanad         ###   ########.fr       */
+/*   Created: 2024/09/11 17:03:37 by trazanad          #+#    #+#             */
+/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INPUT_H
+#ifndef executor_H
+
+# define executor_H
 
 # include "../header.h"
 
-int	process_loop(int (*run_shell)(char *, char **, int), char **envp, int exit_status);
+# include "../parser/parser.h"
+
+void	execute(t_sh_params **shell_params);
 
 #endif

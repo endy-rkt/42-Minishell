@@ -1,23 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executer.h                                         :+:      :+:    :+:   */
+/*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/11 17:03:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/12 10:28:16 by trazanad         ###   ########.fr       */
+/*   Created: 2024/09/13 11:12:03 by trazanad          #+#    #+#             */
+/*   Updated: 2024/09/13 11:22:14 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTER_H
+#include "executor.h"
 
-# define EXECUTER_H
+/*execute_cmd(shell_params); **
+execute_pipeline(shell_params);*/
 
-# include "../header.h"
+void	exec_builtin(t_sh_params **shell_params)
+{
 
-void	execute(t_sh_params **sh_params);
-int		handle_stdin(t_cmd *cmd);
-int		handle_stdout(t_cmd *cmd);
+}
 
-#endif
+void	exec_external(t_sh_params **shell_params)
+{
+
+}
+
+void	execute_cmd(t_sh_params **shell_params)
+{
+	
+}
+

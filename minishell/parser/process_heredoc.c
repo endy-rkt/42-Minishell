@@ -6,13 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/12 12:11:48 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static char	*heredoc_value(t_redir *rd, t_sh_params *sh_params)
+static char	*heredoc_value(t_redir *rd, t_sh_params *shell_params)
 {
 	char	*value;
 	char	*input;
@@ -27,7 +27,7 @@ static char	*heredoc_value(t_redir *rd, t_sh_params *sh_params)
 		input = get_next_line(0);
 		if (strcmp(input, delimiter) == 0)
 			break ;
-		input = hdoc_new_val(rd, input, sh_params);
+		input = hdoc_new_val(rd, input, shell_params);
 		value = ft_strjoin(value, input);
 		free(input);
 	}
@@ -36,7 +36,7 @@ static char	*heredoc_value(t_redir *rd, t_sh_params *sh_params)
 	return (value);
 }
 
-static void	tmp_heredoc(t_list *lst_redir, t_sh_params *sh_params)
+static void	tmp_heredoc(t_list *lst_redir, t_sh_params *shell_params)
 {
 	char	*value;
     t_redir *redir;
@@ -44,12 +44,12 @@ static void	tmp_heredoc(t_list *lst_redir, t_sh_params *sh_params)
     redir = lst_redir->content;
     if (redir->type != TK_HEREDOC)
         return ;
-	value = heredoc_value(redir, sh_params);
+	value = heredoc_value(redir, shell_params);
 	if (value != NULL)
 		free(value);
 }
 
-static void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char file, t_sh_params **sh_params)
+static void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char file, t_sh_params **shell_params)
 {
 	int		fd;
 	char	*value;
@@ -58,17 +58,17 @@ static void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char file, t_sh_param
     redir = lst_redir->content;
     if (redir->type != TK_HEREDOC)
         return ;
-	value = heredoc_value(redir, *sh_params);
+	value = heredoc_value(redir, *shell_params);
 	fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0777);
 	if (value != NULL)
 		write(fd, value, ft_strlen(value));
 	if (value != NULL)
 		free(value);
 	close(fd);
-	change_heredoc(cmd, file, sh_params);
+	change_heredoc(cmd, file, shell_params);
 }
 
-static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **sh_params)
+static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params)
 {
     t_list	*lst_redir;
 
@@ -78,14 +78,14 @@ static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **sh_params)
     while (lst_redir != NULL)
     {
 		if (last_redir_in(lst_redir))
-		    stored_heredoc(cmd, lst_redir, file, sh_params);
+		    stored_heredoc(cmd, lst_redir, file, shell_params);
 		else
-        	tmp_heredoc(lst_redir, *sh_params);
+        	tmp_heredoc(lst_redir, *shell_params);
         lst_redir = lst_redir->next;
     }
 }
 
-void    process_heredoc(t_cmd **cmd, t_sh_params **sh_params)
+void    process_heredoc(t_cmd **cmd, t_sh_params **shell_params)
 {
     int     i;
     char    *str;
@@ -100,7 +100,7 @@ void    process_heredoc(t_cmd **cmd, t_sh_params **sh_params)
         file = ft_strdup(".tmp");
         file = ft_strjoin(file, str);
         free(str);
-        handle_heredoc(&tmp, file, sh_params);
+        handle_heredoc(&tmp, file, shell_params);
         free(file);
         i++;
         tmp = tmp->next;

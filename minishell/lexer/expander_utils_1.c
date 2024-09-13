@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:38:39 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 15:12:50 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	expand_single_quote(char *value, char **new_value, int i)
 	return (i);
 }
 
-int	expand_double_quote(char *value, char **new_value, int i, t_sh_params *sh_params)
+int	expand_double_quote(char *value, char **new_value, int i, t_sh_params *shell_params)
 {
 	i++;
 	while (value[i] && value[i] != '\"')
@@ -49,7 +49,7 @@ int	expand_double_quote(char *value, char **new_value, int i, t_sh_params *sh_pa
 		{
 			if (value[i + 1] == '\'')
 				*new_value = ft_strjoin(*new_value, "$");
-			i = expand_params(value, new_value, i, sh_params);
+			i = expand_params(value, new_value, i, shell_params);
 		}
 		else
 		{

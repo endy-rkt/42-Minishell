@@ -6,42 +6,42 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/12 09:26:36 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_sh_params	*init_sh_params(char **envp)
+t_sh_params	*init_sh_params(char **envp, int exit_status)
 {
-	t_sh_params	*sh_params;
+	t_sh_params	*shell_params;
 
-	sh_params = malloc(sizeof(t_sh_params));
-	if (!sh_params)
+	shell_params = malloc(sizeof(t_sh_params));
+	if (!shell_params)
 		return (NULL);
-	sh_params->ast = NULL;
-	sh_params->tmp_file = NULL;
-	sh_params->exit_status = 0;
-	sh_params->my_envp = NULL;	//copy envp
-	sh_params->my_export = NULL; //copy envp
-	return (sh_params);
+	shell_params->ast = NULL;
+	shell_params->tmp_file = NULL;
+	shell_params->exit_status = exit_status;
+	shell_params->my_envp = NULL;	//copy envp
+	shell_params->my_export = NULL; //copy envp
+	return (shell_params);
 }
 
-int	run_shell(char *input, char **envp)
+int	run_shell(char *input, char **envp, int exit_status)
 {
-	t_sh_params	*sh_params;
+	t_sh_params	*shell_params;
 	int			exit_status;
 
 	exit_status = 0;
-	sh_params = init_sh_params(envp);
-	parse(&sh_params, input);
-	if (sh_params->exit_status == 0)
-		execute(&sh_params);// bad file , cmd not found , built 
-	exit_status = sh_params->exit_status;
-	close_fd(sh_params);
-	delete_tmp_file(sh_params->tmp_file);
-	free_sh_params(&sh_params);
-	sh_params = NULL;
+	shell_params = init_sh_params(envp, exit_status);
+	parse(&shell_params, input);
+	if (shell_params->exit_status == 0)
+		execute(&shell_params);// bad file , cmd not found , built 
+	exit_status = shell_params->exit_status;
+	close_fd(shell_params);
+	delete_tmp_file(shell_params->tmp_file);
+	free_shell_params(&shell_params);
+	shell_params = NULL;
 	return (exit_status);
 }
 
@@ -55,6 +55,6 @@ int	main(int argc, char **argv, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	exit_status = 0;
-	exit_status = process_loop(run_shell, envp);//
+	exit_status = process_loop(run_shell, envp, exit_status);//
 	exit(exit_status);
 }

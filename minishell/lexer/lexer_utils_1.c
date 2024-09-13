@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:47:54 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 15:43:44 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/13 13:27:41 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	handle_pipe(char *str, t_token **tk)
 
 	len = 1;
 	add_token(tk, TK_PIPE, str, len);
-	return (len);	
+	return (len);
 }
 
 static int	handle_single_redir(char *str, t_token **tk, int len)

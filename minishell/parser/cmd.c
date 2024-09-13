@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:13:08 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/12 10:49:54 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static t_cmd	*create_one_cmd(t_token	**tk)
 	return (cmd);
 }
 
-t_cmd	*create_cmd_list(t_token *tk, t_sh_params **sh_params)
+t_cmd	*create_cmd_list(t_token *tk, t_sh_params **shell_params)
 {
 	t_cmd	*cmd;
 	t_cmd	*new_cmd;
@@ -96,6 +96,6 @@ t_cmd	*create_cmd_list(t_token *tk, t_sh_params **sh_params)
 		}
 		cmd_addback(&cmd, new_cmd);
 	}
-	process_heredoc(&cmd, sh_params);
+	process_heredoc(&cmd, shell_params);
 	return (cmd);
 }

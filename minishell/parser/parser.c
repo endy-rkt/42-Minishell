@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 15:12:14 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static t_ast	*create_ast(t_cmd *cmd)
 	return (ast);
 }
 
-void	parse(t_sh_params **sh_params, char *input)
+void	parse(t_sh_params **shell_params, char *input)
 {
 	t_token	*tk;
 	t_cmd	*cmd;
@@ -66,12 +66,12 @@ void	parse(t_sh_params **sh_params, char *input)
 	int		tk_error;
 
 	tk_error = 0;
-	tk = lex(input, sh_params);
+	tk = lex(input, shell_params);
 	if (!tk)
 		return ;
-	tk_error = check_tk_error(&tk, sh_params);
-	expand(&tk, *sh_params);
-	cmd = create_cmd_list(&tk, sh_params);
+	tk_error = check_tk_error(&tk, shell_params);
+	expand(&tk, *shell_params);
+	cmd = create_cmd_list(&tk, shell_params);
 	tk_clear(&tk);
 	if (tk_error)
 	{
@@ -79,7 +79,7 @@ void	parse(t_sh_params **sh_params, char *input)
 		return ;
 	}
 	ast = create_ast(&cmd);// no cmd free
-	(*sh_params)->ast = ast;
+	(*shell_params)->ast = ast;
 }
 
 void	print_ast(t_ast *ast)

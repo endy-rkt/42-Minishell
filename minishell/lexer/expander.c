@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 15:45:57 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	verify_assign(t_token **tk)
 	(*tk)->type = TK_ASSIGN;
 }
 
-static void	expand_word(t_token	**tk, t_sh_params *sh_params)
+static void	expand_word(t_token	**tk, t_sh_params *shell_params)
 {
 	int		i;
 	char	*value;
@@ -46,9 +46,9 @@ static void	expand_word(t_token	**tk, t_sh_params *sh_params)
 		if (value[i] == '\'')
 			i = expand_single_quote(value, &new_value, i);
 		else if (value[i] == '\"')
-			i = expand_double_quote(value, &new_value, i, sh_params);
+			i = expand_double_quote(value, &new_value, i, shell_params);
 		else if (value[i] == '$')
-			i = expand_params(value, &new_value, i, sh_params);
+			i = expand_params(value, &new_value, i, shell_params);
 		else
 		{
 			new_value = join_char(new_value, value[i]);
@@ -83,25 +83,25 @@ static void	expand_redir(t_token **tk)
 	(*tk)->value = new_value;
 }
 
-static void	expand_token(t_token **tk, t_sh_params *sh_params)
+static void	expand_token(t_token **tk, t_sh_params *shell_params)
 {
 	if (*tk)
 	{
 		if ((*tk)->type == TK_WORD || (*tk)->type == TK_ASSIGN)
 		{
 			verify_assign(tk);
-			expand_word(tk, sh_params);
+			expand_word(tk, shell_params);
 		}
 		if (is_redir(*tk))
 			expand_redir(tk);
 		if ((*tk)->next)
-			expand_token(&((*tk)->next), sh_params);
+			expand_token(&((*tk)->next), shell_params);
 	}
 }
 
-void	expand(t_token **tk, t_sh_params *sh_params)
+void	expand(t_token **tk, t_sh_params *shell_params)
 {
 	if (!tk || (*tk) == NULL)
 		return ;
-	expand_token(tk, sh_params);
+	expand_token(tk, shell_params);
 }

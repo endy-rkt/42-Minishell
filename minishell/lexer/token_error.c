@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:11:30 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 15:47:08 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	pipe_error(t_token **tk)
 	return (0);
 }
 
-int	check_tk_error(t_token **tk, t_sh_params **sh_params)
+int	check_tk_error(t_token **tk, t_sh_params **shell_params)
 {
 	int	error_status;
 
@@ -63,8 +63,8 @@ int	check_tk_error(t_token **tk, t_sh_params **sh_params)
 	else if ((*tk)->type == TK_HEREDOC)
 		error_status = heredoc_error(tk);
 	if (!error_status && (*tk)->next)
-		return (check_tk_error(&((*tk)->next), sh_params));
+		return (check_tk_error(&((*tk)->next), shell_params));
 	if (error_status != 0)
-		(*sh_params)->exit_status = error_status;
+		(*shell_params)->exit_status = error_status;
 	return (error_status);
 }
