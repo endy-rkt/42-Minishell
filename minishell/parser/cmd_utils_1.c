@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:23:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/12 10:47:56 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:33:35 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	cmd_clear(t_cmd **cmd)
 		while (tmp)
 		{
 			next = tmp->next;
-			//free(tmp);
+			free_one_cmd(&tmp);
 			tmp = next;
 		}
 		*cmd = NULL;

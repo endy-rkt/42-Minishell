@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:44 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 14:16:18 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:09:53 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,9 @@ char	*take_delim(t_redir *rd);
 int		last_redir_in(t_list *lst_redir);
 int		last_redir_out(t_list *lst_redir);
 int		*redir_value(t_list *lst_redir);
+void	free_args(char **args);
+void	free_assign(char *value);
+void	free_redir(t_redir **redir);
+void	ast_clear(t_ast **ast);
 
 #endif

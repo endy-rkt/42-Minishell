@@ -6,13 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:36:46 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/12 10:49:01 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:09:41 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static void	free_args(char **args)
+void	free_args(char **args)
 {
 	int	i;
 
@@ -27,7 +27,7 @@ static void	free_args(char **args)
 	free(args);
 }
 
-static void	free_redir(t_redir **redir)
+void	free_redir(t_redir **redir)
 {
 	if (redir == NULL)
 		return ;
@@ -37,7 +37,7 @@ static void	free_redir(t_redir **redir)
 		free((*redir)->file);
 }
 
-static void	free_assign(char *value)
+void	free_assign(char *value)
 {
 	if (value != NULL)
 		free(value);

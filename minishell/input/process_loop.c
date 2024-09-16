@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 11:09:09 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:20:49 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	keep_running(char *input)
 	return (1);
 }
 
-int	process_loop(int (*run_shell)(char *, char **, int), char **envp, int exit_status)
+int	process_loop(int (*run_shell)(char *, char **, int), char **envp)
 {
 	char	*input;
 	int		no_exit;
@@ -33,7 +33,7 @@ int	process_loop(int (*run_shell)(char *, char **, int), char **envp, int exit_s
 		input = get_next_line(0);
 		if (input == NULL)
 			return (1);
-		prev_status = run_shell(input, envp, exit_status);
+		prev_status = run_shell(input, envp, prev_status);
 		no_exit = keep_running(input);
 		free(input);	
 	}

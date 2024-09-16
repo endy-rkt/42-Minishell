@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 10:29:42 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 11:09:26 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:20:52 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 # include "../header.h"
 
-int	process_loop(int (*run_shell)(char *, char **, int), char **envp, int exit_status);
+int	process_loop(int (*run_shell)(char *, char **, int), char **envp);
 
 #endif

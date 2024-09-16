@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_path.c                                       :+:      :+:    :+:   */
+/*   executor_utils_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/16 10:57:57 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 13:02:06 by trazanad         ###   ########.fr       */
+/*   Created: 2024/09/16 10:58:21 by trazanad          #+#    #+#             */
+/*   Updated: 2024/09/16 15:48:54 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 		free(path);
 		i++;
 	}
-	//free(tmp);
+	if (path == NULL)
+		ft_putstr_fd("Command not found", 2);
+	free_args(tmp);
 	return (path);
 }
