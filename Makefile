@@ -10,11 +10,11 @@ BONUS = minishell_bonus
 
 NAME = minishell
 
-CC = cc
+CC = gcc 
 
 RM = rm -f
 
-CFLAGS = -g #-lreadline -lbsd -Wall -Wextra -Werror #-g
+CFLAGS = -g -s#-lreadline -lbsd -Wall -Wextra -Werror #-g
 
 LIBFT_PATH = ./libft
 

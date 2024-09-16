@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 12:51:44 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/16 09:24:44 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void	verify_assign(t_token **tk)
 	(*tk)->type = TK_ASSIGN;
 }
 
-void	expand_word(t_token	**tk, t_sh_params *sh_params)
+void	expand_word(t_token	**tk)
 {
 	int		i;
 	char	*value;

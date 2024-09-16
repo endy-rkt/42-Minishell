@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:44 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/16 14:16:18 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *shell_params);
 char	*take_delim(t_redir *rd);
 int		last_redir_in(t_list *lst_redir);
 int		last_redir_out(t_list *lst_redir);
+int		*redir_value(t_list *lst_redir);
 
 #endif

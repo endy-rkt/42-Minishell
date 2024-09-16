@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:17:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 10:44:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/09/16 14:16:02 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ static void	invalid_fd(int fd, char *file)
 		return ;
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(file, 2);
-	ft_putstr_fd(": file descriptor error\n", 2);
+	if (access(file, F_OK))
+		ft_putstr_fd(": No such file or directory\n", 2);
+	else if (access(file, R_OK | W_OK))
+		ft_putstr_fd(": Permission denied\n", 2);
 	close(fd);
 }
 
@@ -74,18 +77,16 @@ static int	handle_stdout(t_list *lst_redir)
 	return (fd);
 }
 
-int	*redir_value(t_cmd *cmd)
+int	*redir_value(t_list *lst_redir)
 {
 	int		*fd;
 	t_redir	*redir;
-	t_list	*lst_redir;
 
 	fd = malloc(sizeof(int) * 2);
 	if (!fd)
 		return (NULL);
 	fd[0] = STDIN_FILENO;	
 	fd[1] = STDOUT_FILENO;
-	lst_redir = cmd->redir;
 	while (lst_redir)
 	{
 		redir = lst_redir->content;
