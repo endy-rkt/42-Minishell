@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:49:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,12 @@ static void	tmp_heredoc(t_list *lst_redir, t_sh_params *shell_params)
     if (redir->type != TK_HEREDOC)
         return ;
 	value = heredoc_value(redir, shell_params);
+	printf("value:{%s}\n", value);
 	if (value != NULL)
 		free(value);
 }
 
-static void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char file, t_sh_params **shell_params)
+static void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char *file, t_sh_params **shell_params)
 {
 	int		fd;
 	char	*value;
@@ -59,13 +60,14 @@ static void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char file, t_sh_param
     if (redir->type != TK_HEREDOC)
         return ;
 	value = heredoc_value(redir, *shell_params);
+	printf("value:{%s}\n", value);
 	fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0777);
 	if (value != NULL)
 		write(fd, value, ft_strlen(value));
 	if (value != NULL)
 		free(value);
 	close(fd);
-	change_heredoc(cmd, file, shell_params);
+	change_heredoc(&lst_redir, file, shell_params);
 }
 
 static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params)

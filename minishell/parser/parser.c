@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 16:02:24 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:27:12 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_ast	*parse_pipeline(t_cmd **cmd)
 	*cmd = (*cmd)->next;
 	while (left_node != NULL && *cmd)
 	{
-		if (cmd_pipe(*cmd))
+		if (cmd_is_pipe(*cmd))
 			*cmd = (*cmd)->next;
 		if (!*cmd)
 			break ;
@@ -85,15 +85,16 @@ void	parse(t_sh_params **shell_params, char *input)
 		return ;
 	tk_error = check_tk_error(&tk, shell_params);
 	expand(&tk, *shell_params);
-	cmd = create_cmd_list(&tk, shell_params);
+	cmd = create_cmd_list(tk, shell_params);
 	tk_clear(&tk);
 	if (tk_error)
 	{
 		cmd_clear(&cmd);
 		return ;
 	}
-	ast = create_ast(&cmd);// no cmd free
+	ast = create_ast(cmd);// no cmd free
 	(*shell_params)->ast = ast;
+	print_ast(ast);
 }
 
 void	print_ast(t_ast *ast)

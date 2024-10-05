@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:36:46 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 16:09:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:30:58 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,20 @@ void	free_args(char **args)
 	free(args);
 }
 
-void	free_redir(t_redir **redir)
+void	free_redir(void *redir)
 {
-	if (redir == NULL)
+	t_redir	*tmp_redir;
+
+	tmp_redir = (t_redir *) redir;
+	if (tmp_redir == NULL)
 		return ;
-	if (*redir == NULL)
+	if (tmp_redir == NULL)
 		return ;
-	if ((*redir)->file != NULL)
-		free((*redir)->file);
+	if (tmp_redir->file != NULL)
+		free(tmp_redir->file);
 }
 
-void	free_assign(char *value)
+void	free_assign(void *value)
 {
 	if (value != NULL)
 		free(value);

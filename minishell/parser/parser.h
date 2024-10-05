@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:44 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 16:09:53 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:39:45 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,17 @@ void	parse(t_sh_params **shell_params, char *input);
 int		size_of_args(t_token *tk);
 void	free_one_cmd(t_cmd **cmd);
 void    process_heredoc(t_cmd **cmd, t_sh_params **shell_params);
-void	change_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params);
+void	change_heredoc(t_list **lst_redir, char *file, t_sh_params **shell_params);
 char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *shell_params);
 char	*take_delim(t_redir *rd);
 int		last_redir_in(t_list *lst_redir);
 int		last_redir_out(t_list *lst_redir);
 int		*redir_value(t_list *lst_redir);
 void	free_args(char **args);
-void	free_assign(char *value);
-void	free_redir(t_redir **redir);
+void	free_assign(void *value);
+void	free_redir(void *redir);
 void	ast_clear(t_ast **ast);
+void	print_ast(t_ast *ast);
+void	print_one_cmd(t_cmd *cmd);
 
 #endif

@@ -1,4 +1,12 @@
-SRCS = main.c lexer/char_handler.c lexer/lexer_utils.c lexer/lexer.c  lexer/expander.c  lexer/error_checker.c input/input.c parser/process_cmd.c parser/parser_utils.c parser/parser.c  parser/process_heredoc.c executor/executor.c executor/executor_utils.c 
+LEXER_SRC = lexer/lexer.c lexer/expander_utils_1.c lexer/expander_utils_2.c lexer/expander.c lexer/lexer_utils_1.c lexer/lexer_utils_2.c lexer/lexer_utils_3.c lexer/token_error_utils.c lexer/token_error.c
+
+PARSER_SRC = parser/parser.c parser/cmd_utils_1.c parser/cmd_utils_2.c parser/cmd_utils_3.c parser/cmd.c parser/process_heredoc.c parser/process_heredoc_utils.c parser/process_redir.c
+
+EXECUTOR_SRC = executor/executor.c executor/executor_utils_1.c executor/executor_utils_2.c
+
+BUILTIN_SRC = builtin/builtin.c builtin/buildin_utils.c builtin/chdir_utils.c builtin/chdir.c builtin/env_utils.c builtin/env.c builtin/export.c builtin/get_envp.c builtin/prompt.c builtin/unset.c
+
+SRCS = main.c input/process_loop.c  ${LEXER_SRC}  ${PARSER_SRC} ${BUILTIN_SRC}
 
 BONUS_SRCS = main.c
 

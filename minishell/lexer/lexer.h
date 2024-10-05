@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:35:02 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:17:48 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ int		expand_params(char *value, char **new_value, int i, t_sh_params *shell_para
 int		expand_single_quote(char *value, char **new_value, int i);
 int		expand_double_quote(char *value, char **new_value, int i, t_sh_params *shell_params);
 char	*join_char(char *new_value, char c);
+int		is_operator(char c);
+int		idx_of_first(char *str, char c);
 
 #endif

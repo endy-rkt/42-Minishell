@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:47:54 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 13:27:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:28:17 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ static int	handle_single_redir(char *str, t_token **tk, int len)
 
 static int	handle_redir(char *str, t_token **tk, int len)
 {
-	int	len;
 	int	redir_nb;
 
-	len  = 0;
 	redir_nb = 0;
 	while (str[len] == '<' || str[len] == '>')
 	{
