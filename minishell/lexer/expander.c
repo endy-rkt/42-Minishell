@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/05 10:31:37 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/08 08:53:38 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,37 +59,44 @@ static void	expand_word0(t_token	**tk, t_sh_params *shell_params)
 	(*tk)->value = new_value;
 }
 
+
+// void	print_list(t_list *lst)
+// {
+// 	if (lst)
+// 	{
+// 		if (lst->content)
+// 		printf("val:{%s}\n", (char*)lst->content);
+// 		if (lst -> next)
+// 			print_list(lst -> next);
+// 	}
+// }
+
 int	handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params *shell_params)
 {
 	int		i;
-	int		len;
 	int		count;
-	char	**word_tab;
-	t_list	*last_lst;
+	char	**splitted_word;
 
 	i = 0;
-	len = ft_strlen(*new_value);
 	i = expand_params(value, new_value, i, shell_params);
-	word_tab = ft_split(*new_value, ' ');
-	last_lst = ft_lstlast(*lst_word);
-	if (!word_tab)
+	splitted_word = ft_split(*new_value, ' ');
+	if ((*new_value)[ft_strlen(*new_value) - 1] == ' ' && !splitted_word && value[i])
+		ft_lstadd_back(lst_word, ft_lstnew(ft_strdup("")));
+	if (!splitted_word)
 		return (i);
-	last_lst->content = ft_strjoin(last_lst->content, word_tab[0]);
-	count = 1;
-	while (word_tab[count])
+	count = 0;
+	while (splitted_word[count])
 	{
-		ft_lstadd_back(lst_word, ft_lstnew(ft_strdup(word_tab[count])));
+		if (count == 0 && *lst_word)
+			(*lst_word)->content = ft_strjoin((*lst_word)->content, splitted_word[count]);
+		else
+			ft_lstadd_back(lst_word, ft_lstnew(ft_strdup(splitted_word[count])));
 		count++;
 	}
-	//free_double tab;
-	if (ft_is_blank(*new_value + len))
-	{
-		(*new_value)[0] = ' ';
-		(*new_value)[1] = '\0';
-	}
-	else
+	if ((*new_value)[ft_strlen(*new_value) - 1] == ' ' && value[i])
+		ft_lstadd_back(lst_word, ft_lstnew(ft_strdup("")));
 	(*new_value)[0] = '\0';
-	return (i);
+	return(i);
 }
 
 void	add_expansion(t_token **tk, char **new_value, t_list **lst_word)
@@ -99,6 +106,8 @@ void	add_expansion(t_token **tk, char **new_value, t_list **lst_word)
 	t_token	*tk_new;
 	t_list	*last_lst;
 
+	if (*lst_word == NULL)
+		*lst_word = ft_lstnew(ft_strdup(""));
 	last_lst = ft_lstlast(*lst_word);
 	last_lst->content = ft_strjoin(last_lst->content, *new_value);
 	tk_next = (*tk)->next;
@@ -131,7 +140,7 @@ static void	expand_word(t_token	**tk, t_sh_params *shell_params)
 	i = 0;
 	value = (*tk)->value;
 	new_value = ft_strdup("");
-	lst_word = ft_lstnew(ft_strdup(""));
+	lst_word = NULL;
 	while (value[i])
 	{
 		if (value[i] == '\'')
