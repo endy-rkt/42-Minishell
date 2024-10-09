@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:58:21 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 15:48:54 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:19:04 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 static int	not_valid_path(char *path)
 {
-	if (access(path, F_OK) == 0)
+	if (access(path, F_OK) != 0)
 		return (127);
-	if (access(path, X_OK) == 0)
+	if (access(path, X_OK) != 0)
 		return (126);
 	return (0);
 }
+
 
 char	*get_path(char **args, char **my_envp, int *err_status)
 {
@@ -28,7 +29,8 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 	char	**tmp;
 
 	i = 0;
-	path = NULL;
+	if (!not_valid_path(args[0]))
+		return (ft_strdup(args[0]));
 	while (ft_strnstr(my_envp[i], "PATH=", 5) == 0)
 		i++;
 	tmp = ft_split(my_envp[i] + 5, ':');
@@ -38,13 +40,14 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 		path = ft_strjoin(tmp[i], "/");
 		path = ft_strjoin(path, args[0]);
 		*err_status = not_valid_path(path);
-		if (!err_status)
+		if (!*err_status) 
 			break ;
 		free(path);
+		path = NULL;
 		i++;
 	}
 	if (path == NULL)
-		ft_putstr_fd("Command not found", 2);
-	free_args(tmp);
+		ft_putstr_fd("Command not found\n", 2);
+	// free_args(tmp);
 	return (path);
 }

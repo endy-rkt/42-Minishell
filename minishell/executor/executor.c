@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 16:23:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:58:39 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ static int exec_cmd(char **args, t_list *lst_redir, char **my_envp)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (change_redir(lst_redir, STDIN_FILENO, STDOUT_FILENO))
 			execve(path, args, my_envp);
 		free(path);
 		free_args(args);
-		free_args(my_envp);
+		// free_args(my_envp);
 		ft_lstclear(&lst_redir, free_redir);
 		exit(1);
 	}
@@ -102,8 +103,6 @@ void	execute(t_sh_params **shell_params)
 
 	ast = (*shell_params)->ast;
 	if (ast == NULL)
-		return ;
-	if (ast->cmd == NULL)
 		return ;
 	if (ast->node_type == NODE_CMD)
 		execute_cmd(shell_params);

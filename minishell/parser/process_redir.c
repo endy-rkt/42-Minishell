@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:17:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 14:16:02 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:02:05 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ int	*redir_value(t_list *lst_redir)
 	{
 		redir = lst_redir->content;
 		if (redir->type == TK_REDIR_OUT || redir->type == TK_REDIR_APPEND)
-			fd[0] = handle_stdout(lst_redir);
+			fd[1] = handle_stdout(lst_redir);
 		else
-			fd[1] = handle_stdin(lst_redir);
+			fd[0] = handle_stdin(lst_redir);
 		if (fd[0] == -1 || fd[1] == -1)
 			return (fd);
 		lst_redir = lst_redir->next;

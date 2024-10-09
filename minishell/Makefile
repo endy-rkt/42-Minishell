@@ -6,7 +6,7 @@ EXECUTOR_SRC = executor/executor.c executor/executor_utils_1.c executor/executor
 
 BUILTIN_SRC = builtin/builtin.c builtin/buildin_utils.c builtin/chdir_utils.c builtin/chdir.c builtin/env_utils.c builtin/env.c builtin/export.c builtin/get_envp.c builtin/prompt.c builtin/unset.c
 
-SRCS = main.c input/process_loop.c  ${LEXER_SRC}  ${PARSER_SRC} ${BUILTIN_SRC}
+SRCS = main.c input/process_loop.c  ${LEXER_SRC}  ${PARSER_SRC} ${BUILTIN_SRC} ${EXECUTOR_SRC}
 
 BONUS_SRCS = main.c
 

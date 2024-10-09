@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/04 11:27:12 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/09 09:10:49 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	parse(t_sh_params **shell_params, char *input)
 	}
 	ast = create_ast(cmd);// no cmd free
 	(*shell_params)->ast = ast;
-	print_ast(ast);
 }
 
 void	print_ast(t_ast *ast)

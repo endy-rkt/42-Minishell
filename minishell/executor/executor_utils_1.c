@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:12:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 16:23:22 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:58:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	change_redir(t_list *lst_redir, int stdin, int stdout)
 		return (0);
 	dup2(stdin, STDIN_FILENO);
 	dup2(stdout, STDOUT_FILENO);
-	dup2(fd[0], stdin);
-	dup2(fd[1], stdout);
+	dup2(fd[0], STDIN_FILENO);
+	dup2(fd[1], STDOUT_FILENO);
 	free(fd);
 	return (1);
 }
@@ -34,9 +34,9 @@ int	get_status(int pid)
 	status = 0;
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-	    status = WIFEXITED(status);
-    else if (WIFSIGNALED(status))
 	    status = WEXITSTATUS(status);
+    else if (WIFSIGNALED(status))
+	    status = WTERMSIG(status);
 	return (status);
 }
 
@@ -48,10 +48,11 @@ void	launch_child(t_ast *ast, char **my_envp, int fd_0, int fd_1)
 	char	*path;
 
 	cmd = ast->cmd;
+	lst_redir = cmd->redir;
 	path = get_path(cmd->args, my_envp, &status);
 	if (status != 0)
 	{
-		if (path != NULL)
+		if (path)
 			free(path);
 		exit(status);
 	}
