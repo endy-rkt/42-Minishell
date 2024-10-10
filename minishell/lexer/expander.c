@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/08 08:53:38 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:58:57 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ int	handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params 
 	char	**splitted_word;
 
 	i = 0;
+	count = ft_strlen(*new_value);
 	i = expand_params(value, new_value, i, shell_params);
+	if (ft_strlen(*new_value) == count)
+		return (i);
 	splitted_word = ft_split(*new_value, ' ');
 	if ((*new_value)[ft_strlen(*new_value) - 1] == ' ' && !splitted_word && value[i])
 		ft_lstadd_back(lst_word, ft_lstnew(ft_strdup("")));
@@ -105,10 +108,15 @@ void	add_expansion(t_token **tk, char **new_value, t_list **lst_word)
 	t_token	*tk_next;
 	t_token	*tk_new;
 	t_list	*last_lst;
+	char	*content;
 
 	if (*lst_word == NULL)
 		*lst_word = ft_lstnew(ft_strdup(""));
 	last_lst = ft_lstlast(*lst_word);
+	if (last_lst == NULL)
+	{
+		return ;
+	}
 	last_lst->content = ft_strjoin(last_lst->content, *new_value);
 	tk_next = (*tk)->next;
 	(*tk)->value = ft_strdup((*lst_word)->content);
@@ -155,8 +163,12 @@ static void	expand_word(t_token	**tk, t_sh_params *shell_params)
 			i++;
 		}
 	}
+	if (!(new_value[0] == 0 && !(ft_strchr(value, '\'') || ft_strchr(value, '\"')) && lst_word == NULL))
+		add_expansion(tk, &new_value, &lst_word);
+	else
+		(*tk)->value = NULL;
 	free(value);
-	add_expansion(tk, &new_value, &lst_word);
+	value = NULL;
 }
 
 static void	expand_redir(t_token **tk)

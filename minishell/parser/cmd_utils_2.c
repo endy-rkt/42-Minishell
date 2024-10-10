@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/12 10:48:26 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/10 13:03:45 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int	take_args(t_token **tk, t_cmd **cmd, int arg)
 	char	**args;
 
 	if ((*tk)->type != TK_ASSIGN && (*tk)->type != TK_WORD)
+		return (0);
+	if ((*tk)->value == NULL)
 		return (0);
 	(*cmd)->args[arg] = ft_strdup((*tk)->value);
 	return (1);

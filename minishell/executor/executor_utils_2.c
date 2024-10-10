@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:58:21 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/09 15:19:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:09:35 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 	char	**tmp;
 
 	i = 0;
+	if (args[0] == NULL)
+		return (NULL);
+	if (args[0][0] == '\0')
+	{
+		*err_status = 127;
+		ft_putstr_fd("Command not found\n", 2);
+		return (NULL);
+	}
 	if (!not_valid_path(args[0]))
 		return (ft_strdup(args[0]));
 	while (ft_strnstr(my_envp[i], "PATH=", 5) == 0)
@@ -40,8 +48,8 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 		path = ft_strjoin(tmp[i], "/");
 		path = ft_strjoin(path, args[0]);
 		*err_status = not_valid_path(path);
-		if (!*err_status) 
-			break ;
+		if (*err_status == 0)
+			break;
 		free(path);
 		path = NULL;
 		i++;

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/09 15:58:39 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:09:50 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int exec_cmd(char **args, t_list *lst_redir, char **my_envp)
 	int		pid;
 	char	*path;
 
+	status = 0;
 	path = get_path(args, my_envp, &status);
 	if (status != 0)
 	{
@@ -54,13 +55,19 @@ int exec_pipeline(t_ast *ast, char **my_envp)
 	if (pid[0] == 0)
 	{
 		close(fd[0]);
-		exec_node(ast->left_node, my_envp, fd[0], fd[1]);
+        dup2(fd[1], STDOUT_FILENO);  
+        close(fd[1]); 
+		exec_node(ast->left_node, my_envp, STDIN_FILENO, STDOUT_FILENO);
+		exit(EXIT_FAILURE); 
 	}
 	pid[1] = fork();
 	if (pid[1] == 0)
 	{
 		close(fd[1]);
-		exec_node(ast->right_node, my_envp, fd[0], fd[1]);
+        dup2(fd[0], STDIN_FILENO);
+        close(fd[0]); 
+		exec_node(ast->right_node, my_envp, STDOUT_FILENO, STDOUT_FILENO);
+		exit(EXIT_FAILURE); 
 	}
 	close(fd[0]);
 	close(fd[1]);

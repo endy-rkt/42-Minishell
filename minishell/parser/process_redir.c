@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:17:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/09 16:02:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/10 10:38:19 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static int	handle_stdin(t_list *lst_redir)
 	fd = STDIN_FILENO;
 	if (lst_redir == NULL)
 		return (STDIN_FILENO);
+	redir = lst_redir->content;
 	if (redir->type == TK_REDIR_IN2)
 		fd = open(redir->file,  O_RDWR | O_TRUNC |O_CREAT, 0777);
 	else
