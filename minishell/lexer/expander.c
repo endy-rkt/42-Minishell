@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/10 12:58:57 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/11 13:15:24 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,34 +31,6 @@ static void	verify_assign(t_token **tk)
 	}
 	(*tk)->type = TK_ASSIGN;
 }
-//
-static void	expand_word0(t_token	**tk, t_sh_params *shell_params)
-{
-	int		i;
-	char	*value;
-	char	*new_value;
-
-	i = 0;
-	value = (*tk)->value;
-	new_value = ft_strdup("");
-	while (value[i])
-	{
-		if (value[i] == '\'')
-			i = expand_single_quote(value, &new_value, i);
-		else if (value[i] == '\"')
-			i = expand_double_quote(value, &new_value, i, shell_params);
-		else if (value[i] == '$')
-			i = expand_params(value, &new_value, i, shell_params);
-		else
-		{
-			new_value = join_char(new_value, value[i]);
-			i++;
-		}
-	}
-	free(value);
-	(*tk)->value = new_value;
-}
-
 
 // void	print_list(t_list *lst)
 // {
@@ -71,52 +43,84 @@ static void	expand_word0(t_token	**tk, t_sh_params *shell_params)
 // 	}
 // }
 
+int	join_token(char **splitted_word, int count, t_list **lst_word)
+{
+	t_list	*new;
+	char	*init_content;
+
+	while (splitted_word[count])
+	{
+		if (count == 0 && *lst_word)
+		{
+			init_content = ft_strjoin((*lst_word)->content, splitted_word[count]);
+			(*lst_word)->content = init_content;
+		}
+		else
+		{
+			new = ft_lstnew(ft_strdup(splitted_word[count]));
+			ft_lstadd_back(lst_word, new);
+		}
+		count++;
+	}
+	//free_split;
+	return (count);
+}
+
 int	handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params *shell_params)
 {
 	int		i;
+	int		len;
 	int		count;
 	char	**splitted_word;
 
 	i = 0;
 	count = ft_strlen(*new_value);
 	i = expand_params(value, new_value, i, shell_params);
-	if (ft_strlen(*new_value) == count)
+	len = ft_strlen(*new_value);
+	if (len == count)
 		return (i);
 	splitted_word = ft_split(*new_value, ' ');
-	if ((*new_value)[ft_strlen(*new_value) - 1] == ' ' && !splitted_word && value[i])
+	if ((*new_value)[len - 1] == ' ' && !splitted_word && value[i])
 		ft_lstadd_back(lst_word, ft_lstnew(ft_strdup("")));
 	if (!splitted_word)
 		return (i);
-	count = 0;
-	while (splitted_word[count])
-	{
-		if (count == 0 && *lst_word)
-			(*lst_word)->content = ft_strjoin((*lst_word)->content, splitted_word[count]);
-		else
-			ft_lstadd_back(lst_word, ft_lstnew(ft_strdup(splitted_word[count])));
-		count++;
-	}
-	if ((*new_value)[ft_strlen(*new_value) - 1] == ' ' && value[i])
+	count = join_token(splitted_word, 0, lst_word);
+	if ((*new_value)[len - 1] == ' ' && value[i])
 		ft_lstadd_back(lst_word, ft_lstnew(ft_strdup("")));
 	(*new_value)[0] = '\0';
-	return(i);
+	return (i);
+}
+
+void	add_tk(t_token **tk, t_token **tk_new, t_token *tk_next, t_list *tmp)
+{
+	t_token	*new;
+
+	while (tmp)
+	{
+		tmp = tmp->next;
+		if (tmp)
+		{
+			new = tk_create(tmp->content, TK_WORD, (*tk_new)->prev);
+			tk_add_back(tk_new, new);
+		}
+	}
+	if (tk_new)
+	{
+		tk_add_back(tk_new, tk_next);
+		(*tk)->next = *tk_new;
+	}
 }
 
 void	add_expansion(t_token **tk, char **new_value, t_list **lst_word)
 {
 	t_list	*tmp;
-	t_token	*tk_next;
-	t_token	*tk_new;
 	t_list	*last_lst;
-	char	*content;
+	t_token	*tk_new;
+	t_token	*tk_next;
 
 	if (*lst_word == NULL)
 		*lst_word = ft_lstnew(ft_strdup(""));
 	last_lst = ft_lstlast(*lst_word);
-	if (last_lst == NULL)
-	{
-		return ;
-	}
 	last_lst->content = ft_strjoin(last_lst->content, *new_value);
 	tk_next = (*tk)->next;
 	(*tk)->value = ft_strdup((*lst_word)->content);
@@ -124,17 +128,27 @@ void	add_expansion(t_token **tk, char **new_value, t_list **lst_word)
 	tk_new =NULL;
 	if (tmp)
 		tk_new = tk_create(tmp->content, TK_WORD, *tk);
-	while (tmp)
+	add_tk(tk, &tk_new, tk_next, tmp);
+	//free list tmp;
+}
+
+static void	apply_expansion(t_token **tk, t_list **lst_word, char **new_val, char **value)
+{
+	int	empty_val;
+	int	quoted_value;
+
+	quoted_value = (ft_strchr(*value, '\'') || ft_strchr(*value, '\"'));
+	empty_val = ((*new_val)[0] != 0 && !quoted_value); 
+	if (*lst_word != NULL || empty_val)
 	{
-		tmp = tmp->next;
-		if (tmp)
-			tk_add_back(&tk_new, tk_create(tmp->content, TK_WORD, tk_new->prev));
+		add_expansion(tk, new_val, lst_word);
+		free(*value);
+		*value = NULL;
 	}
-	//free list
-	if (tk_new)
+	else
 	{
-		tk_add_back(&tk_new, tk_next);
-		(*tk)->next = tk_new;
+		free(*value);
+		(*tk)->value = NULL;
 	}
 }
 
@@ -163,12 +177,7 @@ static void	expand_word(t_token	**tk, t_sh_params *shell_params)
 			i++;
 		}
 	}
-	if (!(new_value[0] == 0 && !(ft_strchr(value, '\'') || ft_strchr(value, '\"')) && lst_word == NULL))
-		add_expansion(tk, &new_value, &lst_word);
-	else
-		(*tk)->value = NULL;
-	free(value);
-	value = NULL;
+	apply_expansion(tk, &lst_word, &new_value, &value);
 }
 
 static void	expand_redir(t_token **tk)

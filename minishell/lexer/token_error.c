@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:11:30 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:38:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,20 @@ static int	heredoc_error(t_token **tk)
 		redir_nb++;
 	}
 	if (redir_nb > 2 || !value[i])
-		return (my_perror(2, "minishell: syntax error near unexpected token `<'"));
+		return (my_perror(2, "minishell: syntax error near unexpected token `<'\n"));
 	return (0);
 }
 
 static int	pipe_error(t_token **tk)
 {
 	if (!(*tk)->prev)
-		return (my_perror(2, "minishell: syntax error near unexpected token `|'"));
+		return (my_perror(2, "minishell: syntax error near unexpected token `|'\n"));
+	if (!(*tk)->next)
+		return (my_perror(2, "minishell: syntax error near unexpected token `|'\n"));
 	if ((*tk)->next)
 	{
 		if ((*tk)->next->type == TK_PIPE)
-			return (my_perror(2, "minishell: syntax error near unexpected token `|'"));
+			return (my_perror(2, "minishell: syntax error near unexpected token `|'\n"));
 	}
 	return (0);
 }

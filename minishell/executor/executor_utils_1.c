@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:12:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/10 10:39:17 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/11 08:25:52 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	launch_child(t_ast *ast, char **my_envp, int fd_0, int fd_1)
 		exit(status);
 	}
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (change_redir(lst_redir, fd_0, fd_1))
 		execve(path, cmd->args, my_envp);
 	free(path);

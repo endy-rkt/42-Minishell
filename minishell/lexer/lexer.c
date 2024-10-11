@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:35:10 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/11 09:45:29 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ t_token	*lex(char *input, t_sh_params **shell_params)
 	if ((input[0] == '\'' || input[0] == '\"') && input[1] == '\n')
 	{
 		ft_putstr_fd("Error: invalid input\n", 2);
-		(*shell_params)->exit_status = 2; //
+		(*shell_params)->exit_status = 2;
 		return (NULL);
 	}
 	str = ft_retire_space(input);
