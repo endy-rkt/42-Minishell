@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:58:21 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/10 14:09:35 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:47:14 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,24 @@ static int	not_valid_path(char *path)
 	return (0);
 }
 
-
-char	*get_path(char **args, char **my_envp, int *err_status)
+static int	empty_cmd(char **args, int *err_status)
 {
-	int		i;
-	char	*path;
-	char	**tmp;
-
-	i = 0;
 	if (args[0] == NULL)
-		return (NULL);
+		return (1);
 	if (args[0][0] == '\0')
 	{
 		*err_status = 127;
 		ft_putstr_fd("Command not found\n", 2);
-		return (NULL);
+		return (1);
 	}
-	if (!not_valid_path(args[0]))
-		return (ft_strdup(args[0]));
-	while (ft_strnstr(my_envp[i], "PATH=", 5) == 0)
-		i++;
-	tmp = ft_split(my_envp[i] + 5, ':');
+	return (0);
+}
+
+static char	*path_from_env(char **args, char **tmp, int *err_status)
+{
+	int		i;
+	char	*path;
+
 	i = 0;
 	while (tmp[i] != NULL)
 	{
@@ -57,5 +54,23 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 	if (path == NULL)
 		ft_putstr_fd("Command not found\n", 2);
 	// free_args(tmp);
+	return (path);
+}
+
+char	*get_path(char **args, char **my_envp, int *err_status)
+{
+	int		i;
+	char	*path;
+	char	**tmp;
+
+	if (empty_cmd(args, err_status))
+		return (NULL);
+	if (!not_valid_path(args[0]))
+		return (ft_strdup(args[0]));
+	i = 0;
+	while (ft_strnstr(my_envp[i], "PATH=", 5) == 0)
+		i++;
+	tmp = ft_split(my_envp[i] + 5, ':');
+	path = path_from_env(args, tmp, err_status);
 	return (path);
 }

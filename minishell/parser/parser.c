@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/11 10:34:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:17:58 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	parse(t_sh_params **shell_params, char *input)
 	if (!tk)
 		return ;
 	tk_error = check_tk_error(&tk, shell_params);
+	ft_printf("status=%d\n", (*shell_params)->exit_status);
 	expand(&tk, *shell_params);
 	cmd = create_cmd_list(tk, shell_params);
 	tk_clear(&tk);
@@ -94,7 +95,6 @@ void	parse(t_sh_params **shell_params, char *input)
 	}
 	ast = create_ast(cmd);// no cmd free
 	(*shell_params)->ast = ast;
-	ft_printf("status=%d\n", (*shell_params)->exit_status);
 }
 
 void	print_ast(t_ast *ast)

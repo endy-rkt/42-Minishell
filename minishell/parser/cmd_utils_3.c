@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:36:46 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/04 11:30:58 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:25:23 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	free_redir(void *redir)
 		return ;
 	if (tmp_redir->file != NULL)
 		free(tmp_redir->file);
+	free(tmp_redir);
 }
 
 void	free_assign(void *value)
@@ -54,6 +55,8 @@ void	free_one_cmd(t_cmd **cmd)
 	(*cmd)->args = NULL;
 	(*cmd)->assign = NULL;
 	(*cmd)->redir = NULL;
+	free(*cmd);
+	*cmd = NULL;
 }
 
 int	size_of_args(t_token *tk)

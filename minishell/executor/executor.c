@@ -6,13 +6,26 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/11 08:26:10 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:59:15 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static int exec_cmd(char **args, t_list *lst_redir, char **my_envp)
+static int	cmd_child(char **args, t_list *lst_redir, char *path, char **envp)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (change_redir(lst_redir, STDIN_FILENO, STDOUT_FILENO))
+		execve(path, args, envp);
+	free(path);
+	free_args(args);
+	// free_args(my_envp);
+	ft_lstclear(&lst_redir, free_redir);
+	exit(1);
+}
+
+static int	exec_cmd(char **args, t_list *lst_redir, char **my_envp)
 {
 	int		status;
 	int		pid;
@@ -28,19 +41,21 @@ static int exec_cmd(char **args, t_list *lst_redir, char **my_envp)
 	}
 	pid = fork();
 	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		if (change_redir(lst_redir, STDIN_FILENO, STDOUT_FILENO))
-			execve(path, args, my_envp);
-		free(path);
-		free_args(args);
-		// free_args(my_envp);
-		ft_lstclear(&lst_redir, free_redir);
-		exit(1);
-	}
+		cmd_child(args, lst_redir, path, my_envp);
 	free(path);
 	status = get_status(pid);
+	return (status);
+}
+
+int	pipe_status(int fd_0, int fd_1, int pid_0, int pid_1)
+{
+	int	status;
+
+	status = 0;
+	close(fd_0);
+	close(fd_1);
+	waitpid(pid_0, &status, 0);
+	status = get_status(pid_1);
 	return (status);
 }
 
@@ -48,7 +63,6 @@ int exec_pipeline(t_ast *ast, char **my_envp)
 {
 	int	fd[2];
 	int	pid[2];
-	int	status;
 
 	pipe(fd);
 	pid[0] = fork();
@@ -69,11 +83,7 @@ int exec_pipeline(t_ast *ast, char **my_envp)
 		exec_node(ast->right_node, my_envp, STDOUT_FILENO, STDOUT_FILENO);
 		exit(EXIT_FAILURE); 
 	}
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid[0], &status, 0);
-	status = get_status(pid[1]);
-	return (status);
+	return (pipe_status(fd[0], fd[1], pid[0], pid[1]));
 }
 
 static void	execute_cmd(t_sh_params **shell_params)
