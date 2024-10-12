@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/11 08:46:47 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/12 13:12:44 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_sh_params	*init_sh_params(char **envp, int exit_status)
 	shell_params->ast = NULL;
 	shell_params->tmp_file = NULL;
 	shell_params->exit_status = exit_status;
-	shell_params->my_envp = ft_copy_env(envp);
+	shell_params->my_envp = envp;
 	shell_params->my_export = NULL;
 	return (shell_params);
 }
@@ -33,7 +33,8 @@ void	delete_tmp_file(t_list *tmp_file)
 
 	while (tmp_file)
 	{
-		file = tmp_file->content;
+		if (tmp_file->content != NULL)
+			file = tmp_file->content;
 		unlink(file);
 		tmp_file = tmp_file->next;
 	}	
@@ -61,7 +62,8 @@ int	run_shell(char *input, char **envp, int prev_status)
 		execute(&shell_params);// bad file , cmd not found , built 
 	// exit_status = shell_params->exit_status;
 	// //close_fd(shell_params);
-	// delete_tmp_file(shell_params->tmp_file);
+	if (shell_params->tmp_file)
+		delete_tmp_file(shell_params->tmp_file);
 	// free_sh_params(&shell_params);
 	// shell_params = NULL;
 	return (exit_status);

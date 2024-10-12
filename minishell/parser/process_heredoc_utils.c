@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:35:14 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/09 16:22:32 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/12 13:01:13 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *shell_params)
 
 void	change_heredoc(t_list **lst_redir, char *file, t_sh_params **shell_params)
 {
+	char	*tmp_str;
 	t_redir	**redir;
 	t_list	**tmp_file;
 
@@ -112,7 +113,8 @@ void	change_heredoc(t_list **lst_redir, char *file, t_sh_params **shell_params)
 	(*redir)->file = ft_strdup(file);
 	(*redir)->type = TK_REDIR_IN;
 	tmp_file = &((*shell_params)->tmp_file);
-	ft_lstadd_back(tmp_file, ft_lstnew(file));
+	tmp_str = ft_strdup(file);
+	ft_lstadd_back(tmp_file, ft_lstnew(tmp_str));
 }
 
 int	last_redir_in(t_list *lst_redir)

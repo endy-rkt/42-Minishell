@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/11 16:10:00 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/12 13:13:11 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,25 @@ void handle_sigint(int sig)
 
 int	process_loop(int (*run_shell)(char *, char **, int), char **envp)
 {
-	char	*input;
 	int		no_exit;
 	int		prev_status;
+	char	*input;
+	char	**global_envp;
 
 	no_exit = 1;
 	prev_status = 0;
 	signal(SIGINT, handle_sigint);
+	global_envp = ft_copy_env(envp);
 	while (no_exit)
 	{
 		ft_printf(">>");
 		input = get_next_line(0);
 		if (input == NULL)
 			return (1);
-		prev_status = run_shell(input, envp, prev_status);
+		prev_status = run_shell(input, global_envp, prev_status);
 		no_exit = keep_running(input);
 		free(input);	
 	}
+	//free global envp;
 	return (0);
 }
