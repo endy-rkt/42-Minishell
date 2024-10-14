@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:36:46 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/11 16:25:23 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/13 15:27:56 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	free_args(char **args)
 		i++;
 	}
 	free(args);
+	args = NULL;
 }
 
 void	free_redir(void *redir)
