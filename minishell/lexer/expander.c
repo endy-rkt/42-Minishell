@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/13 16:16:38 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:44:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,13 @@ static void	apply_expansion(t_token **tk, t_list **lst_word, char **new_val, cha
 	int	quoted_value;
 
 	quoted_value = (ft_strchr(*value, '\'') || ft_strchr(*value, '\"'));
-	empty_val = ((*new_val)[0] != 0 && !quoted_value); 
+	empty_val = ((*new_val)[0] != 0 && !quoted_value);
+	if (*new_val && *lst_word == NULL)
+	{
+		free(*value);
+		(*tk)->value = *new_val;
+		return ;
+	}
 	if (*lst_word != NULL || empty_val)
 	{
 		add_expansion(tk, new_val, lst_word);

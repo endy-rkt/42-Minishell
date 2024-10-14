@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:36:46 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/13 15:27:56 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:26:07 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	free_args(char **args)
 	if (args == NULL)
 		return ;
 	i = 0;
-	while (args[i])
+	while (args[i] != NULL)
 	{
 		free(args[i]);
 		i++;

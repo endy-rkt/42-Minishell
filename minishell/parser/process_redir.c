@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:17:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/10 10:38:19 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:04:58 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	handle_stdin(t_list *lst_redir)
 		return (STDIN_FILENO);
 	redir = lst_redir->content;
 	if (redir->type == TK_REDIR_IN2)
-		fd = open(redir->file,  O_RDWR | O_TRUNC |O_CREAT, 0777);
+		fd = open(redir->file,  O_RDWR | O_TRUNC |O_CREAT, 0666);
 	else
 		fd = open(redir->file, O_RDONLY);
 	if (!last_redir_in(lst_redir))
@@ -69,9 +69,9 @@ static int	handle_stdout(t_list *lst_redir)
 		return (STDOUT_FILENO);
 	redir = lst_redir->content;
 	if (redir->type == TK_REDIR_OUT)
-		fd = open(redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0777);
+		fd = open(redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	else
-		fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT, 0777);
+		fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (!last_redir_out(lst_redir))
 		close(fd);
 	invalid_fd(fd, redir->file);

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:23:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 15:33:35 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 08:29:13 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	print_one_cmd(t_cmd *cmd)
 			while (redir)
 			{
 				tmp = (t_redir *)redir->content;
-				printf("{%s}{%d}{%d}\t", tmp->file, tmp->type);
+				printf("{%s}{%d}\t", tmp->file, tmp->type);
 				redir = redir->next;
 			}
 			printf("\n");

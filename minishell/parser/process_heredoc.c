@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/12 13:04:13 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:04:58 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	*heredoc_value(t_redir *rd, t_sh_params *shell_params)
 		input = NULL;
 		ft_printf("heredoc>");
 		input = get_next_line(0);
-		if (input != NULL && strcmp(input, delimiter) == 0)
+		if (input != NULL && ft_strcmp(input, delimiter) == 0)
 			break ;
 		input = hdoc_new_val(rd, input, shell_params);
 		value = ft_strjoin(value, input);
@@ -59,7 +59,7 @@ static void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char *file, t_sh_para
     if (redir->type != TK_HEREDOC)
         return ;
 	value = heredoc_value(redir, *shell_params);
-	fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0777);
+	fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0666);
 	if (value != NULL)
 		write(fd, value, ft_strlen(value));
 	if (value != NULL)

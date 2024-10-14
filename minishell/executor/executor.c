@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/11 16:59:15 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:53:30 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	cmd_child(char **args, t_list *lst_redir, char *path, char **envp)
 		execve(path, args, envp);
 	free(path);
 	free_args(args);
-	// free_args(my_envp);
+	free_args(envp);
 	ft_lstclear(&lst_redir, free_redir);
 	exit(1);
 }
@@ -101,6 +101,31 @@ static void	execute_cmd(t_sh_params **shell_params)
 	(*shell_params)->exit_status = exit_status;
 }
 
+int	exec_builtin(t_sh_params **shell_params)
+{
+	int		*fd;
+	int		status;
+	t_cmd	*cmd;
+	t_ast	*ast;
+
+	ast = (*shell_params)->ast;
+	if (ast == NULL)
+		return (1);
+	cmd = ast->cmd;
+	if (cmd == NULL)
+		return (1);
+	status = 0;
+	fd = redir_value(cmd->redir);
+	if (fd[0] == -1 || fd[1] == -1)
+		return (1);
+	status = buildin(cmd->args, &((*shell_params)->my_envp), fd[1]);
+	if (fd[1] != STDOUT_FILENO)
+		close(fd[1]);
+	if (fd[0] != STDIN_FILENO)
+		close(fd[0]);
+	return (status);
+}
+
 static void	execute_pipeline(t_sh_params **shell_params)
 {
 	t_ast	*ast;
@@ -122,7 +147,12 @@ void	execute(t_sh_params **shell_params)
 	if (ast == NULL)
 		return ;
 	if (ast->node_type == NODE_CMD)
-		execute_cmd(shell_params);
+	{
+		if (is_builtin(ast->cmd))
+			exec_builtin(shell_params);
+		else
+			execute_cmd(shell_params);
+	}
 	else
 		execute_pipeline(shell_params);
 }

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:20:35 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 12:05:21 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 09:01:57 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 int		ft_isspace(int c);
 int		ft_is_blank(char *str);
 char	*ft_retire_space(char *str);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

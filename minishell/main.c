@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/13 16:27:48 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:58:36 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_sh_params	*init_sh_params(char **envp, int exit_status)
 	shell_params->tmp_file = NULL;
 	shell_params->exit_status = exit_status;
 	shell_params->my_envp = envp;
-	shell_params->my_export = NULL;
 	return (shell_params);
 }
 
@@ -45,18 +44,17 @@ void	free_sh_params(t_sh_params **shell_params)
 	ast_clear(&((*shell_params)->ast));
 	ft_lstclear(&((*shell_params)->tmp_file), free_assign);
 	free_args(((*shell_params)->my_envp));
-	free_args(((*shell_params)->my_export));
-	free(shell_params);
+	free(*shell_params);
 }
 
-int	run_shell(char *input, char **envp, int prev_status)
+int	run_shell(char *input, char ***envp, int prev_status)
 {
 	int			exit_status;
 	t_sh_params	*shell_params;
 
 	exit_status = prev_status;
 	shell_params = NULL;
-	shell_params = init_sh_params(envp, exit_status);//copy env
+	shell_params = init_sh_params(*envp, exit_status);//copy env
 	parse(&shell_params, input);
 	// print_ast(shell_params->ast);
 	if (shell_params->exit_status == 0 && shell_params->ast != NULL)
@@ -65,9 +63,10 @@ int	run_shell(char *input, char **envp, int prev_status)
 	// //close_fd(shell_params);
 	if (shell_params->tmp_file)
 		delete_tmp_file(shell_params->tmp_file);
-	if (shell_params)
-		free_sh_params(&shell_params);
-	shell_params = NULL;
+	// if (shell_params)
+	// 	free_sh_params(&shell_params);
+	//shell_params = NULL;
+	*envp = shell_params->my_envp;
 	return (exit_status);
 }
 

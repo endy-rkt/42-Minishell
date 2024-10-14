@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:14:39 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/13 11:14:47 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 08:46:38 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ typedef struct s_shell_params
 	t_ast	*ast;
 	t_list	*tmp_file;
 	char	**my_envp;
-	char	**my_export;
 	int		exit_status;
 }	t_sh_params;
 

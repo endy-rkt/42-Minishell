@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:58:21 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/13 15:44:01 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:06:02 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,47 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 
 	if (empty_cmd(args, err_status))
 		return (NULL);
+	printf(" file = %s files=%d\n",  args[0], access(args[0], X_OK));
 	if (!not_valid_path(args[0]))
 		return (ft_strdup(args[0]));
 	i = 0;
-	while (ft_strnstr(my_envp[i], "PATH=", 5) == 0)
+	while (my_envp[i] != NULL && ft_strnstr(my_envp[i], "PATH=", 5) == 0)
 		i++;
+	if (my_envp[i] == NULL)
+	{
+		ft_putstr_fd("Command not found\n", 2);
+		return (NULL);
+	}
 	tmp = ft_split(my_envp[i] + 5, ':');
 	path = path_from_env(args, tmp, err_status);
 	free_args(tmp);
 	return (path);
+}
+
+int	is_builtin(t_cmd *cmd)
+{
+	char	**argv;
+
+	if (cmd == NULL)
+		return (0);
+	argv = cmd->args;
+	if (argv == NULL || argv[0] == NULL)
+		return (0);
+	if (ft_strcmp(argv[0], "cd") == 0)
+		return (1);
+	else if (ft_strcmp(argv[0], "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(argv[0], "env") == 0)
+		return (1);
+	else if (ft_strcmp(argv[0], "unset") == 0)
+		return (1);
+	else if (ft_strcmp(argv[0], "export") == 0)
+		return (1);
+	else if (ft_strcmp(argv[0], "echo") == 0)
+		return (1);
+	else if (ft_strcmp(argv[0], "get_env") == 0)
+		return (1);
+	else if (ft_strcmp(argv[0], "exit") == 0)
+		return (1);
+	return (0);
 }

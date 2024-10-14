@@ -6,56 +6,65 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:49 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/04 11:36:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:52:06 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
 
-int	ft_echo(char **argv)
+int	is_valid_flag(char *argv)
 {
 	int	i;
-	int	j;
-	int	nl;
-	int	status;
+	int	ok;
 
 	i = 1;
-	nl = 0;
-	status = 0;
+	ok = 0;
+	while (argv[i] && argv[0] == '-')
+	{
+		if (argv[i] == 'n')
+			ok = 1;
+		else
+			return (0);
+		i++;
+	}
+	if (ok == 1)
+		return (1);
+	else
+		return (0);
+}
+
+int ft_echo(char **argv, int fd)
+{
+    int i;
+	int j;
+    int nl;
+	int	index;
+
+	i = 1;
+	nl = 1;
+	index = 1;
 	while (argv[i])
 	{
-		if (argv[i][0] == '-')
+		j = 1;
+		if (argv[1][0] == '-' && is_valid_flag(argv[i]) == 1)
 		{
-			j = 1;
-			while (argv[i][j])
-			{
-				if (argv[i][j] && argv[i][j] == 'n')
-				{
-					nl = 1;
-					j++;
-				}
-				else if (argv[i][j] && argv[i][j] != 'n')
-				{
-					write(2, "echo: invalid flag\n", 19);
-					nl = 2;
-					break ;
-				}
-			}
+			index = i + 1;
+			nl = 0;
 		}
 		else
-			break ;
-		if (nl == 2)
-			return (1);
+			break;
 		i++;
 	}
-	while (argv[i])
-	{
-		printf("%s", argv[i]);
-		i++;
-	}
-	if (nl == 1)
-		printf("\n");
-	return (status);
+    while (argv[index])
+    {
+		ft_putstr_fd(argv[index], fd);
+        if (argv[index + 1])
+            ft_putchar_fd(' ', fd);
+        index++;
+    }
+    if (nl)
+        ft_putchar_fd('\n', fd);
+    return 0;
 }
 
 int	ft_exit(char **argv)
@@ -70,26 +79,27 @@ int	ft_exit(char **argv)
 	return (0);
 }
 
-int	buildin(char **argv, char ***copy_env)
+int	buildin(char **argv, char ***copy_env, int fd)
 {
-	int	status;
+	int		status;
+	char	*value_env;
 
 	status = 0;
-	if (strcmp(argv[0], "cd") == 0)
+	if (ft_strcmp(argv[0], "cd") == 0)
 		status = ft_cd(argv, *copy_env);
-	else if (strcmp(argv[0], "pwd") == 0)
-		status = ft_pwd(argv);
-	else if (strcmp(argv[0], "env") == 0)
-		status = ft_env(*copy_env, argv);
-	else if (strcmp(argv[0], "unset") == 0)
-		status = ft_unset(argv, &*copy_env);
-	else if (strcmp(argv[0], "export") == 0)
-		status = ft_export(argv, &*copy_env);
-	else if (strcmp(argv[0], "echo") == 0)
-		status = ft_echo(argv);
-	else if (strcmp(argv[0], "get_env") == 0)
-		status = get_env_value(argv, *copy_env);
-	else if (strcmp(argv[0], "exit") == 0)
+	else if (ft_strcmp(argv[0], "pwd") == 0)
+		status = ft_pwd(fd);
+	else if (ft_strcmp(argv[0], "env") == 0)
+		status = ft_env(*copy_env, argv, fd);
+	else if (ft_strcmp(argv[0], "unset") == 0)
+		status = ft_unset(argv, copy_env);
+	else if (ft_strcmp(argv[0], "export") == 0)
+		status = ft_export(argv, copy_env, fd);
+	else if (ft_strcmp(argv[0], "echo") == 0)
+		status = ft_echo(argv, fd);
+	else if (ft_strcmp(argv[0], "get_env") == 0)
+		value_env = get_env_value(argv, *copy_env);
+	else if (ft_strcmp(argv[0], "exit") == 0)
 		status = ft_exit(argv);
 	else
 	{
@@ -118,11 +128,12 @@ int	buildin(char **argv, char ***copy_env)
 // 			free(line_read);
 // 			line_read = NULL;
 // 		}
-// 		pwd_prompt("pwd");
+// 		pwd_prompt();
 // 		line_read = readline("\n\033[0;35m❯ \033[0m");
 // 		add_history(line_read);
 // 		args = ft_split(line_read, ' ');
-// 		buildin(args, &copy_env);
+// 		//int fd = open("test", O_RDWR | O_TRUNC);
+// 		buildin(args, &copy_env, 1);
 // 	}
 // 	for (int i = 0; copy_env[i]; i++)
 // 		free(copy_env[i]);
