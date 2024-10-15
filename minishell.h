@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:38 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 10:44:00 by trazanad         ###   ########.fr       */
+/*   Created: 2024/09/11 13:15:38 by trazanad          #+#    #+#             */
+/*   Updated: 2024/10/14 08:46:54 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 # include "header.h"
 
+# include "./input/input.h"
+
 # include "./lexer/lexer.h"
 
 # include "./input/input.h"
@@ -23,5 +25,7 @@
 # include "./parser/parser.h"
 
 # include "./executor/executor.h"
+
+# include "./builtin/buildin.h"
 
 #endif

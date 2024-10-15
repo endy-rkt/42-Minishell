@@ -5,74 +5,69 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/29 08:52:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/11 07:55:08 by trazanad         ###   ########.fr       */
+/*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
+/*   Updated: 2024/10/15 18:06:31 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_type()
+t_sh_params	*init_sh_params(char **envp, int exit_status)
 {
-	token_type type []={
-	TK_WORD,//0
-    TK_PIPE,//1
-    TK_REDIR_IN,//3
-    TK_REDIR_OUT,//4
-    TK_REDIR_APPEND,//5
-    TK_HEREDOC//6
-	};//11
-	for (int i = 0; i < 12; i++)
-	{
-		printf("%d\t--",type[i]);
-	}
-		printf("\n");
+	t_sh_params	*shell_params;
 
-}
-
-t_sh_params	*init_sh_params(t_ast *ast, t_list *tmp_file, char **my_envp, char **my_export)
-{
-	t_sh_params	*init_params;
-
-	init_params = malloc(sizeof(t_sh_params));
-	if (!init_params)
+	shell_params = malloc(sizeof(t_sh_params));
+	if (!shell_params)
 		return (NULL);
-	init_params->ast = ast;
-	init_params->exit_status = 0;
-	init_params->tmp_file = tmp_file;
-	init_params->my_envp = my_envp;
-	init_params->my_export = my_export;
-	return (init_params);
+	shell_params->ast = NULL;
+	shell_params->tmp_file = NULL;
+	shell_params->exit_status = exit_status;
+	shell_params->my_envp = envp;
+	return (shell_params);
 }
 
-void	lex_test(char *input)
+void	delete_tmp_file(t_list *tmp_file)
 {
-	int		input_error;
-	t_token	*tk;
-	t_sh_params	*sh_params;
-	t_ast	*ast;
+	char	*file;
 
-	tk = lex(input);
-	input_error = expand(&tk);
-	tk_print(tk);
-	ast = create_ast(tk);
-	sh_params = init_sh_params(ast, NULL, NULL, NULL);
-	// print_ast(ast);
-	// printf("------------cmd---------------------\n");
-	execute_ast(ast);
-	tk_clear(&tk);
+	while (tmp_file)
+	{
+		if (tmp_file->content != NULL)
+			file = tmp_file->content;
+		unlink(file);
+		tmp_file = tmp_file->next;
+	}	
 }
 
-void handle_sigint(int sig)
+int	run_shell(char *input, char ***envp, int prev_status)
 {
-    (void)sig;
-    // Print a new prompt after catching Ctrl+C
-    write(STDOUT_FILENO, "\n>>", 3);
+	int			exit_status;
+	t_sh_params	*shell_params;
+
+	exit_status = prev_status;
+	shell_params = NULL;
+	shell_params = init_sh_params(*envp, exit_status);//copy env
+	parse(&shell_params, input);
+	// print_ast(shell_params->ast);
+	if (shell_params->exit_status == 0 && shell_params->ast != NULL)
+		execute(&shell_params);// bad file , cmd not found , built 
+	// exit_status = shell_params->exit_status;
+	// //close_fd(shell_params);
+	if (shell_params->tmp_file)
+		delete_tmp_file(shell_params->tmp_file);
+	*envp = shell_params->my_envp;
+	// if (shell_params)
+	// 	free_sh_params(&shell_params);
+	return (exit_status);
 }
 
-int	main(void/*, char *envp[]void*/)
+int	main(int argc, char **argv, char **envp)
 {
-	signal(SIGINT, handle_sigint);
-	handle_input0(lex_test);
-	return (0);
+	if (argc != 1)
+	{
+		ft_putstr_fd("minishell: minishell need no argument", 2);
+		exit(EXIT_FAILURE);
+	}
+	process_loop(run_shell, envp);//
+	exit(0);
 }

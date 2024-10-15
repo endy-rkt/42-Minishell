@@ -1,8 +1,8 @@
 {
 	"files.associations": {
-		"libft.h": "c",
-		"history.h": "c",
-		"wait.h": "c",
-		"header.h": "c"
+		"parser.h": "c",
+		"buildin.h": "c",
+		"header.h": "c",
+		"minishell.h": "c"
 	}
 }

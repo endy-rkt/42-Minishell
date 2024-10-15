@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 08:40:29 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 11:10:09 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/13 16:13:12 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	ft_strcat(str, s2, index_ptr);
 	str[*index_ptr] = '\0';
 	free(s1);
+	s1 = NULL;
 	return (str);
 }

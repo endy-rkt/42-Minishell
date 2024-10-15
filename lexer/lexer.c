@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 09:21:00 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 14:44:49 by trazanad         ###   ########.fr       */
+/*   Created: 2024/09/11 14:35:10 by trazanad          #+#    #+#             */
+/*   Updated: 2024/10/14 10:35:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,99 +56,7 @@ int	take_word_len(char *str, int i)
 	return (check_in);
 }
 
-int	handle_operator(char *str, t_token **tk)
-{
-	int		len;
-	int		redir_nb;
-
-	len = 0;
-	if (str[len] == '|')
-	{
-		len++;
-		add_token(tk, TK_PIPE, str, len);
-	}
-	else
-	{
-		redir_nb = 0;
-		while (str[len] == '<' || str[len] == '>')
-		{
-			len++;
-			redir_nb++;
-		}
-		if (redir_nb == 1)
-		{
-			if (str[len - 1] == '>')
-			{
-			add_token(tk, TK_REDIR_OUT, str, len);
-			if (str[len] == '|')
-				len++;
-			}
-			else
-				add_token(tk, TK_REDIR_IN, str, len);
-			return (len);
-		}
-		if (str[len - 1] == '<' && str[len - 2] == '<')
-		{
-			if (str[len] == '-')
-				len++;
-			while (ft_isspace(str[len]))
-				len++;
-			len += take_word_len(str, len);//
-			add_token(tk, TK_HEREDOC, str, len);
-		}
-		else
-			add_token(tk, TK_REDIR_APPEND, str, len);
-	}
-	return (len);
-}
-
-int	handle_digit(char *str, t_token **tk)
-{
-	int		len;
-	int		redir_nb;
-
-	len = 0;
-	redir_nb = 0;
-	while (ft_isdigit(str[len]))
-		len++;
-	while (str[len] == '<' || str[len] == '>')
-	{
-		len++;
-		redir_nb++;
-	}
-	if (redir_nb == 1)
-	{
-		if (str[len - 1] == '>')
-		{
-			add_token(tk, TK_REDIR_OUT, str, len);
-			if (str[len] == '|')
-				len++;
-		}
-		else
-		add_token(tk, TK_REDIR_IN, str, len);
-		return (len);
-	}
-	if (redir_nb == 0)
-	{
-		len += take_word_len(str, len);
-		add_token(tk, TK_WORD, str, len);
-		return (len);
-	}
-	if (str[len - 1] == '<' && str[len - 2] == '<')
-	{
-		if (str[len] == '-')
-			len++;
-		while (ft_isspace(str[len]))
-			len++;
-		len += take_word_len(str, len);//
-		add_token(tk, TK_HEREDOC, str, len);
-	}
-	else
-		add_token(tk, TK_REDIR_APPEND, str, len);
-	return (len);
-}
-
-int	handle_char(char *str, t_token **tk)
+static int	handle_char(char *str, t_token **tk)
 {
 	int		len;
 
@@ -158,7 +66,7 @@ int	handle_char(char *str, t_token **tk)
 	return (len);
 }
 
-int	create_tk_list(char *str, t_token **tk)
+static int	create_tk_list(char *str, t_token **tk)
 {
 	int	len;
 
@@ -169,14 +77,12 @@ int	create_tk_list(char *str, t_token **tk)
 		return (0);
 	if (is_operator(str[len]))
 		len += handle_operator(str + len, tk);
-	else if (ft_isdigit(str[len]))
-		len += handle_digit(str + len, tk);
 	else
 		len += handle_char(str + len, tk);
 	return (len);
 }
 
-t_token	*lex(char *input)
+t_token	*lex(char *input, t_sh_params **shell_params)
 {
 	int		i;
 	char	*str;
@@ -187,6 +93,7 @@ t_token	*lex(char *input)
 	if ((input[0] == '\'' || input[0] == '\"') && input[1] == '\n')
 	{
 		ft_putstr_fd("Error: invalid input\n", 2);
+		(*shell_params)->exit_status = 2;
 		return (NULL);
 	}
 	str = ft_retire_space(input);

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 09:28:55 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/11 10:48:23 by trazanad         ###   ########.fr       */
+/*   Created: 2024/09/11 14:35:02 by trazanad          #+#    #+#             */
+/*   Updated: 2024/10/13 16:06:30 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,24 @@
 
 # include "../header.h"
 
-int		is_operator(char c);
+t_token	*lex(char *input, t_sh_params **shell_params);
+void	add_token(t_token **tk, token_type type, char *str, int len);
+int		take_word_len(char *str, int i);
+int		handle_operator(char *str, t_token **tk);
+int		is_redir(t_token *tk);
 t_token	*tk_create(char *value, token_type type, t_token *tk_prev);
 t_token	*tk_last(t_token *tk);
 void	tk_add_back(t_token **tk, t_token *tk_new);
 void	tk_clear(t_token **tk);
-void	tk_print(t_token *tk); //0
-int		idx_of_last(char *str, char c);
+int		check_tk_error(t_token **tk, t_sh_params **shell_params);
+int		redir_error(t_token **tk);
+int		my_perror(int status, char *str);
+void	expand(t_token **tk, t_sh_params *shell_params);
+int		expand_params(char *value, char **new_value, int i, t_sh_params *shell_params);
+int		expand_single_quote(char *value, char **new_value, int i);
+int		expand_double_quote(char *value, char **new_value, int i, t_sh_params *shell_params);
+char	*join_char(char *new_value, char c);
+int		is_operator(char c);
 int		idx_of_first(char *str, char c);
-void	add_token(t_token **tk, token_type type, char *str, int len);
-int		take_word_len(char *str, int i);
-t_token	*lex(char *input);
-int		input_error(t_token **tk);
-int		expand(t_token  **tk);
-int		is_redir(t_token *tk);
 
 #endif

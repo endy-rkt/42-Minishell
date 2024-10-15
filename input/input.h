@@ -6,15 +6,15 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 10:29:42 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/12 11:21:52 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:58:57 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INPUT_H
 
 # include "../header.h"
+# include "../minishell.h"
 
-void	handle_input();
-void	handle_input0(void (*process_input)(char*));
+int	process_loop(int (*run_shell)(char *, char ***, int), char **envp);
 
 #endif

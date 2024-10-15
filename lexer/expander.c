@@ -5,125 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/12 11:27:04 by trazanad          #+#    #+#             */
-/*   Updated: 2024/09/16 09:24:44 by trazanad         ###   ########.fr       */
+/*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
+/*   Updated: 2024/10/14 10:44:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-char	*my_getenv(char *var, t_sh_params *sh_params)
-{
-	char	*str;
-
-	if (!var)
-		return ("");
-	str = getenv(var);
-	if (!str)
-		return ("");
-	return (str);
-}
-
-char	*join_char(char *new_value, char c)
-{
-	char	*tmp;
-	char	*str;
-
-	tmp = malloc(2);
-	if (!tmp)
-		return (NULL);
-	tmp[0] = c;
-	tmp[1] = '\0';
-	str = ft_strjoin(new_value, tmp);
-	free(tmp);
-	return (str);
-}
-
-int	expand_single_quote(char *value, char **new_value, int i)
-{
-	i++;
-	while (value[i] && value[i] != '\'')
-	{
-		*new_value = join_char(*new_value, value[i]);
-		i++;
-	}
-	if (value[i] == '\'')
-		i++;
-	return (i);
-}
-
-int	expand_params(char *value, char **new_value, int i, t_sh_params *sh_params)
-{
-	int		j;
-	char	*tmp;
-
-	i++;
-	tmp = ft_strdup("");
-	if (value[i] == '\'' || value[i] == '\"')
-		return (i);
-	else if (value[i] == '\0' || ft_isspace(value[i]))
-	{
-		*new_value = ft_strjoin(*new_value, "$");
-		return (i);
-	}
-	else if (value[i] == '?')//to handle dude //0
-	{
-		tmp = join_char(tmp, value[i]);
-		*new_value = ft_strjoin(*new_value, tmp);//0
-		free(tmp);
-		return (i + 1);
-	}
-	else if (ft_strchr("$!#*@-", value[i]) || ft_isdigit(value[i]))
-	{
-		tmp = join_char(tmp, value[i]);
-		*new_value = ft_strjoin(*new_value, my_getenv(tmp, sh_params));
-		free(tmp);
-		return (i + 1);
-	}
-	else if (!(ft_isalpha(value[i]) || value[i] == '_'))
-	{
-		tmp = join_char(tmp, '$');
-		tmp = join_char(tmp, value[i]);
-		*new_value = ft_strjoin(*new_value, tmp);
-		free(tmp);
-		return (i + 1);
-	}
-	else
-	{
-		while (ft_isalpha(value[i]) || value[i] == '_' || ft_isdigit(value[i]))
-		{
-			tmp = join_char(tmp, value[i]);
-			i++;
-		}
-		*new_value = ft_strjoin(*new_value, my_getenv(tmp, sh_params));
-		free(tmp);
-		return (i);
-	}
-}
-
-int		expand_double_quote(char *value, char **new_value, int i, t_sh_params *sh_params)
-{
-	i++;
-	while (value[i] && value[i] != '\"')
-	{
-		if (value[i] == '$')
-		{
-			if (value[i + 1] == '\'')
-				*new_value = ft_strjoin(*new_value, "$");
-			i = expand_params(value, new_value, i, sh_params);
-		}
-		else
-		{
-			*new_value = join_char(*new_value, value[i]);
-			i++;
-		}
-	}
-	if (value[i] == '\"')
-		i++;
-	return (i);
-}
-
-void	verify_assign(t_token **tk)
+static void	verify_assign(t_token **tk)
 {
 	int		i;
 	char	*value;
@@ -143,59 +32,161 @@ void	verify_assign(t_token **tk)
 	(*tk)->type = TK_ASSIGN;
 }
 
-void	expand_word(t_token	**tk)
+// void	print_list(t_list *lst)
+// {
+// 	if (lst)
+// 	{
+// 		if (lst->content)
+// 		printf("val:{%s}\n", (char*)lst->content);
+// 		if (lst -> next)
+// 			print_list(lst -> next);
+// 	}
+// }
+
+int	join_token(char **splitted_word, int count, t_list **lst_word)
+{
+	t_list	*new;
+	char	*init_content;
+
+	while (splitted_word[count])
+	{
+		if (count == 0 && *lst_word)
+		{
+			init_content = ft_strjoin((*lst_word)->content, splitted_word[count]);
+			(*lst_word)->content = init_content;
+		}
+		else
+		{
+			new = ft_lstnew(ft_strdup(splitted_word[count]));
+			ft_lstadd_back(lst_word, new);
+		}
+		count++;
+	}
+	//free_split;
+	return (count);
+}
+
+int	handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params *shell_params)
+{
+	int		i;
+	int		len;
+	int		count;
+	char	**splitted_word;
+
+	i = 0;
+	count = ft_strlen(*new_value);
+	i = expand_params(value, new_value, i, shell_params);
+	len = ft_strlen(*new_value);
+	if (len == count)
+		return (i);
+	splitted_word = ft_split(*new_value, ' ');
+	if ((*new_value)[len - 1] == ' ' && !splitted_word && value[i])
+		ft_lstadd_back(lst_word, ft_lstnew(ft_strdup("")));
+	if (!splitted_word)
+		return (i);
+	count = join_token(splitted_word, 0, lst_word);
+	if ((*new_value)[len - 1] == ' ' && value[i])
+		ft_lstadd_back(lst_word, ft_lstnew(ft_strdup("")));
+	(*new_value)[0] = '\0';
+	return (i);
+}
+
+void	add_tk(t_token **tk, t_token **tk_new, t_token *tk_next, t_list *tmp)
+{
+	t_token	*new;
+
+	while (tmp)
+	{
+		tmp = tmp->next;
+		if (tmp)
+		{
+			new = tk_create(tmp->content, TK_WORD, (*tk_new)->prev);
+			tk_add_back(tk_new, new);
+		}
+	}
+	if (tk_new)
+	{
+		tk_add_back(tk_new, tk_next);
+		(*tk)->next = *tk_new;
+	}
+}
+
+void	add_expansion(t_token **tk, char **new_value, t_list **lst_word)
+{
+	t_list	*tmp;
+	t_list	*last_lst;
+	t_token	*tk_new;
+	t_token	*tk_next;
+
+	if (*lst_word == NULL)
+		*lst_word = ft_lstnew(ft_strdup(""));
+	last_lst = ft_lstlast(*lst_word);
+	last_lst->content = ft_strjoin(last_lst->content, *new_value);
+	tk_next = (*tk)->next;
+	(*tk)->value = ft_strdup((*lst_word)->content);
+	tmp = (*lst_word)->next;
+	tk_new =NULL;
+	if (tmp)
+		tk_new = tk_create(tmp->content, TK_WORD, *tk);
+	add_tk(tk, &tk_new, tk_next, tmp);
+	//free list tmp;
+}
+
+static void	apply_expansion(t_token **tk, t_list **lst_word, char **new_val, char **value)
+{
+	int	empty_val;
+	int	quoted_value;
+
+	quoted_value = (ft_strchr(*value, '\'') || ft_strchr(*value, '\"'));
+	empty_val = ((*new_val)[0] != 0 && !quoted_value);
+	if (*new_val && *lst_word == NULL)
+	{
+		free(*value);
+		(*tk)->value = *new_val;
+		return ;
+	}
+	if (*lst_word != NULL || empty_val)
+	{
+		add_expansion(tk, new_val, lst_word);
+		free(*value);
+		*value = NULL;
+	}
+	else
+	{
+		free(*value);
+		(*tk)->value = NULL;
+	}
+}
+
+static void	expand_word(t_token	**tk, t_sh_params *shell_params)
 {
 	int		i;
 	char	*value;
 	char	*new_value;
+	t_list	*lst_word;
 
 	i = 0;
 	value = (*tk)->value;
 	new_value = ft_strdup("");
+	lst_word = NULL;
 	while (value[i])
 	{
 		if (value[i] == '\'')
 			i = expand_single_quote(value, &new_value, i);
 		else if (value[i] == '\"')
-			i = expand_double_quote(value, &new_value, i, sh_params);
+			i = expand_double_quote(value, &new_value, i, shell_params);
 		else if (value[i] == '$')
-			i = expand_params(value, &new_value, i, sh_params);
+			i += handle_params(&lst_word, value + i, &new_value, shell_params);	
 		else
 		{
 			new_value = join_char(new_value, value[i]);
 			i++;
 		}
 	}
-	free(value);
-	(*tk)->value = new_value;
+	apply_expansion(tk, &lst_word, &new_value, &value);
 }
 
-int	format_delimiter(char *value, char *new_value, int i, int j)
-{
-	char	tmp;
-
-	tmp = 0;
-	if (value[i] == '-')
-		i++;
-	while (ft_isspace(value[i]))
-		i++;
-	while (value[i])
-	{
-		if ((value[i] == '\'' || value[i] == '\"') && tmp == 0)
-			tmp = value[i];
-		else if (value[i] == tmp && tmp != 0)
-			tmp = 0;
-		else
-		{
-			new_value[j] = value[i];
-			j++;
-		}
-		i++;
-	}
-	return (j);
-}
-
-void	expand_redir(t_token **tk)
+static void	expand_redir(t_token **tk)
 {
 	int		i;
 	int		j;
@@ -208,47 +199,36 @@ void	expand_redir(t_token **tk)
 	new_value = malloc(ft_strlen(value) + 1);
 	if (!new_value)
 		return ;
-	while ((ft_isdigit(value[i]) || ft_strchr("<>", value[i])) && value[i])
+	while (ft_strchr("<>", value[i]) && value[i])
 	{
 		new_value[j] = value[i];
 		i++;
 		j++;
 	}
-	if ((*tk)->type == TK_HEREDOC)
-		j = format_delimiter(value, new_value, i, j);
 	new_value[j] = '\0';
 	free(value);
 	(*tk)->value = new_value;
 }
 
-void	expand_token(t_token **tk, t_sh_params *sh_params)
+static void	expand_token(t_token **tk, t_sh_params *shell_params)
 {
 	if (*tk)
 	{
 		if ((*tk)->type == TK_WORD || (*tk)->type == TK_ASSIGN)
 		{
 			verify_assign(tk);
-			expand_word(tk, sh_params);
+			expand_word(tk, shell_params);
 		}
-		if (is_redir(*tk) || (*tk)->type == TK_HEREDOC)
+		if (is_redir(*tk))
 			expand_redir(tk);
 		if ((*tk)->next)
-			expand_token(&((*tk)->next), sh_params);
+			expand_token(&((*tk)->next), shell_params);
 	}
 }
 
-//before expand create state
-int	expand(t_token  **tk, t_sh_params *sh_params)	//check expand
+void	expand(t_token **tk, t_sh_params *shell_params)
 {
-	if (!*tk)
-		return (1);
-	expand_token(tk, sh_params);
-	sh_params->exit_status = 0;
-	sh_params->exit_status = input_error(tk);
-	// if(input_error(tk))
-	// {
-	// 	printf("Error\n");
-	// 	return (1);
-	// }
-	return (sh_params->exit_status);
+	if (!tk || (*tk) == NULL)
+		return ;
+	expand_token(tk, shell_params);
 }
