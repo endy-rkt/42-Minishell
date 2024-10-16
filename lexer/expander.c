@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 09:10:29 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:00:10 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params 
 	i = 0;
 	count = ft_strlen(*new_value);
 	i = expand_params(value, new_value, i, shell_params);
-	if ((*new_value)[0] == '\0')
+	if ((*new_value)[0] == '\0' && ft_strcmp(value, "$\"\"") && ft_strcmp(value, "$\'\'"))
 	{
 		free(*new_value);
 		*new_value = NULL;
