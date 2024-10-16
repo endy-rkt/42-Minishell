@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:23:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/15 17:58:12 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 10:51:57 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	cmd_clear(t_cmd **cmd)
 		*cmd = NULL;
 	}
 }
+
+
 
 int	cmd_is_pipe(t_cmd *cmd)
 {

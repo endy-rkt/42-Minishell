@@ -3,6 +3,9 @@
 		"parser.h": "c",
 		"buildin.h": "c",
 		"header.h": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"errno.h": "c",
+		"stat.h": "c",
+		"termios.h": "c"
 	}
 }

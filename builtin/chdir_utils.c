@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chdir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 08:54:48 by ferafano          #+#    #+#             */
-/*   Updated: 2024/09/13 11:20:49 by ferafano         ###   ########.fr       */
+/*   Updated: 2024/10/16 09:21:57 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	is_match(char *line_read, char **copy_env)
 void	change_to_home(char *cwd, char **copy_env)
 {
 	update_oldpwd("OLDPWD", cwd, copy_env);
-	chdir("/home/ferafano/");
+	chdir("/home/trazanad/");
 }
 
 int	change_to_oldpwd(char *cwd, char **copy_env)

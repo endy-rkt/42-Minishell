@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chdir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 08:05:44 by ferafano          #+#    #+#             */
-/*   Updated: 2024/09/13 08:58:13 by ferafano         ###   ########.fr       */
+/*   Updated: 2024/10/16 09:21:04 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	change_to_path(char *path, char *cwd, char **copy_env)
 		change_to_home(cwd, copy_env);
 	else if (path[0] == '~')
 	{
-		chdir("/home/ferafano/");
+		chdir("/home/trazanad/");
 		if (chdir(path + 2) == 0)
 			update_oldpwd("OLDPWD", cwd, copy_env);
 		else

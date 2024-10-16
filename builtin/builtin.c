@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:49 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/14 10:52:06 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:09:49 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,6 @@ int	buildin(char **argv, char ***copy_env, int fd)
 		status = ft_export(argv, copy_env, fd);
 	else if (ft_strcmp(argv[0], "echo") == 0)
 		status = ft_echo(argv, fd);
-	else if (ft_strcmp(argv[0], "get_env") == 0)
-		value_env = get_env_value(argv, *copy_env);
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		status = ft_exit(argv);
 	else

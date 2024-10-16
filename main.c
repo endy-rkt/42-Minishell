@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/15 18:06:31 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:49:31 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_sh_params	*init_sh_params(char **envp, int exit_status)
 	shell_params->tmp_file = NULL;
 	shell_params->exit_status = exit_status;
 	shell_params->my_envp = envp;
+	shell_params->cmd = NULL;
 	return (shell_params);
 }
 
@@ -56,8 +57,9 @@ int	run_shell(char *input, char ***envp, int prev_status)
 	if (shell_params->tmp_file)
 		delete_tmp_file(shell_params->tmp_file);
 	*envp = shell_params->my_envp;
-	// if (shell_params)
-	// 	free_sh_params(&shell_params);
+	cmd_clear(&(shell_params->cmd));
+	if (shell_params)
+		free_sh_params(&shell_params);
 	return (exit_status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:44 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/15 16:44:45 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:35:47 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ void	ast_clear(t_ast **ast);
 void	print_ast(t_ast *ast);
 void	print_one_cmd(t_cmd *cmd);
 void	free_sh_params(t_sh_params **shell_params);
+void	print_single_cmd(t_cmd *cmd);
 
 #endif

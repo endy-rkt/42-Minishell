@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 09:02:32 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/14 10:51:08 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 09:12:29 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,11 @@ int	ft_export(char **argv, char ***env, int fd)
 		check = check_valid_name(argv[i], env);
 		if (check == 1)
 			ft_cond(i, env, argv, temp);
-		else if (check == 0)
-			;
-		else
+		else if (check != 1 && check != 0)
+		{
 			printf("invalid identifier\n");
+			status = 1;
+		}
 		i++;
 	}
 	return (status);

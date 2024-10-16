@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/14 10:44:25 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 09:10:29 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,12 @@ int	handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params 
 	i = 0;
 	count = ft_strlen(*new_value);
 	i = expand_params(value, new_value, i, shell_params);
+	if ((*new_value)[0] == '\0')
+	{
+		free(*new_value);
+		*new_value = NULL;
+		return (i);
+	}
 	len = ft_strlen(*new_value);
 	if (len == count)
 		return (i);
@@ -137,14 +143,14 @@ static void	apply_expansion(t_token **tk, t_list **lst_word, char **new_val, cha
 	int	empty_val;
 	int	quoted_value;
 
-	quoted_value = (ft_strchr(*value, '\'') || ft_strchr(*value, '\"'));
-	empty_val = ((*new_val)[0] != 0 && !quoted_value);
-	if (*new_val && *lst_word == NULL)
+	if ((*new_val && *lst_word == NULL) || *new_val == NULL)
 	{
 		free(*value);
 		(*tk)->value = *new_val;
 		return ;
 	}
+	quoted_value = (ft_strchr(*value, '\'') || ft_strchr(*value, '\"'));
+	empty_val = ((*new_val)[0] != 0 && !quoted_value);
 	if (*lst_word != NULL || empty_val)
 	{
 		add_expansion(tk, new_val, lst_word);

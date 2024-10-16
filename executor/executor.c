@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/15 17:53:02 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:50:26 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	pipe_status(int fd_0, int fd_1, int pid_0, int pid_1)
 	return (status);
 }
 
-int exec_pipeline(t_ast *ast, char **my_envp)
+int exec_pipeline(t_ast *ast, char **my_envp, t_sh_params **shell_params)
 {
 	int	fd[2];
 	int	pid[2];
@@ -71,7 +71,10 @@ int exec_pipeline(t_ast *ast, char **my_envp)
 		close(fd[0]);
         dup2(fd[1], STDOUT_FILENO);  
         close(fd[1]);
-		exec_node(ast->left_node, my_envp, STDIN_FILENO, STDOUT_FILENO);
+		exec_node(ast->left_node, my_envp, shell_params);
+		cmd_clear(&((*shell_params)->cmd));
+		if (*shell_params)
+			free_sh_params(shell_params);
 		exit(EXIT_FAILURE); 
 	}
 	pid[1] = fork();
@@ -80,7 +83,10 @@ int exec_pipeline(t_ast *ast, char **my_envp)
 		close(fd[1]);
         dup2(fd[0], STDIN_FILENO);
         close(fd[0]); 
-		exec_node(ast->right_node, my_envp, STDOUT_FILENO, STDOUT_FILENO);
+		exec_node(ast->right_node, my_envp, shell_params);
+		cmd_clear(&((*shell_params)->cmd));
+		if (*shell_params)
+			free_sh_params(shell_params);
 		exit(EXIT_FAILURE); 
 	}
 	return (pipe_status(fd[0], fd[1], pid[0], pid[1]));
@@ -136,7 +142,7 @@ static void	execute_pipeline(t_sh_params **shell_params)
 	exit_status = 0;
 	ast = (*shell_params)->ast;
 	my_envp = (*shell_params)->my_envp;
-	exit_status = exec_pipeline(ast, my_envp);
+	exit_status = exec_pipeline(ast, my_envp, shell_params);
 	(*shell_params)->exit_status = exit_status;
 }
 

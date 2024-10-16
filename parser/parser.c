@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/15 17:40:03 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:35:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,15 +115,25 @@ void	ast_clear(t_ast **ast)
 	if (*ast)
 	{
 		if ((*ast)->left_node != NULL)
+		{
 			ast_clear(&((*ast)->left_node));
+			(*ast)->left_node = NULL;
+		}
 		if ((*ast)->right_node != NULL)
+		{
 			ast_clear(&((*ast)->right_node));
-		if ((*ast)->cmd != NULL)
-			cmd_clear(&((*ast)->cmd));
+			(*ast)->right_node = NULL;
+		}
+		// if ((*ast)->cmd != NULL)
+		// {
+		// 	cmd_clear(&((*ast)->cmd));
+		// 	(*ast)->cmd = NULL;
+		// }
 		free(*ast);
 		*ast =  NULL;
 	}
 }
+
 
 void	parse(t_sh_params **shell_params, char *input)
 {
@@ -147,6 +157,7 @@ void	parse(t_sh_params **shell_params, char *input)
 	}
 	process_heredoc(&cmd, shell_params, &input);
 	ast = create_ast(cmd);// no cmd free
+	(*shell_params)->cmd = cmd;
 	(*shell_params)->ast = ast;
 }
 
