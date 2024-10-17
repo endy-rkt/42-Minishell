@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:12:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/17 09:21:48 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:47:33 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int	get_status(int pid)
 	if (WIFEXITED(status))
 	    status = WEXITSTATUS(status);
     else if (WIFSIGNALED(status))
-	    status = WTERMSIG(status) + 18;
-	// ft_printf("\033[2K\r");
+	    status = WTERMSIG(status);
 	return (status);
 }
 
@@ -62,8 +61,6 @@ void	launch_child(t_ast *ast, char **my_envp, t_sh_params **shell_params)
 		free_params(shell_params);
 		exit(status);
 	}
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	if (change_redir(lst_redir, STDIN_FILENO, STDOUT_FILENO) && cmd->args[0] != NULL)
 		execve(path, cmd->args, my_envp);
 	free(path);
@@ -79,8 +76,6 @@ int	piped_builtin(t_ast *ast, char **my_envp, t_sh_params **shell_params)
 
 	cmd = ast->cmd;
 	lst_redir = cmd->redir;
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	if (change_redir(lst_redir, STDIN_FILENO, STDOUT_FILENO))
 		status = buildin(cmd->args, &my_envp, STDOUT_FILENO);
 	free_params(shell_params);

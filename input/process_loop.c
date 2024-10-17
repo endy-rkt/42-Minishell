@@ -6,22 +6,26 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 16:56:59 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:26:56 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
+static volatile sig_atomic_t signal_code = 0;
+
 void	sigint_handler(int sig)
 {
+	signal_code = 130;
     (void)sig;
 	ft_printf("\n>>");
 }
 
+
 void	signal_handler()
 {
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 }	
 
 int	launch_execution(char **input)
@@ -57,7 +61,8 @@ int	process_loop(int (*run_shell)(char **, char ***, int), char **envp)
 		}
 		no_exit = ft_strcmp(input, "exit\n");
 		if (launch_execution(&input))
-			prev_status = run_shell(&input, &global_envp, prev_status);
+			prev_status = run_shell(&input, &global_envp, signal_code);
+		signal_code = prev_status;
 	}
 	free_args(global_envp);
 	return (0);

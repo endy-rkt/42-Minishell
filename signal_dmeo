@@ -1,0 +1,24 @@
+
+void	signal_handler(int sig_num, siginfo_t *siginfo, void	*context)
+{
+	(void)context;
+	(void)siginfo;
+	if (sig_num == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		rl_redisplay();
+	}
+}
+
+void	minishell_signal(void)
+{
+	struct sigaction	sig;
+
+	sigemptyset(&(sig.sa_mask));
+	sig.sa_flags = SA_RESTART;
+	sig.sa_sigaction = signal_handler;
+	signal(SIGQUIT, SIG_IGN);
+	sigaction(SIGINT, &sig, NULL);
+}

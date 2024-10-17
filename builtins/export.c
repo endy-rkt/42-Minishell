@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
+/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 09:02:32 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/16 09:12:29 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/10 07:38:34 by ferafano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,9 @@ int	ft_export(char **argv, char ***env, int fd)
 		check = check_valid_name(argv[i], env);
 		if (check == 1)
 			ft_cond(i, env, argv, temp);
-		else if (check != 1 && check != 0)
+		else if (check == 0)
+			;
+		else
 		{
 			printf("invalid identifier\n");
 			status = 1;

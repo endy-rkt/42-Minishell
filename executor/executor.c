@@ -6,16 +6,20 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/17 09:17:39 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:48:37 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
+static void	sigint_handler(int sig)
+{
+    (void)sig;
+	// ft_printf("\n>>");
+}
+
 static int	cmd_child(char **args, t_list *lst_redir, char *path, char **envp)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	if (change_redir(lst_redir, STDIN_FILENO, STDOUT_FILENO))
 		execve(path, args, envp);
 	free(path);
@@ -40,6 +44,8 @@ static int	exec_cmd(char **args, t_list *lst_redir, char **my_envp)
 		return (status);
 	}
 	pid = fork();
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_DFL);
 	if (pid == 0)
 		cmd_child(args, lst_redir, path, my_envp);
 	free(path);
@@ -74,6 +80,8 @@ int exec_pipeline(t_ast *ast, char **my_envp, t_sh_params **shell_params)
 
 	pipe(fd);
 	pid[0] = fork();
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_DFL);
 	if (pid[0] == 0)
 	{
 		close(fd[0]);
@@ -84,6 +92,8 @@ int exec_pipeline(t_ast *ast, char **my_envp, t_sh_params **shell_params)
 		exit(EXIT_FAILURE); 
 	}
 	pid[1] = fork();
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_DFL);
 	if (pid[1] == 0)
 	{
 		close(fd[1]);

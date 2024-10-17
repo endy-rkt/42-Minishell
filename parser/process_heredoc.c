@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/17 09:28:56 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/17 14:11:39 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,24 @@ static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params, 
 	update_status(status, pid, shell_params);
 }
 
+t_list	*last_redirin(t_list *lst)
+{
+	t_list	*tmp;
+	t_redir *r;
+
+	if (last_redir_in(lst))
+		return (lst);
+	tmp = lst->next;
+	while (tmp != NULL)
+	{
+		if (last_redir_in(tmp))
+			break;
+		r = lst->content;
+		tmp = tmp->next;
+	}
+	r = tmp->content;
+	return (tmp);
+}
 
 void	add_tmp_file(char *file, t_sh_params **shell_params, t_cmd **cmd)
 {
@@ -127,7 +145,7 @@ void	add_tmp_file(char *file, t_sh_params **shell_params, t_cmd **cmd)
 
 	if (access(file, F_OK) != 0)
 		return ;
-	last_lst = ft_lstlast((*cmd)->redir);
+	last_lst = last_redirin((*cmd)->redir);
 	lst_redir = &last_lst;
 	redir = (t_redir**) &((*lst_redir)->content);
 	free((*redir)->file);
