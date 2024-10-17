@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:58:21 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/14 16:15:34 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/17 11:06:46 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,56 @@ static char	*path_from_env(char **args, char **tmp, int *err_status)
 	return (path);
 }
 
+int	only_slash(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '/' && str[i] != '.')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	check_local_path(char **args, int *err_status)
+{
+	int	access_code;
+
+	access_code = not_valid_path(args[0]);
+	if (only_slash(args[0]))
+	{
+		if (access_code == 0)
+		{
+			*err_status = 126;
+			ft_putstr_fd("Is a directory\n", 2);
+		}
+		else
+		{
+			*err_status = access_code;
+			ft_putstr_fd("No such file or directory\n", 2);
+		}
+		return (1);
+	}
+	if (access_code == 126 && (args[0][0] =='.' && args[0][1]=='/'))
+	{
+		*err_status = access_code;
+		ft_putstr_fd("Permission denied\n", 2);
+		return (1);
+	}
+	return (0);
+}
+
 char	*get_path(char **args, char **my_envp, int *err_status)
 {
 	int		i;
 	char	*path;
 	char	**tmp;
 
-	if (empty_cmd(args, err_status))
+	path = NULL;
+	if (empty_cmd(args, err_status) || check_local_path(args, err_status))
 		return (NULL);
 	if (!not_valid_path(args[0]))
 		return (ft_strdup(args[0]));
