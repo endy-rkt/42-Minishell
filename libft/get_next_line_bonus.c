@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 08:31:15 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/14 09:01:42 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:06:12 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,17 +102,10 @@ char	*get_next_line(int fd)
 		free(remining_str[fd]);
 		return (0);
 	}
-	// if (fd == 0)
-	// 	ft_printf(">> ");
 	remining_str[fd] = ft_read_buf(fd, remining_str[fd]);
 	if (!remining_str[fd])
 		return (0);
 	line = ft_get_one_line(remining_str[fd]);
 	remining_str[fd] = ft_renew_remining_str(remining_str[fd]);
-	if (ft_strcmp(line, "exit\n") == 0)
-	{
-		free(line);
-		return (0);
-	}
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:03:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 12:47:39 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:53:55 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@ void	spwan_child(t_ast *ast, char **my_envp, t_sh_params **shell_params);
 int		change_redir(t_list *lst_redir, int stdin, int stdout);
 int		get_status(int pid);
 int		is_builtin(t_cmd *cmd);
+int		check_command(t_ast *ast);
+void	free_params(t_sh_params **shell_params);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 16:00:10 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:00:31 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,6 @@ static void	verify_assign(t_token **tk)
 	(*tk)->type = TK_ASSIGN;
 }
 
-// void	print_list(t_list *lst)
-// {
-// 	if (lst)
-// 	{
-// 		if (lst->content)
-// 		printf("val:{%s}\n", (char*)lst->content);
-// 		if (lst -> next)
-// 			print_list(lst -> next);
-// 	}
-// }
-
 int	join_token(char **splitted_word, int count, t_list **lst_word)
 {
 	t_list	*new;
@@ -62,8 +51,22 @@ int	join_token(char **splitted_word, int count, t_list **lst_word)
 		}
 		count++;
 	}
-	//free_split;
+	free_args(splitted_word);
 	return (count);
+}
+
+int	void_params(char **new_value, char *value)
+{
+	int	quoted_params;
+
+	quoted_params = ft_strcmp(value, "$\"\"") && ft_strcmp(value, "$\'\'");
+	if ((*new_value)[0] == '\0' && quoted_params)
+	{
+		free(*new_value);
+		*new_value = NULL;
+		return (1);
+	}
+	return (0);
 }
 
 int	handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params *shell_params)
@@ -76,12 +79,8 @@ int	handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params 
 	i = 0;
 	count = ft_strlen(*new_value);
 	i = expand_params(value, new_value, i, shell_params);
-	if ((*new_value)[0] == '\0' && ft_strcmp(value, "$\"\"") && ft_strcmp(value, "$\'\'"))
-	{
-		free(*new_value);
-		*new_value = NULL;
+	if (void_params(new_value, value))
 		return (i);
-	}
 	len = ft_strlen(*new_value);
 	if (len == count)
 		return (i);
@@ -117,7 +116,7 @@ void	add_tk(t_token **tk, t_token **tk_new, t_token *tk_next, t_list *tmp)
 	}
 }
 
-void	add_expansion(t_token **tk, char **new_value, t_list **lst_word)
+void	add_value(t_token **tk, char **new_value, t_list **lst_word)
 {
 	t_list	*tmp;
 	t_list	*last_lst;
@@ -135,7 +134,6 @@ void	add_expansion(t_token **tk, char **new_value, t_list **lst_word)
 	if (tmp)
 		tk_new = tk_create(tmp->content, TK_WORD, *tk);
 	add_tk(tk, &tk_new, tk_next, tmp);
-	//free list tmp;
 }
 
 static void	apply_expansion(t_token **tk, t_list **lst_word, char **new_val, char **value)
@@ -153,7 +151,7 @@ static void	apply_expansion(t_token **tk, t_list **lst_word, char **new_val, cha
 	empty_val = ((*new_val)[0] != 0 && !quoted_value);
 	if (*lst_word != NULL || empty_val)
 	{
-		add_expansion(tk, new_val, lst_word);
+		add_value(tk, new_val, lst_word);
 		free(*value);
 		*value = NULL;
 	}
@@ -162,6 +160,8 @@ static void	apply_expansion(t_token **tk, t_list **lst_word, char **new_val, cha
 		free(*value);
 		(*tk)->value = NULL;
 	}
+	if (*lst_word)
+		ft_lstclear(lst_word, free_assign);
 }
 
 static void	expand_word(t_token	**tk, t_sh_params *shell_params)
@@ -189,6 +189,7 @@ static void	expand_word(t_token	**tk, t_sh_params *shell_params)
 			i++;
 		}
 	}
+	// printf("new value=%s\n", new_value);
 	apply_expansion(tk, &lst_word, &new_value, &value);
 }
 
@@ -216,7 +217,7 @@ static void	expand_redir(t_token **tk)
 	(*tk)->value = new_value;
 }
 
-static void	expand_token(t_token **tk, t_sh_params *shell_params)
+static void	recursive_expansion(t_token **tk, t_sh_params *shell_params)
 {
 	if (*tk)
 	{
@@ -228,7 +229,7 @@ static void	expand_token(t_token **tk, t_sh_params *shell_params)
 		if (is_redir(*tk))
 			expand_redir(tk);
 		if ((*tk)->next)
-			expand_token(&((*tk)->next), shell_params);
+			recursive_expansion(&((*tk)->next), shell_params);
 	}
 }
 
@@ -236,5 +237,5 @@ void	expand(t_token **tk, t_sh_params *shell_params)
 {
 	if (!tk || (*tk) == NULL)
 		return ;
-	expand_token(tk, shell_params);
+	recursive_expansion(tk, shell_params);
 }

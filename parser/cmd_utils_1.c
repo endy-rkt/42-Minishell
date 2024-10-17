@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:23:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 10:51:57 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 18:50:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,6 @@ void	cmd_addback(t_cmd **cmd, t_cmd *new_cmd)
 	}
 }
 
-// void	cmd_clear(t_cmd **cmd)
-// {
-// 	t_cmd	*tmp;
-// 	t_cmd	*next;
-
-// 	next = NULL;
-// 	if (cmd && *cmd)
-// 	{
-// 		tmp = *cmd;
-// 		while (tmp != NULL)
-// 		{
-// 			next = tmp->next;
-// 			free_one_cmd(&tmp);
-// 			tmp = next;
-// 		}
-// 		*cmd = NULL;
-// 	}
-// }
-
 void	cmd_clear(t_cmd **cmd)
 {
 	t_cmd	*tmp;
@@ -86,8 +67,6 @@ void	cmd_clear(t_cmd **cmd)
 		*cmd = NULL;
 	}
 }
-
-
 
 int	cmd_is_pipe(t_cmd *cmd)
 {

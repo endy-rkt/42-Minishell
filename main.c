@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 12:49:31 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/17 09:46:02 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,25 @@ void	delete_tmp_file(t_list *tmp_file)
 	}	
 }
 
-int	run_shell(char *input, char ***envp, int prev_status)
+int	run_shell(char **input, char ***envp, int prev_status)
 {
 	int			exit_status;
+	char		**tmp_envp;
 	t_sh_params	*shell_params;
 
-	exit_status = prev_status;
 	shell_params = NULL;
-	shell_params = init_sh_params(*envp, exit_status);//copy env
+	exit_status = prev_status;
+	shell_params = init_sh_params(*envp, exit_status);
 	parse(&shell_params, input);
-	// print_ast(shell_params->ast);
 	if (shell_params->exit_status == 0 && shell_params->ast != NULL)
-		execute(&shell_params);// bad file , cmd not found , built 
-	// exit_status = shell_params->exit_status;
-	// //close_fd(shell_params);
+		execute(&shell_params); 
+	exit_status = shell_params->exit_status;
+	//close_fd(shell_params);
 	if (shell_params->tmp_file)
 		delete_tmp_file(shell_params->tmp_file);
-	*envp = shell_params->my_envp;
+	tmp_envp = ft_copy_env(shell_params->my_envp);
+	free_args(*envp);
+	*envp = tmp_envp;
 	cmd_clear(&(shell_params->cmd));
 	if (shell_params)
 		free_sh_params(&shell_params);
@@ -70,6 +72,6 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd("minishell: minishell need no argument", 2);
 		exit(EXIT_FAILURE);
 	}
-	process_loop(run_shell, envp);//
+	process_loop(run_shell, envp);
 	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/15 16:45:38 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/17 09:28:56 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,29 @@ static void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char *file, t_sh_para
 	if (value != NULL)
 		free(value);
 	close(fd);
-	//change_heredoc(&lst_redir, file, shell_params);
 }
 
-static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params, char **input)
+void	free_alloc(t_cmd **cmd, char *file, t_sh_params **shell_params, t_cmd **lst_cmd)
+{
+	if ((*shell_params)->my_envp)
+		free_args(((*shell_params)->my_envp));	
+	cmd_clear(lst_cmd);
+	free_sh_params(shell_params);
+	free(file);
+}
+
+void	update_status(int status, int pid, t_sh_params **shell_params)
+{
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+	    status = WEXITSTATUS(status);
+    else if (WIFSIGNALED(status))
+	    status = WTERMSIG(status) + 18;
+	ft_printf("\033[2K\r");
+	(*shell_params)->exit_status = status;
+}
+
+static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params, t_cmd **lst_cmd)
 {
 	int		pid;
     t_list	*lst_redir;
@@ -91,22 +110,12 @@ static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params, 
 				tmp_heredoc(lst_redir, *shell_params);
 			lst_redir = lst_redir->next;
     	}
-		if ((*shell_params)->my_envp)
-		free_args(((*shell_params)->my_envp));
-		free_sh_params(shell_params);
-		cmd_clear(cmd);
-		free(file);
-		free(*input);
+		free_alloc(cmd, file, shell_params, lst_cmd);
 		exit(0);
 	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-	    status = WEXITSTATUS(status);
-    else if (WIFSIGNALED(status))
-	    status = WTERMSIG(status) + 18;
-	ft_printf("\033[2K\r");
-	(*shell_params)->exit_status = status;
+	update_status(status, pid, shell_params);
 }
+
 
 void	add_tmp_file(char *file, t_sh_params **shell_params, t_cmd **cmd)
 {
@@ -129,7 +138,7 @@ void	add_tmp_file(char *file, t_sh_params **shell_params, t_cmd **cmd)
 	ft_lstadd_back(tmp_file, ft_lstnew(tmp_str));
 }
 
-void    process_heredoc(t_cmd **cmd, t_sh_params **shell_params, char **input)
+void    process_heredoc(t_cmd **cmd, t_sh_params **shell_params)
 {
     int     i;
     char    *str;
@@ -144,7 +153,7 @@ void    process_heredoc(t_cmd **cmd, t_sh_params **shell_params, char **input)
         file = ft_strdup(".tmp");
         file = ft_strjoin(file, str);
         free(str);
-        handle_heredoc(&tmp, file, shell_params, input);
+        handle_heredoc(&tmp, file, shell_params, cmd);
 		add_tmp_file(file, shell_params, &tmp);
         free(file);
         i++;

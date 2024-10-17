@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:01:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 09:02:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:16:49 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static int	not_alpha_expansion(char *value, char **new_value, int i)
 int	expand_params(char *value, char **new_value, int i, t_sh_params *shell_params)
 {
 	char	*tmp;
+	char	*var_value;
 
 	i++;
 	if (value[i] == '\'' || value[i] == '\"')
@@ -72,7 +73,8 @@ int	expand_params(char *value, char **new_value, int i, t_sh_params *shell_param
 		tmp = join_char(tmp, value[i]);
 		i++;
 	}
-	*new_value = ft_strjoin(*new_value, my_getenv(tmp, shell_params));
+	var_value = my_getenv(tmp, shell_params);
+	*new_value = ft_strjoin(*new_value, var_value);
 	free(tmp);
 	return (i);
 }

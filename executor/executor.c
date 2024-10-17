@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 12:50:26 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/17 09:17:39 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,14 @@ int	pipe_status(int fd_0, int fd_1, int pid_0, int pid_1)
 	return (status);
 }
 
+void	free_params(t_sh_params **shell_params)
+{
+	free_args((*shell_params)->my_envp);
+	cmd_clear(&((*shell_params)->cmd));
+	if (*shell_params)
+		free_sh_params(shell_params);
+}
+
 int exec_pipeline(t_ast *ast, char **my_envp, t_sh_params **shell_params)
 {
 	int	fd[2];
@@ -72,9 +80,7 @@ int exec_pipeline(t_ast *ast, char **my_envp, t_sh_params **shell_params)
         dup2(fd[1], STDOUT_FILENO);  
         close(fd[1]);
 		exec_node(ast->left_node, my_envp, shell_params);
-		cmd_clear(&((*shell_params)->cmd));
-		if (*shell_params)
-			free_sh_params(shell_params);
+		free_params(shell_params);
 		exit(EXIT_FAILURE); 
 	}
 	pid[1] = fork();
@@ -84,9 +90,7 @@ int exec_pipeline(t_ast *ast, char **my_envp, t_sh_params **shell_params)
         dup2(fd[0], STDIN_FILENO);
         close(fd[0]); 
 		exec_node(ast->right_node, my_envp, shell_params);
-		cmd_clear(&((*shell_params)->cmd));
-		if (*shell_params)
-			free_sh_params(shell_params);
+		free_params(shell_params);
 		exit(EXIT_FAILURE); 
 	}
 	return (pipe_status(fd[0], fd[1], pid[0], pid[1]));
@@ -146,15 +150,41 @@ static void	execute_pipeline(t_sh_params **shell_params)
 	(*shell_params)->exit_status = exit_status;
 }
 
+int	check_command(t_ast *ast)
+{
+	int		*fd;
+	t_cmd	*cmd;
+	t_list	*redir;
+
+	if (ast->cmd == NULL)
+		return (1);
+	cmd = ast->cmd;
+	if (cmd->args == NULL || cmd->args[0] == NULL)
+	{
+		if (cmd->redir == NULL)
+			return (1);
+		else
+		{
+			fd = redir_value(cmd->redir);
+			free(fd);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 void	execute(t_sh_params **shell_params)
 {
 	t_ast	*ast;
+	char	**args;
 
 	ast = (*shell_params)->ast;
 	if (ast == NULL)
 		return ;
 	if (ast->node_type == NODE_CMD)
 	{
+		if (check_command(ast))
+			return ;
 		if (is_builtin(ast->cmd))
 			exec_builtin(shell_params);
 		else

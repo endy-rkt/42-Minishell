@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:35:02 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/13 16:06:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:11:34 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # define LEXER_H
 
 # include "../header.h"
+# include "../parser/parser.h"
+# include "../builtin/buildin.h"
 
 t_token	*lex(char *input, t_sh_params **shell_params);
 void	add_token(t_token **tk, token_type type, char *str, int len);

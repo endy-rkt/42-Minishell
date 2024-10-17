@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:35:14 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/14 16:09:50 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:23:18 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ static void	format_delimiter(char *value, char **new_value, int i, int j)
 			i += dollared_delim(value + i, new_value, &j, tmp);
 		i++;
 	}
-	(*new_value)[j] = '\n';
-	(*new_value)[j + 1] = '\0';
+	(*new_value)[j] = '\0';
+	*new_value = ft_strjoin(*new_value, "\n");
 }
 
 char	*take_delim(t_redir *rd)

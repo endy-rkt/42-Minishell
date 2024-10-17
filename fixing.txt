@@ -1,0 +1,8 @@
+1- leak
+2- heredoc + get_next_line 
+3- more than 25 lines function
+   gnl to readline
+4- signal handler
+5- exit status
+6- norminette
+7- series of test

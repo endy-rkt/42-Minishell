@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:09:24 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/11 10:38:23 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:32:16 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	is_redir(t_token *tk)
 
 int	is_operator(char c)
 {
-	if (ft_strchr("<>|", c)) //()&;
+	if (ft_strchr("<>|", c))
 		return (1);
 	return (0);
 }
