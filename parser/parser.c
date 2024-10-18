@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/17 09:44:58 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/18 09:30:35 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	free_sh_params(t_sh_params **shell_params)
 		ast_clear(&((*shell_params)->ast));
 	if ((*shell_params)->tmp_file)
 		ft_lstclear(&((*shell_params)->tmp_file), free_assign);
-	// if ((*shell_params)->my_envp)
-	// 	free_args(((*shell_params)->my_envp));
 	free(*shell_params);
 	*shell_params = NULL;
 }

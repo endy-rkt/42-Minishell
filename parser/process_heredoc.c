@@ -6,11 +6,21 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/17 14:11:39 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/18 14:11:48 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+static volatile sig_atomic_t a = 0;
+
+static void	sigint_handler(int sig)
+{
+    (void)sig;
+	a = 130;
+	close(STDIN_FILENO);
+	ft_printf("");
+}
 
 static char	*heredoc_value(t_redir *rd, t_sh_params *shell_params)
 {
@@ -27,6 +37,11 @@ static char	*heredoc_value(t_redir *rd, t_sh_params *shell_params)
 		input = get_next_line(0);
 		if (input != NULL && ft_strcmp(input, delimiter) == 0)
 			break ;
+		if (a == 130)
+		{
+			free(input);
+			break ;
+		}
 		input = hdoc_new_val(rd, input, shell_params);
 		value = ft_strjoin(value, input);
 		free(input);
@@ -82,7 +97,7 @@ void	update_status(int status, int pid, t_sh_params **shell_params)
 	if (WIFEXITED(status))
 	    status = WEXITSTATUS(status);
     else if (WIFSIGNALED(status))
-	    status = WTERMSIG(status) + 18;
+	    status = WTERMSIG(status) + 128;
 	ft_printf("\033[2K\r");
 	(*shell_params)->exit_status = status;
 }
@@ -100,8 +115,7 @@ static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params, 
 	pid = fork();
     if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, sigint_handler);
 		while (lst_redir != NULL)
     	{
 			if (last_redir_in(lst_redir))
@@ -111,7 +125,7 @@ static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params, 
 			lst_redir = lst_redir->next;
     	}
 		free_alloc(cmd, file, shell_params, lst_cmd);
-		exit(0);
+		exit(a);
 	}
 	update_status(status, pid, shell_params);
 }
@@ -174,6 +188,8 @@ void    process_heredoc(t_cmd **cmd, t_sh_params **shell_params)
         handle_heredoc(&tmp, file, shell_params, cmd);
 		add_tmp_file(file, shell_params, &tmp);
         free(file);
+		if ((*shell_params)->exit_status)
+			break ;
         i++;
         tmp = tmp->next;
     }

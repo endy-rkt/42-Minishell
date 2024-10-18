@@ -22,3 +22,6 @@ void	minishell_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 	sigaction(SIGINT, &sig, NULL);
 }
+
+2:39
+valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell

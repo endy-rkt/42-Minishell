@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/17 15:27:09 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:03:22 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	run_shell(char **input, char ***envp, int prev_status)
 	cmd_clear(&(shell_params->cmd));
 	if (shell_params)
 		free_sh_params(&shell_params);
+	close(3);
 	return (exit_status);
 }
 

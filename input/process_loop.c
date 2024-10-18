@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/18 08:56:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/18 14:07:48 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,19 @@ void	signal_handler()
 	signal(SIGQUIT, SIG_IGN);
 }	
 
-int	launch_execution(char **input)
+int	launch_execution(char **input, char **global_envp)
 {
-	if (ft_strcmp(*input, "exit\n") == 0 || ft_strcmp(*input, "\n") == 0)
+	if (ft_strcmp(*input, "exit\n") == 0)
 	{
 		ft_printf("exit\n");
+		free(*input);
+		*input = NULL;
+		free_args(global_envp);
+		global_envp = NULL;
+		exit (signal_code);
+	}
+	if (ft_strcmp(*input, "\n") == 0)
+	{
 		free(*input);
 		*input = NULL;
 		return (0);
@@ -64,11 +72,11 @@ int	process_loop(int (*run_shell)(char **, char ***, int), char **envp)
 			return (1);
 		}
 		no_exit = ft_strcmp(input, "exit\n");
-		if (launch_execution(&input))
+		if (launch_execution(&input, global_envp))
 			prev_status = run_shell(&input, &global_envp, signal_code);
 		signal_code = prev_status;
+	signal_handler();
 	}
-	free_args(global_envp);
 	return (0);
 }
 

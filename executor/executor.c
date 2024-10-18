@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/18 09:23:37 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:18:32 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static int	cmd_child(char **args, t_list *lst_redir, char *path, char **envp)
 	free_args(args);
 	free_args(envp);
 	ft_lstclear(&lst_redir, free_redir);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 	exit(1);
 }
 
@@ -66,6 +68,8 @@ int	pipe_status(int fd_0, int fd_1, int pid_0, int pid_1)
 
 void	free_params(t_sh_params **shell_params)
 {
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 	free_args((*shell_params)->my_envp);
 	cmd_clear(&((*shell_params)->cmd));
 	if (*shell_params)
