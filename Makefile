@@ -4,7 +4,7 @@ PARSER_SRC = parser/parser.c parser/cmd_utils_1.c parser/cmd_utils_2.c parser/cm
 
 EXECUTOR_SRC = executor/executor.c executor/executor_utils_1.c executor/executor_utils_2.c
 
-BUILTIN_SRC = builtin/builtin.c builtin/buildin_utils.c builtin/buildin_utils2.c builtin/chdir_utils.c builtin/chdir.c builtin/env_utils.c builtin/env_utils2.c builtin/env.c builtin/export.c builtin/export_utils.c builtin/export_utils2.c builtin/get_envp.c builtin/prompt.c builtin/unset.c
+BUILTIN_SRC = builtin/builtin.c builtin/buildin_utils.c  builtin/chdir_utils.c builtin/chdir.c builtin/env_utils.c builtin/env_utils2.c builtin/env.c builtin/export.c builtin/export_utils.c builtin/export_utils2.c builtin/get_envp.c builtin/prompt.c builtin/unset.c builtin/ft_strncpy.c builtin/exit.c
 
 SRCS = main.c input/process_loop.c  ${LEXER_SRC}  ${PARSER_SRC} ${BUILTIN_SRC} ${EXECUTOR_SRC}
 

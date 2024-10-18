@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chdir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 08:54:48 by ferafano          #+#    #+#             */
-/*   Updated: 2024/09/13 11:20:49 by ferafano         ###   ########.fr       */
+/*   Updated: 2024/10/18 08:20:17 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

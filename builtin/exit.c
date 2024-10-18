@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 09:32:11 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/17 13:57:43 by ferafano         ###   ########.fr       */
+/*   Updated: 2024/10/18 08:21:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	valid_exit(char *str)
 			return (0);
 	}
 	if ((str[1] == '-' && ft_strlen(str) > 21) || (ft_strlen(str) > 20)
-		|| !ft_strcmp4(str, "-9223372036854775809") || !ft_strcmp4(str,
-			"9223372036854775808") || !ft_strcmp4(str, "9223372036854775809"))
+		|| !ft_strcmp(str, "-9223372036854775809") || !ft_strcmp(str,
+			"9223372036854775808") || !ft_strcmp(str, "9223372036854775809"))
 		return (0);
 	tmp = ft_atol(str);
 	if (tmp >= -9223372036854775807 - 1 && tmp <= 9223372036854775807)

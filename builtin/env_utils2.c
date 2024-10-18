@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 09:30:37 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/10 09:33:11 by ferafano         ###   ########.fr       */
+/*   Updated: 2024/10/18 08:21:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	bubble_sort(char **array, int length)
 		j = 0;
 		while (j < length - i - 1)
 		{
-			if (ft_strcmp4(array[j], array[j + 1]) > 0)
+			if (ft_strcmp(array[j], array[j + 1]) > 0)
 			{
 				swap(&array[j], &array[j + 1]);
 				swapped = 1;

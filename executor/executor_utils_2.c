@@ -6,11 +6,22 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:58:21 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/17 11:06:46 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/18 09:28:39 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+
+void	print_exec_error(char *arg_name, char *message)
+{
+	char	*str;
+
+	str = ft_strdup(arg_name);
+	str = ft_strjoin(str, ": ");
+	str = ft_strjoin(str, message);
+	ft_putstr_fd(str, 2);
+	free(str);
+}
 
 static int	not_valid_path(char *path)
 {
@@ -28,7 +39,7 @@ static int	empty_cmd(char **args, int *err_status)
 	if (args[0][0] == '\0')
 	{
 		*err_status = 127;
-		ft_putstr_fd("Command not found\n", 2);
+		print_exec_error(args[0], "Command not found\n");
 		return (1);
 	}
 	return (0);
@@ -54,7 +65,7 @@ static char	*path_from_env(char **args, char **tmp, int *err_status)
 		i++;
 	}
 	if (path == NULL)
-		ft_putstr_fd("Command not found\n", 2);
+		print_exec_error(args[0], "Command not found\n");
 	return (path);
 }
 
@@ -82,19 +93,19 @@ int	check_local_path(char **args, int *err_status)
 		if (access_code == 0)
 		{
 			*err_status = 126;
-			ft_putstr_fd("Is a directory\n", 2);
+			print_exec_error(args[0], "Is a directory\n");
 		}
 		else
 		{
 			*err_status = access_code;
-			ft_putstr_fd("No such file or directory\n", 2);
+			print_exec_error(args[0], "No such file or directory\n");
 		}
 		return (1);
 	}
 	if (access_code == 126 && (args[0][0] =='.' && args[0][1]=='/'))
 	{
 		*err_status = access_code;
-		ft_putstr_fd("Permission denied\n", 2);
+			print_exec_error(args[0], "Permission denied\n");
 		return (1);
 	}
 	return (0);
@@ -116,7 +127,7 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 		i++;
 	if (my_envp[i] == NULL)
 	{
-		ft_putstr_fd("Command not found\n", 2);
+		print_exec_error(args[0], "Command not found\n");
 		return (NULL);
 	}
 	tmp = ft_split(my_envp[i] + 5, ':');
@@ -145,8 +156,6 @@ int	is_builtin(t_cmd *cmd)
 	else if (ft_strcmp(argv[0], "export") == 0)
 		return (1);
 	else if (ft_strcmp(argv[0], "echo") == 0)
-		return (1);
-	else if (ft_strcmp(argv[0], "get_env") == 0)
 		return (1);
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		return (1);

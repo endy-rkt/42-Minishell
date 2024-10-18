@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:49 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/17 14:14:22 by ferafano         ###   ########.fr       */
+/*   Updated: 2024/10/18 08:21:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
+
+char *ft_strcpy(char *dest, const char *src)
+{
+    char *original_dest;
+
+	original_dest = dest;
+    while ((*dest++ = *src++) != '\0')
+		;
+    return (original_dest);
+}
 
 int	is_valid_flag(char *argv)
 {
@@ -72,19 +82,19 @@ int	buildin(char **argv, char ***copy_env, int fd)
 	int		status;
 
 	status = 0;
-	if (ft_strcmp4(argv[0], "cd") == 0)
+	if (ft_strcmp(argv[0], "cd") == 0)
 		status = ft_cd(argv, *copy_env);
-	else if (ft_strcmp4(argv[0], "pwd") == 0)
+	else if (ft_strcmp(argv[0], "pwd") == 0)
 		status = ft_pwd(fd);
-	else if (ft_strcmp4(argv[0], "env") == 0)
+	else if (ft_strcmp(argv[0], "env") == 0)
 		status = ft_env(*copy_env, argv, fd);
-	else if (ft_strcmp4(argv[0], "unset") == 0)
+	else if (ft_strcmp(argv[0], "unset") == 0)
 		status = ft_unset(argv, &*copy_env);
-	else if (ft_strcmp4(argv[0], "export") == 0)
+	else if (ft_strcmp(argv[0], "export") == 0)
 		status = ft_export(argv, &*copy_env, fd);
-	else if (ft_strcmp4(argv[0], "echo") == 0)
+	else if (ft_strcmp(argv[0], "echo") == 0)
 		status = ft_echo(argv, fd);
-	else if (ft_strcmp4(argv[0], "exit") == 0)
+	else if (ft_strcmp(argv[0], "exit") == 0)
 		status = ft_exit(argv, copy_env);
 	else
 	{
@@ -95,33 +105,33 @@ int	buildin(char **argv, char ***copy_env, int fd)
 	return (status);
 }
 
-int	main(int argc, char *argv[], char *envp[])
-{
-	char	*line_read;
-	char	**copy_env;
-	char	**args;
+// int	main(int argc, char *argv[], char *envp[])
+// {
+// 	char	*line_read;
+// 	char	**copy_env;
+// 	char	**args;
 
-	(void)argc;
-	(void)argv;
-	line_read = NULL;
-	copy_env = ft_copy_env(envp);
-	args = malloc(sizeof(char *));
-	while (1)
-	{
-		if (line_read)
-		{
-			free(line_read);
-			line_read = NULL;
-		}
-		pwd_prompt();
-		line_read = readline("\n\033[0;35m❯ \033[0m");
-		add_history(line_read);
-		args = ft_split(line_read, ' ');
-		//int fd = open("test", O_RDWR | O_TRUNC);
-		buildin(args, &copy_env, 1);
-	}
-	for (int i = 0; copy_env[i]; i++)
-		free(copy_env[i]);
-	free(copy_env);
-	return (0);
-}
+// 	(void)argc;
+// 	(void)argv;
+// 	line_read = NULL;
+// 	copy_env = ft_copy_env(envp);
+// 	args = malloc(sizeof(char *));
+// 	while (1)
+// 	{
+// 		if (line_read)
+// 		{
+// 			free(line_read);
+// 			line_read = NULL;
+// 		}
+// 		pwd_prompt();
+// 		line_read = readline("\n\033[0;35m❯ \033[0m");
+// 		add_history(line_read);
+// 		args = ft_split(line_read, ' ');
+// 		//int fd = open("test", O_RDWR | O_TRUNC);
+// 		buildin(args, &copy_env, 1);
+// 	}
+// 	for (int i = 0; copy_env[i]; i++)
+// 		free(copy_env[i]);
+// 	free(copy_env);
+// 	return (0);
+// }

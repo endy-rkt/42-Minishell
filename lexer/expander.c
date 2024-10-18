@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 17:00:31 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/18 09:17:54 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,6 @@ static void	expand_word(t_token	**tk, t_sh_params *shell_params)
 			i++;
 		}
 	}
-	// printf("new value=%s\n", new_value);
 	apply_expansion(tk, &lst_word, &new_value, &value);
 }
 

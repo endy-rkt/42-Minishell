@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:17:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/17 14:12:36 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/18 08:47:26 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,30 @@ int	last_redir_out(t_list *lst_redir)
 	return (1);
 }
 
+static void	print_error(char *arg_name, char *message)
+{
+	char	*str;
+
+	str = ft_strdup(arg_name);
+	str = ft_strjoin(str, ":");
+	str = ft_strjoin(str, message);
+	ft_putstr_fd(str, 2);
+	free(str);
+}
+
 static void	invalid_fd(int fd, char *file)
 {
 	if (fd != -1)
 		return ;
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(file, 2);
+	// ft_putstr_fd("minishell: ", 2);
+	// ft_putstr_fd(file, 2);
 	if (access(file, F_OK))
-		ft_putstr_fd(": No such file or directory\n", 2);
+		// ft_putstr_fd(": No such file or directory\n", 2);
+		print_error(file, " No such file or directory\n");
 	else if (access(file, R_OK | W_OK))
-		ft_putstr_fd(": Permission denied\n", 2);
+		// ft_putstr_fd(": Permission denied\n", 2);
+		print_error(file, " Permission denied\n");
+
 	close(fd);
 }
 

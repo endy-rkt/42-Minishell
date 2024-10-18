@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/17 15:48:37 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/18 09:23:37 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	sigint_handler(int sig)
 {
     (void)sig;
-	// ft_printf("\n>>");
+	// ft_printf("\n");
 }
 
 static int	cmd_child(char **args, t_list *lst_redir, char *path, char **envp)
@@ -45,7 +45,6 @@ static int	exec_cmd(char **args, t_list *lst_redir, char **my_envp)
 	}
 	pid = fork();
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_DFL);
 	if (pid == 0)
 		cmd_child(args, lst_redir, path, my_envp);
 	free(path);
@@ -73,6 +72,13 @@ void	free_params(t_sh_params **shell_params)
 		free_sh_params(shell_params);
 }
 
+void	update_fileno(int to_close_fd, int to_dup_fd, int fd)
+{
+	close(to_close_fd);
+	dup2(to_dup_fd, fd);
+	close(to_dup_fd);
+}
+
 int exec_pipeline(t_ast *ast, char **my_envp, t_sh_params **shell_params)
 {
 	int	fd[2];
@@ -81,24 +87,18 @@ int exec_pipeline(t_ast *ast, char **my_envp, t_sh_params **shell_params)
 	pipe(fd);
 	pid[0] = fork();
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_DFL);
 	if (pid[0] == 0)
 	{
-		close(fd[0]);
-        dup2(fd[1], STDOUT_FILENO);  
-        close(fd[1]);
+		update_fileno(fd[0], fd[1], STDOUT_FILENO);
 		exec_node(ast->left_node, my_envp, shell_params);
 		free_params(shell_params);
 		exit(EXIT_FAILURE); 
 	}
 	pid[1] = fork();
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_DFL);
 	if (pid[1] == 0)
 	{
-		close(fd[1]);
-        dup2(fd[0], STDIN_FILENO);
-        close(fd[0]); 
+		update_fileno(fd[1], fd[0], STDIN_FILENO);
 		exec_node(ast->right_node, my_envp, shell_params);
 		free_params(shell_params);
 		exit(EXIT_FAILURE); 
