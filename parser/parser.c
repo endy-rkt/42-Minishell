@@ -6,21 +6,11 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/18 09:30:35 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/19 11:00:31 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-void	free_sh_params(t_sh_params **shell_params)
-{
-	if ((*shell_params)->ast)
-		ast_clear(&((*shell_params)->ast));
-	if ((*shell_params)->tmp_file)
-		ft_lstclear(&((*shell_params)->tmp_file), free_assign);
-	free(*shell_params);
-	*shell_params = NULL;
-}
 
 static t_ast	*create_node(t_cmd *cmd, t_ast *left, t_ast *right, int node_type)
 {
@@ -68,27 +58,17 @@ static t_ast	*create_ast(t_cmd *cmd)
 	return (ast);
 }
 
-void	ast_clear(t_ast **ast)
+static int	error_in_lexing(int tk_error, t_cmd **cmd)
 {
-	if (*ast)
+	if (tk_error)
 	{
-		if ((*ast)->left_node != NULL)
-		{
-			ast_clear(&((*ast)->left_node));
-			(*ast)->left_node = NULL;
-		}
-		if ((*ast)->right_node != NULL)
-		{
-			ast_clear(&((*ast)->right_node));
-			(*ast)->right_node = NULL;
-		}
-		free(*ast);
-		*ast =  NULL;
+		cmd_clear(cmd);
+		return (1);
 	}
+	return (0);
 }
 
-
-void	parse(t_sh_params **shell_params, char **input)
+void	parse(t_sh_params **shell_params, char *input)
 {
 	t_token	*tk;
 	t_cmd	*cmd;
@@ -96,9 +76,7 @@ void	parse(t_sh_params **shell_params, char **input)
 	int		tk_error;
 
 	tk_error = 0;
-	tk = lex(*input, shell_params);
-	free(*input);
-	*input = NULL;
+	tk = lex(input, shell_params);
 	if (!tk)
 		return ;
 	tk_error = check_tk_error(&tk, shell_params);
@@ -106,11 +84,8 @@ void	parse(t_sh_params **shell_params, char **input)
 	(*shell_params)->exit_status = tk_error;
 	cmd = create_cmd_list(tk, shell_params);
 	tk_clear(&tk);
-	if (tk_error)
-	{
-		cmd_clear(&cmd);
+	if (error_in_lexing(tk_error, &cmd))
 		return ;
-	}
 	process_heredoc(&cmd, shell_params);
 	ast = create_ast(cmd);
 	(*shell_params)->cmd = cmd;

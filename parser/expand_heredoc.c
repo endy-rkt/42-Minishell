@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_heredoc_utils.c                            :+:      :+:    :+:   */
+/*   expand_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:35:14 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/18 09:32:44 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/19 13:21:34 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int	dollared_delim(char *value, char **new_value, int *j, char tmp)
+static int	dollared_delim(char *value, char **new_value, int *j, char tmp)
 {
 	int	i;
 	int	dollar_nb;
@@ -102,18 +102,3 @@ char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *shell_params)
 	return (new_input);
 }
 
-int	last_redir_in(t_list *lst_redir)
-{
-	t_list	*tmp;
-	t_redir *redir;
-
-	tmp = lst_redir->next;
-	while (tmp)
-	{
-		redir = tmp->content;
-		if (redir->type == TK_HEREDOC || redir->type == TK_REDIR_IN || redir->type == TK_REDIR_IN2)
-			return (0);
-		tmp = tmp->next;
-	}
-	return (1);
-}

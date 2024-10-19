@@ -1,36 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_utils_2.c                                 :+:      :+:    :+:   */
+/*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:58:21 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/18 09:28:39 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/19 13:38:09 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-
-void	print_exec_error(char *arg_name, char *message)
-{
-	char	*str;
-
-	str = ft_strdup(arg_name);
-	str = ft_strjoin(str, ": ");
-	str = ft_strjoin(str, message);
-	ft_putstr_fd(str, 2);
-	free(str);
-}
-
-static int	not_valid_path(char *path)
-{
-	if (access(path, F_OK) != 0)
-		return (127);
-	if (access(path, X_OK) != 0)
-		return (126);
-	return (0);
-}
 
 static int	empty_cmd(char **args, int *err_status)
 {
@@ -69,7 +49,7 @@ static char	*path_from_env(char **args, char **tmp, int *err_status)
 	return (path);
 }
 
-int	only_slash(char *str)
+static int	only_slash(char *str)
 {
 	int i;
 
@@ -83,7 +63,7 @@ int	only_slash(char *str)
 	return (1);
 }
 
-int	check_local_path(char **args, int *err_status)
+static	int check_local_path(char **args, int *err_status)
 {
 	int	access_code;
 
@@ -134,30 +114,4 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 	path = path_from_env(args, tmp, err_status);
 	free_args(tmp);
 	return (path);
-}
-
-int	is_builtin(t_cmd *cmd)
-{
-	char	**argv;
-
-	if (cmd == NULL)
-		return (0);
-	argv = cmd->args;
-	if (argv == NULL || argv[0] == NULL)
-		return (0);
-	if (ft_strcmp(argv[0], "cd") == 0)
-		return (1);
-	else if (ft_strcmp(argv[0], "pwd") == 0)
-		return (1);
-	else if (ft_strcmp(argv[0], "env") == 0)
-		return (1);
-	else if (ft_strcmp(argv[0], "unset") == 0)
-		return (1);
-	else if (ft_strcmp(argv[0], "export") == 0)
-		return (1);
-	else if (ft_strcmp(argv[0], "echo") == 0)
-		return (1);
-	else if (ft_strcmp(argv[0], "exit") == 0)
-		return (1);
-	return (0);
 }

@@ -1,16 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_utils_3.c                                      :+:      :+:    :+:   */
+/*   cmd_operation_utils.c.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:36:46 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/15 17:42:49 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/19 11:01:34 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+int	size_of_args(t_token *tk)
+{
+	int	size;
+
+	size = 0;
+	while (tk != NULL && tk->type != TK_PIPE)
+	{
+		if (tk->type == TK_WORD && tk->prev == NULL)
+			break;
+		else if (tk->type == TK_WORD && (tk->prev != NULL && !is_redir(tk->prev)))
+			break ;
+		tk = tk->next;
+	}
+	while (tk != NULL && tk->type != TK_PIPE)
+	{
+		if (tk->type == TK_WORD || tk->type == TK_ASSIGN)
+		{
+			if (tk->prev == NULL && tk->type == TK_WORD)
+				size++;
+			else if (tk->prev != NULL && !is_redir(tk->prev))
+				size++;
+		}
+		tk = tk->next;
+	}
+	return (size);
+}
 
 void	free_args(char **args)
 {
@@ -65,29 +92,3 @@ void	free_one_cmd(t_cmd **cmd)
 	*cmd = NULL;
 }
 
-int	size_of_args(t_token *tk)
-{
-	int	size;
-
-	size = 0;
-	while (tk != NULL && tk->type != TK_PIPE)
-	{
-		if (tk->type == TK_WORD && tk->prev == NULL)
-			break;
-		else if (tk->type == TK_WORD && (tk->prev != NULL && !is_redir(tk->prev)))
-			break ;
-		tk = tk->next;
-	}
-	while (tk != NULL && tk->type != TK_PIPE)
-	{
-		if (tk->type == TK_WORD || tk->type == TK_ASSIGN)
-		{
-			if (tk->prev == NULL && tk->type == TK_WORD)
-				size++;
-			else if (tk->prev != NULL && !is_redir(tk->prev))
-				size++;
-		}
-		tk = tk->next;
-	}
-	return (size);
-}

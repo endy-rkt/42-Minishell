@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/18 13:03:22 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/19 12:22:04 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,31 @@ void	delete_tmp_file(t_list *tmp_file)
 	}	
 }
 
-int	run_shell(char **input, char ***envp, int prev_status)
+void	clean_params(t_sh_params *shell_params)
+{
+	if (shell_params->tmp_file)
+		delete_tmp_file(shell_params->tmp_file);
+	cmd_clear(&(shell_params->cmd));
+	if (shell_params)
+		free_sh_params(&shell_params);
+}
+
+int	run_shell(char *input, char ***envp, int prev_status)
 {
 	int			exit_status;
 	char		**tmp_envp;
 	t_sh_params	*shell_params;
 
-	shell_params = NULL;
 	exit_status = prev_status;
 	shell_params = init_sh_params(*envp, exit_status);
 	parse(&shell_params, input);
 	if (shell_params->exit_status == 0 && shell_params->ast != NULL)
 		execute(&shell_params); 
 	exit_status = shell_params->exit_status;
-	//close_fd(shell_params);
-	if (shell_params->tmp_file)
-		delete_tmp_file(shell_params->tmp_file);
 	tmp_envp = ft_copy_env(shell_params->my_envp);
 	free_args(*envp);
 	*envp = tmp_envp;
-	cmd_clear(&(shell_params->cmd));
-	if (shell_params)
-		free_sh_params(&shell_params);
-	close(3);
+	clean_params(shell_params);
 	return (exit_status);
 }
 

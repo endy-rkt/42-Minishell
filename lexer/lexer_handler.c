@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils_1.c                                    :+:      :+:    :+:   */
+/*   lexer_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:47:54 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/04 16:28:17 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/19 12:24:38 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-static int	handle_pipe(char *str, t_token **tk)
+static int	lex_pipe(char *str, t_token **tk)
 {
 	int	len;
 
@@ -21,7 +21,7 @@ static int	handle_pipe(char *str, t_token **tk)
 	return (len);
 }
 
-static int	handle_single_redir(char *str, t_token **tk, int len)
+static int	lex_single_redir(char *str, t_token **tk, int len)
 {
 	if (str[len - 1] == '>')
 	{
@@ -34,7 +34,7 @@ static int	handle_single_redir(char *str, t_token **tk, int len)
 	return (len);
 }
 
-static int	handle_redir(char *str, t_token **tk, int len)
+static int	lex_redir(char *str, t_token **tk, int len)
 {
 	int	redir_nb;
 
@@ -45,7 +45,7 @@ static int	handle_redir(char *str, t_token **tk, int len)
 		redir_nb++;
 	}
 	if (redir_nb == 1)
-		return (handle_single_redir(str, tk, len));
+		return (lex_single_redir(str, tk, len));
 	if (str[len - 1] == '<' && str[len - 2] == '<')
 	{
 		if (str[len] == '-')
@@ -60,14 +60,14 @@ static int	handle_redir(char *str, t_token **tk, int len)
 	return (len);
 }
 
-int	handle_operator(char *str, t_token **tk)
+int	lex_operator(char *str, t_token **tk)
 {
 	int	len;
 
 	len = 0;
 	if (str[len] == '|')
-		len += handle_pipe(str, tk);
+		len += lex_pipe(str, tk);
 	else
-		len += handle_redir(str, tk, len);
+		len += lex_redir(str, tk, len);
 	return (len);
 }

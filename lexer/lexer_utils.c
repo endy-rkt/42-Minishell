@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils_3.c                                    :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:09:24 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 16:32:16 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/19 12:24:51 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,6 @@ int	is_operator(char c)
 {
 	if (ft_strchr("<>|", c))
 		return (1);
-	return (0);
-}
-
-int	idx_of_last(char *str, char c)
-{
-	int len;
-
-	len = ft_strlen(str) - 1;
-	if (len < 0)
-		return (-1);
-	while (str[len])
-	{
-		if (str[len] == c)
-			return (len);
-		len--;
-	}
 	return (0);
 }
 

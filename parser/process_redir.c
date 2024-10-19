@@ -6,11 +6,29 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:17:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/18 13:09:57 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/19 13:43:16 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+int	last_redir_in(t_list *lst_redir)
+{
+	int		is_redirin;
+	t_list	*tmp;
+	t_redir *redir;
+
+	tmp = lst_redir->next;
+	while (tmp)
+	{
+		redir = tmp->content;
+		is_redirin = redir->type == TK_REDIR_IN || redir->type == TK_REDIR_IN2;
+		if (redir->type == TK_HEREDOC || is_redirin)
+			return (0);
+		tmp = tmp->next;
+	}
+	return (1);
+}
 
 int	last_redir_out(t_list *lst_redir)
 {
@@ -28,29 +46,7 @@ int	last_redir_out(t_list *lst_redir)
 	return (1);
 }
 
-static void	print_error(char *arg_name, char *message)
-{
-	char	*str;
-
-	str = ft_strdup(arg_name);
-	str = ft_strjoin(str, ":");
-	str = ft_strjoin(str, message);
-	ft_putstr_fd(str, 2);
-	free(str);
-}
-
-static void	invalid_fd(int fd, char *file)
-{
-	if (fd != -1)
-		return ;
-	if (access(file, F_OK))
-		print_error(file, " No such file or directory\n");
-	else if (access(file, R_OK | W_OK))
-		print_error(file, " Permission denied\n");
-	close(fd);
-}
-
-static int	handle_stdin(t_list *lst_redir)
+static int	stdin_value(t_list *lst_redir)
 {
 	int		fd;
 	t_redir	*redir;
@@ -69,7 +65,7 @@ static int	handle_stdin(t_list *lst_redir)
 	return (fd);
 }
 
-static int	handle_stdout(t_list *lst_redir)
+static int	stdout_value(t_list *lst_redir)
 {
 	int		fd;
 	t_redir	*redir;
@@ -101,11 +97,11 @@ int	*redir_value(t_list *lst_redir)
 	{
 		redir = lst_redir->content;
 		if (redir->type == TK_REDIR_OUT || redir->type == TK_REDIR_APPEND)
-			fd[1] = handle_stdout(lst_redir);
+			fd[1] = stdout_value(lst_redir);
 		else
 		{
 			if (redir->type != TK_HEREDOC)
-				fd[0] = handle_stdin(lst_redir);
+				fd[0] = stdin_value(lst_redir);
 		}
 		if (fd[0] == -1 || fd[1] == -1)
 			return (fd);

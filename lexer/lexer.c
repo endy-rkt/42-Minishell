@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:35:10 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/18 08:33:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/19 10:25:19 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	create_tk_list(char *str, t_token **tk)
 	if (str[len] == '\0')
 		return (0);
 	if (is_operator(str[len]))
-		len += handle_operator(str + len, tk);
+		len += lex_operator(str + len, tk);
 	else
 		len += handle_char(str + len, tk);
 	return (len);
