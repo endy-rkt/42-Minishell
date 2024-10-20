@@ -1,4 +1,4 @@
-LEXER_SRC = lexer/expander.c lexer/expand_params.c lexer/expand_quote.c lexer/expand_word_1.c lexer/expand_word_2.c lexer/lexer.c lexer/lexer_handler.c lexer/lexer_utils.c lexer/tk_operation.c lexer/token_error.c lexer/token_error_utils.c
+LEXER_SRC = lexer/expander.c lexer/expand_params.c lexer/expand_quote.c lexer/expand_word.c lexer/lexer.c lexer/lexer_handler.c lexer/lexer_utils.c lexer/tk_operation.c lexer/token_error.c lexer/token_error_utils.c
 
 PARSER_SRC = parser/cmd.c parser/cmd_creation.c parser/cmd_operation.c parser/cmd_operation_utils.c.c parser/expand_heredoc.c parser/parser.c  parser/parser_utils.c parser/process_heredoc.c parser/process_redir.c parser/redirection_utils.c
 
@@ -8,13 +8,7 @@ BUILTIN_SRC = builtin/builtin.c builtin/buildin_utils.c  builtin/chdir_utils.c b
 
 SRCS = main.c utils/process_loop.c  ${LEXER_SRC}  ${PARSER_SRC} ${BUILTIN_SRC} ${EXECUTOR_SRC}
 
-BONUS_SRCS = main.c
-
 OBJS = ${SRCS:.c=.o}
-
-BONUS_OBJS = ${BONUS_SRCS:.c=.o}
-
-BONUS = minishell_bonus
 
 NAME = minishell
 
@@ -22,7 +16,7 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS = -g -lreadline #-lbsd -Wall -Wextra -Werror #-g
+CFLAGS = -g  #-lbsd -Wall -Wextra -Werror #-g
 
 LIBFT_PATH = ./libft
 
@@ -31,26 +25,24 @@ LIBFT_LIB = libft.a
 LIBFT = ${LIBFT_PATH}/${LIBFT_LIB}
 
 ${NAME}:	${OBJS} ${LIBFT}
-			${CC} ${CFLAGS} ${SRCS} ${LIBFT} -o ${NAME}
+			${CC} ${CFLAGS} ${SRCS} ${LIBFT} -o ${NAME} -lreadline
 
 ${LIBFT}:
 			make -C ${LIBFT_PATH} bonus
 			cp ${LIBFT} .
 
-${BONUS}:	${BONUS_OBJS} ${LIBFT}
-			${CC} ${CFLAGS} ${BONUS_SRCS} ${LIBFT} -o ${BONUS}
-
 all:		${NAME}
 
-bonus:		${BONUS}
+val:		${NAME}
+			valgrind --suppressions=.readline.supp --leak-check=full --show-leak-kinds=all -s ./${NAME}
 
 clean:
-			${RM} ${OBJS} ${BONUS_OBJS}
+			${RM} ${OBJS}
 			make -C ${LIBFT_PATH} clean
 
 fclean:		clean
 			${RM} ${LIBFT_LIB}
-			${RM} ${NAME} ${BONUS}
+			${RM} ${NAME}
 			make -C ${LIBFT_PATH} fclean
 
 re:			fclean all

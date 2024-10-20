@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:03:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 13:53:18 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/20 07:09:17 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print_exec_error(char *arg_name, char *message);
 int		not_valid_path(char *path);
 void	execute(t_sh_params **shell_params);
 int		exec_builtin(t_sh_params **shell_params);
-int		exec_void_cmd(t_ast *ast);
+int		exec_void_cmd(t_ast *ast, t_sh_params **shell_params);
 int		exec_cmd(char **args, t_list *lst_redir, t_sh_params **shell_params);
 int		is_builtin(t_cmd *cmd);
 int		exec_piped_builtin(t_ast *ast, char **my_envp, t_sh_params **shell_params);

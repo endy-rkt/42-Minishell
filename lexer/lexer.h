@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:35:02 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 13:14:02 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/20 08:03:36 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ int		expand_params(char *value, char **new_value, int i, t_sh_params *shell_para
 int		expand_single_quote(char *value, char **new_value, int i);
 int		expand_double_quote(char *value, char **new_value, int i, t_sh_params *shell_params);
 char	*join_char(char *new_value, char c);
-void	apply_expansion(t_token **tk, t_list **lst_word, char **new_val, char **value);
+void	*update_tk(t_token **tk, t_list **lst_word, char **new_value, char **value);
 int		handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params *shell_params);
+void	tk_print(t_token *tk);
 
 #endif

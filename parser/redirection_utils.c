@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 11:08:02 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 14:06:52 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/20 07:55:31 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char *file, t_sh_params **sh
 
     redir = lst_redir->content;
 	value = NULL;
-	ft_printf("+++++++++++++%d+++++++%s\n", (*shell_params)->exit_status, redir->file);
     if (redir->type != TK_HEREDOC)
         return ;
 	value = heredoc_value(redir, *shell_params);

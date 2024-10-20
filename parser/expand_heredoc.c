@@ -6,11 +6,20 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:35:14 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 13:21:34 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/20 09:45:45 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+
+void	manage_heredoc(t_list	*lst_redir, t_cmd **cmd, char *file, t_sh_params **shell_params)
+{
+	if (last_redir_in(lst_redir))
+		stored_heredoc(cmd, lst_redir, file, shell_params);
+	else
+		tmp_heredoc(lst_redir, *shell_params);
+}
 
 static int	dollared_delim(char *value, char **new_value, int *j, char tmp)
 {

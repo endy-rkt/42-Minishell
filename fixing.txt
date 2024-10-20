@@ -6,6 +6,7 @@
 5- exit status
 6- norminette
 7- series of test
+8- builtin test + series of test
 
 
 exit status
@@ -19,3 +20,5 @@ exit status
 - no such directory 1
 
 - permission denied 126
+
+- exit ctrl+c 130

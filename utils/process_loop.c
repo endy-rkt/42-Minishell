@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 14:18:10 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/20 09:59:22 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	null_input(char *input, char **global_env)
 	if (input == NULL)
 	{
 		free_args(global_env);
+		ft_printf("exit");
 		return (1);
 	}
 	return (0);

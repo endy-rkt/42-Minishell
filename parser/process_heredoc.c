@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 14:17:51 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/20 09:53:50 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,39 +21,47 @@ static void	sigint_handler(int sig)
 	close(STDIN_FILENO);
 }
 
+static	int	break_loop(char **input, char *delimiter)
+{
+	if (*input == NULL)
+	{
+		ft_putstr_fd("\nminishell: warning: here-document at line 1 delimited by end-of-file (wanted `end')\n", 2);
+		return (1);
+	}
+	if (*input != NULL && ft_strcmp(*input, delimiter) == 0)
+	{
+		free(*input);
+		return (1);
+	}
+	if (g_sig == 130)
+	{
+		free(*input);
+		return (1);
+	}
+	return (0);
+}
+
 char	*heredoc_value(t_redir *rd, t_sh_params *shell_params)
 {
-	static char	*value = NULL;
-	static char	*input = NULL;
+	char	*value;
+	char	*input;
 	char		*delimiter;
 
 	delimiter = take_delim(rd);
+	value = NULL;
+	input = NULL;
 	while (1)
 	{
 		ft_printf("heredoc>");
 		input = get_next_line(0);
-		if (input != NULL && ft_strcmp(input, delimiter) == 0)
+		if (break_loop(&input, delimiter))
 			break ;
-		if (g_sig == 130)
-		{
-			free(input);
-			break ;
-		}
 		input = hdoc_new_val(rd, input, shell_params);
 		value = ft_strjoin(value, input);
 		free(input);
 	}
 	free(delimiter);
-	free(input);
 	return (value);
-}
-
-static void	manage_heredoc(t_list	*lst_redir, t_cmd **cmd, char *file, t_sh_params **shell_params)
-{
-	if (last_redir_in(lst_redir))
-		stored_heredoc(cmd, lst_redir, file, shell_params);
-	else
-		tmp_heredoc(lst_redir, *shell_params);
 }
 
 static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params, t_cmd **lst_cmd)

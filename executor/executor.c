@@ -6,13 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 14:19:56 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/20 07:10:22 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-int	exec_void_cmd(t_ast *ast)
+int	exec_void_cmd(t_ast *ast, t_sh_params **shell_params)
 {
 	int		*fd;
 	t_cmd	*cmd;
@@ -23,15 +23,19 @@ int	exec_void_cmd(t_ast *ast)
 	cmd = ast->cmd;
 	if (cmd->args == NULL || cmd->args[0] == NULL)
 	{
+		(*shell_params)->exit_status = 1;
 		if (cmd->redir == NULL)
 			return (1);
 		else
 		{
 			fd = redir_value(cmd->redir);
+			if (fd[0] != -1 && fd[1] != -1)
+				(*shell_params)->exit_status = 0;	
 			free(fd);
 			return (1);
 		}
 	}
+	(*shell_params)->exit_status = 0;
 	return (0);
 }
 
@@ -94,6 +98,7 @@ static void	execute_pipeline(t_sh_params **shell_params)
 
 void	execute(t_sh_params **shell_params)
 {
+	int		void_cmd_status;
 	t_ast	*ast;
 	char	**args;
 
@@ -102,7 +107,7 @@ void	execute(t_sh_params **shell_params)
 		return ;
 	if (ast->node_type == NODE_CMD)
 	{
-		if (exec_void_cmd(ast))
+		if (exec_void_cmd(ast, shell_params))
 			return ;
 		if (is_builtin(ast->cmd))
 			exec_builtin(shell_params);
