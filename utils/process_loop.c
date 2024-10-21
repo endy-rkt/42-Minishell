@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/20 09:59:22 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/21 10:40:40 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	sigint_handler(int sig)
 	rl_replace_line("", 1);
 	rl_redisplay();
 }
+
 
 static void	main_sig_handler()
 {
@@ -68,6 +69,7 @@ int	process_loop(int (*run_shell)(char *, char ***, int), char **envp)
 	no_exit = 1;
 	prev_status = 0;
 	global_envp = ft_copy_env(envp);
+	rl_catch_signals = 1;
 	while (no_exit)
 	{
 		main_sig_handler();

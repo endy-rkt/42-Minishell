@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/20 09:53:50 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/21 10:33:05 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params, 
     if (pid == 0)
 	{
 		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 		while (lst_redir != NULL)
     	{
 			if (g_sig)

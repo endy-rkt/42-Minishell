@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:12:15 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/20 09:33:37 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/21 10:25:53 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	initial_check(t_token **tk, t_list **lst_word, char **new_value, char
 	return (0);
 }
 
-void	*update_tk(t_token **tk, t_list **lst_word, char **new_value, char **value)
+void	update_tk(t_token **tk, t_list **lst_word, char **new_value, char **value)
 {
 	t_token	*next;
 	t_token	*new;
@@ -89,7 +89,7 @@ void	*update_tk(t_token **tk, t_list **lst_word, char **new_value, char **value)
 
 	new = NULL;
 	if (initial_check(tk, lst_word, new_value, value))
-		return (NULL);
+		return ;
 	content = (*lst_word)->content;
 	new = tk_create(ft_strdup(content), TK_WORD, (*tk)->prev);
 	tmp_lst = (*lst_word)->next;
@@ -107,4 +107,5 @@ void	*update_tk(t_token **tk, t_list **lst_word, char **new_value, char **value)
 	*tk = new;
 	ft_lstclear(lst_word, free_assign);
 }
+
 

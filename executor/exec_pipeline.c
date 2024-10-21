@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 11:20:45 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/20 07:36:10 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/21 11:11:34 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	clear_and_close(t_sh_params **shell_params)
 {
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
 	free_args((*shell_params)->my_envp);
 	cmd_clear(&((*shell_params)->cmd));
 	if (*shell_params)
 		free_sh_params(shell_params);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 }
 
 static	int pipe_status(int fd_0, int fd_1, int pid_0, int pid_1)

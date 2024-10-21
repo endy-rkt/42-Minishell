@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:12:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/20 07:33:27 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/21 12:08:40 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	launch_child(t_ast *ast, char **my_envp, t_sh_params **shell_params)
 	status = 0;
 	lst_redir = cmd->redir;
 	path = NULL;
+	signal(SIGQUIT, SIG_DFL);
 	if (change_redir(lst_redir, STDIN_FILENO, STDOUT_FILENO))
 	{
 		path = get_path(cmd->args, my_envp, &status);
