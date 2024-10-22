@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/20 07:10:22 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/22 08:30:07 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ static void	execute_pipeline(t_sh_params **shell_params)
 	ast = (*shell_params)->ast;
 	my_envp = (*shell_params)->my_envp;
 	exit_status = exec_pipeline(ast, my_envp, shell_params);
+	if (exit_status == 130 || exit_status == 131)
+		ft_printf("\n");
 	(*shell_params)->exit_status = exit_status;
 }
 

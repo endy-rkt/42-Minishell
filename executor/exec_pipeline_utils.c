@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:12:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/21 12:08:40 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/22 08:27:59 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	get_status(int pid)
 	if (WIFEXITED(status))
 	    status = WEXITSTATUS(status);
     else if (WIFSIGNALED(status))
+	{
 		status = WTERMSIG(status) + 128;
+		// ft_putstr_fd("\n", 2);
+	}
 	return (status);
 }
 

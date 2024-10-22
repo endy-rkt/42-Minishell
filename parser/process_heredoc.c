@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/21 10:33:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/22 08:39:53 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static	int	break_loop(char **input, char *delimiter)
 {
 	if (*input == NULL)
 	{
-		ft_putstr_fd("\nminishell: warning: here-document at line 1 delimited by end-of-file (wanted `end')\n", 2);
+		if (g_sig == 130)
+			ft_putstr_fd("\n", 2);
+		else
+			ft_putstr_fd("\nminishell: warning: here-document delimited by end-of-file (wanted `end')\n", 2);
 		return (1);
 	}
 	if (*input != NULL && ft_strcmp(*input, delimiter) == 0)
