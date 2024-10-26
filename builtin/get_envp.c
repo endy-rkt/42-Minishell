@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_envp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 10:41:41 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/10 09:12:57 by ferafano         ###   ########.fr       */
+/*   Updated: 2024/10/25 09:52:00 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*get_env_value(char *line_read, char **copy_env)
 		}
 		if (success == 1 && copy_env[i][len] == '=')
 		{
-			printf("%s\n", copy_env[i] + len + 1);
+			// printf("%s\n", copy_env[i] + len + 1);//
 			return (copy_env[i] + len + 1);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:01:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 15:15:40 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/25 09:51:28 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*my_getenv(char *var, t_sh_params *shell_params)
 
 	if (!var)
 		return ("");
-	str = getenv(var);
+	str = get_env_value(var, shell_params->my_envp);
 	if (!str)
 		return ("");
 	return (str);

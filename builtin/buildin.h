@@ -6,13 +6,14 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:20 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/18 08:24:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/25 11:27:39 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILDIN_H
 # define BUILDIN_H
 # include "../header.h"
+# include "../executor/executor.h"
 # include "../libft/libft.h"
 # include <ctype.h>
 
@@ -104,7 +105,7 @@ void	cond_loop(t_print_exp *exp, int *j, int fd);
 void	bubble_sort(char **array, int length);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
-int		buildin(char **argv, char ***copy_env, int fd);
-int		ft_exit(char **argv, char ***copy_env);
+int		buildin(char **argv, t_sh_params **shell_params, int *tab_fd);
+int	ft_exit(char **argv, char ***copy_env, t_sh_params **shell_params, int *tab_fd);
 
 #endif

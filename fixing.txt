@@ -1,24 +1,6 @@
-1- leak   ??
-2- heredoc + get_next_line 
-3- more than 25 lines function
-   gnl to readline
-4- signal handler
-5- exit status
-6- norminette
-7- series of test
-8- builtin test + series of test
 
-
-exit status
-
--by default 0
-
-- token error 2
-
-- command not found 127
-
-- no such directory 1
-
-- permission denied 126
-
-- exit ctrl+c 130
+1- link builtin like exit and get_env to main
+2- refactor export  and cd
+3- leak ??
+4- norminette
+5- series of test

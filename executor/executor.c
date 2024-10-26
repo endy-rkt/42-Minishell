@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/22 08:30:07 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/25 09:36:56 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	exec_builtin(t_sh_params **shell_params)
 		free(fd);
 		return (1);
 	}
-	status = buildin(cmd->args, &((*shell_params)->my_envp), fd[1]);
+	status = buildin(cmd->args, shell_params, fd);
 	if (fd[1] != STDOUT_FILENO)
 		close(fd[1]);
 	if (fd[0] != STDIN_FILENO)
