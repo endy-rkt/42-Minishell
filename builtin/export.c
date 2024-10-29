@@ -3,114 +3,105 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 09:02:32 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/10 07:38:34 by ferafano         ###   ########.fr       */
+/*   Created: 2024/10/29 12:21:37 by trazanad          #+#    #+#             */
+/*   Updated: 2024/10/29 12:45:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
 
-int	create_or_not(char *name, char **env)
+int	validate_name(char *val)
 {
-	int	len;
 	int	i;
 
-	len = ft_strlen(name);
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '\0')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	**create_new_env(char *name, char **env)
-{
-	int		len;
-	int		i;
-	char	**copy;
-
-	len = 0;
-	i = 0;
-	while (env && env[len])
-		len++;
-	copy = malloc((len + 2) * sizeof(char *));
-	if (copy == NULL)
-		return (NULL);
-	while (i < len)
-	{
-		copy[i] = ft_strdup(env[i]);
-		i++;
-	}
-	copy[len] = ft_strdup(name);
-	copy[len + 1] = NULL;
-	return (copy);
-}
-
-int	check_if_exist(char *name, char **env)
-{
-	int		i;
-	int		len;
-	char	*exist_sign;
-
-	exist_sign = ft_strchr(name, '=');
-	len = ft_len(name, exist_sign);
-	i = 0;
-	while (env && env[i])
-	{
-		if (ft_strncmp(env[i], name, len) == 0 && (env[i][len] == '='
-			|| env[i][len] == '\0'))
-		{
-			if (exist_sign)
-				ft_reassign(name, &env[i]);
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-void	ft_cond(int i, char ***env, char **argv, char **temp)
-{
-	if (!check_if_exist(argv[i], *env))
-	{
-		if (create_or_not(argv[i], *env) == 0)
-		{
-			temp = *env;
-			*env = create_new_env(argv[i], temp);
-		}
-	}
-}
-
-int	ft_export(char **argv, char ***env, int fd)
-{
-	int		i;
-	int		status;
-	char	**temp;
-	int		check;
-
+	if (val[0] != '_' && !ft_isalpha(val[0]))
+		return (0);
 	i = 1;
-	status = 0;
-	temp = NULL;
-	if (argv[i] == NULL)
-		print_export(*env, fd);
+	while (val[i] && val[i] != '=' && val[i] != '+')
+	{
+		if (val[i] != '_' && !ft_isalnum(val[i]))
+			return (0);
+		i++;
+	}
+	if (val[i] == '+' && val[i + 1] != '=')
+		return (0);
+	return (1);
+}
+
+int	search_val(char *val, char **envp)
+{
+	int		i;
+	int		val_len;
+	char	*tmp;
+
+	i = 0;
+	tmp = malloc(ft_strlen(val) + 2);
+	tmp = ft_strcpy(tmp, val);
+	while (val[i] && val[i] != '+' && val[i] != '=')
+		i++;
+	val[i] = '=';
+	val[i + 1] = '\0';
+	i = 0;
+	val_len = ft_strlen(tmp);
+	while (envp[i])
+	{
+		if (ft_strncmp(tmp, envp[i], val_len) == 0)
+		{
+			free(tmp);
+			return (1);
+		}
+		i++;
+	}
+	free(tmp);
+	return (0);
+}
+
+void	change_export(char *val, char **envp)
+{
+	
+}
+
+int	update_export(char **argv, char ***my_envp, int fd)
+{
+	int	i;
+	int	name_valid;
+	int	is_in_env;
+
+	i = 0;
+	name_valid = 0;
+	is_in_env = 0;
 	while (argv[i])
 	{
-		check = check_valid_name(argv[i], env);
-		if (check == 1)
-			ft_cond(i, env, argv, temp);
-		else if (check == 0)
-			;
-		else
+		name_valid = validate_name(argv[i]);
+		if (!name_valid)
 		{
-			printf("invalid identifier\n");
-			status = 1;
+			//msg
+			return (1);
 		}
+		is_in_env = search_val(argv[i], *my_envp);
+		if (is_in_env)
+			change_export(argv[i], my_envp);
+		else
+			add_export(argv[i], my_envp);
 		i++;
 	}
+	return (0);
+}
+
+int	ft_export(char **argv, char ***my_envp, int fd)
+{
+	int	status;
+
+	status = 0;
+	if (argv == NULL || argv[0] == NULL)
+		return (status);
+	if (argv[1] == NULL)
+	{
+		print_export(*my_envp, fd);
+		return (status);
+	}
+	status = update_export(argv, my_envp, fd);
 	return (status);
 }

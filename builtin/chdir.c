@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 08:05:44 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/25 11:24:55 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/29 12:14:13 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	this_func(t_oldpwd *var, char **copy_env, char *cwd)
 	copy_env[var->i] = ft_strjoin(copy_env[var->i], "=");
 	ft_strncpy(var->new_value, copy_env[var->i], var->len + 2);
 	ft_strcpy(var->new_value + var->len + 1, cwd);
+	free(copy_env[var->i]);
 	copy_env[var->i] = var->new_value;
 	return (1);
 }
@@ -31,6 +32,7 @@ int	that_func(t_oldpwd *var, char **copy_env, char *cwd)
 		return (0);
 	ft_strncpy(var->new_value, copy_env[var->i], var->len + 1);
 	ft_strcpy(var->new_value + var->len + 1, cwd);
+	free(copy_env[var->i]);
 	copy_env[var->i] = var->new_value;
 	return (1);
 }
