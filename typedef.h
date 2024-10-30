@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:14:39 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 12:34:06 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:43:10 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_shell_params
 	t_cmd	*cmd;
 	t_list	*tmp_file;
 	char	**my_envp;
+	char	**globl_envp;
 	int		exit_status;
 }	t_sh_params;
 

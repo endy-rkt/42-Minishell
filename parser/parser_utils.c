@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 10:59:44 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/21 11:11:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:55:04 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ void	free_sh_params(t_sh_params **shell_params)
 
 void	clean_alloc(t_cmd **cmd, char *file, t_sh_params **shell_params, t_cmd **lst_cmd)
 {
+	if ((*shell_params)->globl_envp)
+		free_args(((*shell_params)->globl_envp));	
 	if ((*shell_params)->my_envp)
-		free_args(((*shell_params)->my_envp));	
+		free_args(((*shell_params)->my_envp));
 	cmd_clear(lst_cmd);
 	free_sh_params(shell_params);
 	free(file);

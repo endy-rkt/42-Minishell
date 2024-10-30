@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:21:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/29 12:45:21 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:32:03 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,37 +30,74 @@ int	validate_name(char *val)
 	return (1);
 }
 
-int	search_val(char *val, char **envp)
+void	add_new_identifier(char *key, char *value,  char ***envp)
 {
 	int		i;
-	int		val_len;
-	char	*tmp;
+	int		len;
+	char	*new_val;
+	char	**new;
+
+	new_val = ft_substr(key, 0, ft_strlen(key) - 1);
+	if (value[0] == '+')
+		new_val = ft_strjoin(new_val, value + 1);
+	else
+		new_val = ft_strjoin(new_val, value);
+	i = 0;
+	len = 0;
+	while ((*envp)[len])
+		len++;
+	new = malloc(sizeof(char *) * (len + 2));
+	while ((*envp)[i])
+	{
+		new[i] = ft_strdup((*envp)[i]);
+		i++;
+	}
+	new[i] = new_val;
+	new[i + 1] = NULL;
+	free_args(*envp);
+	*envp = NULL;
+	*envp = new;
+}
+
+void	add_value(char *val, char ***envp)
+{
+	int		i;
+	char	*key;
+	char	*value;
+	char	*new_val;
 
 	i = 0;
-	tmp = malloc(ft_strlen(val) + 2);
-	tmp = ft_strcpy(tmp, val);
-	while (val[i] && val[i] != '+' && val[i] != '=')
+	while (val[i] && val[i] != '=' && val[i] != '+')
 		i++;
-	val[i] = '=';
-	val[i + 1] = '\0';
+	key = ft_substr(val, 0, i);
+	value = val + i;
 	i = 0;
-	val_len = ft_strlen(tmp);
-	while (envp[i])
+	key = ft_strjoin(key, "=");
+	while ((*envp)[i])
 	{
-		if (ft_strncmp(tmp, envp[i], val_len) == 0)
+		if (ft_strncmp(key, (*envp)[i], ft_strlen(key)) == 0)
 		{
-			free(tmp);
-			return (1);
+			if (value[0] == '+')
+			{
+				new_val = ft_strdup((*envp)[i]);
+				new_val = ft_strjoin(new_val, value + 2);
+				free((*envp)[i]);
+				(*envp)[i] = new_val;
+			}
+			if (value[0] == '=')
+			{
+				new_val = ft_substr(key, 0, ft_strlen(key) - 1);
+				new_val = ft_strjoin(new_val, value + 1);
+				free((*envp)[i]);
+				(*envp)[i] = new_val;
+			}
+			free(key);
+			return ;
 		}
 		i++;
 	}
-	free(tmp);
-	return (0);
-}
-
-void	change_export(char *val, char **envp)
-{
-	
+	add_new_identifier(key, value, envp);
+	free(key);
 }
 
 int	update_export(char **argv, char ***my_envp, int fd)
@@ -69,7 +106,7 @@ int	update_export(char **argv, char ***my_envp, int fd)
 	int	name_valid;
 	int	is_in_env;
 
-	i = 0;
+	i = 1;
 	name_valid = 0;
 	is_in_env = 0;
 	while (argv[i])
@@ -77,14 +114,10 @@ int	update_export(char **argv, char ***my_envp, int fd)
 		name_valid = validate_name(argv[i]);
 		if (!name_valid)
 		{
-			//msg
+			ft_putstr_fd("export: invalid identifier\n", 2);
 			return (1);
 		}
-		is_in_env = search_val(argv[i], *my_envp);
-		if (is_in_env)
-			change_export(argv[i], my_envp);
-		else
-			add_export(argv[i], my_envp);
+		add_value(argv[i], my_envp);
 		i++;
 	}
 	return (0);

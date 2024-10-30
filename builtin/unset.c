@@ -3,102 +3,95 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 09:14:28 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/10 08:05:53 by ferafano         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:28:13 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
 
-void	assign_alloc(t_rem *rm, char **copy_env)
+int	unset_nb(char **argv, char **env)
 {
-	rm->len = 0;
-	rm->j = 0;
-	rm->k = 0;
-	rm->l = 0;
-	rm->str_len = 0;
-	while (copy_env[rm->len])
-		rm->len++;
-	rm->copy = (char **)malloc(rm->len * sizeof(char *));
-}
+	int		i;
+	int		j;
+	int		count;
+	char	*tmp;
 
-void	ft_wfree(t_rem *rm)
-{
-	while (rm->k < rm->l)
+	i = 0;
+	count = 0;
+	while (argv[i])
 	{
-		free(rm->copy[rm->k]);
-		rm->k++;
-	}
-}
-
-char	**ft_rm_env(char **copy_env, int i)
-{
-	t_rem	rm;
-
-	assign_alloc(&rm, copy_env);
-	if (rm.copy == NULL)
-		return (NULL);
-	while (rm.j < rm.len)
-	{
-		if (rm.j != i)
+		tmp = ft_strdup(argv[i]);
+		tmp = ft_strjoin(tmp, "=");
+		j = 0;
+		while (env[j])
 		{
-			rm.str_len = ft_strlen(copy_env[rm.j]);
-			rm.copy[rm.l] = (char *)malloc((rm.str_len + 1) * sizeof(char));
-			if (rm.copy[rm.l] == NULL)
+			if (ft_strncmp(argv[i], env[j], ft_strlen(argv[i])) == 0)
 			{
-				ft_wfree(&rm);
-				free(rm.copy);
-				return (NULL);
+				count++;
+				break ;
 			}
-			strcpy(rm.copy[rm.l], copy_env[rm.j]);
-			rm.l++;
+			j++;
 		}
-		rm.j++;
+		free(tmp);
+		i++;
 	}
-	rm.copy[rm.l] = NULL;
-	return (rm.copy);
+	return (count);
 }
 
-int	un_set(t_unset *unset, char ***copy_env, char **argv)
+int	is_to_unset(char *str, char **argv)
 {
-	unset->delimiter = ft_strchr((*copy_env)[unset->i], '=');
-	if (unset->delimiter)
-		unset->env_name_len = (int)(unset->delimiter - (*copy_env)[unset->i]);
-	else
-		unset->env_name_len = ft_strlen((*copy_env)[unset->i]);
-	if (ft_strncmp((*copy_env)[unset->i], argv[unset->l], unset->env_name_len) == 0
-		&& argv[unset->l][unset->env_name_len] == '\0')
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	tmp = ft_strdup(str);
+	tmp[i] = '\0';
+	i = 0;
+	while (argv[i])
 	{
-		unset->temp = *copy_env;
-		*copy_env = ft_rm_env(unset->temp, unset->i);
-		return (0);
+		if (ft_strcmp(tmp, argv[i]) == 0)
+		{
+			free(tmp);
+			return (1);
+		}
+		i++;
 	}
-	return (1);
+	free(tmp);
+	return (0);
 }
 
 int	ft_unset(char **argv, char ***copy_env)
 {
-	t_unset	unset;
+	int		nb_to_unset;
+	int		len;
+	int		i;
+	char	**new;
 
-	unset.l = 0;
-	unset.env_name_len = 0;
-	while (argv[unset.l])
+	len = 0;
+	while ((*copy_env)[len])
+		len++;
+	nb_to_unset = unset_nb(argv, *copy_env);
+	if (nb_to_unset == 0)
+		return (0);
+	new = malloc(sizeof(char *) * (len - nb_to_unset + 1));
+	len = 0;
+	i = 0;
+	while ((*copy_env)[len])
 	{
-		if (ft_strchr(argv[unset.l], '=') != NULL || ft_strlen(argv[unset.l]) == 0)
+		if (!is_to_unset((*copy_env)[len], argv))
 		{
-			unset.l++;
-			continue ;
-		}
-		unset.i = 0;
-		while ((*copy_env)[unset.i])
-		{
-			if (un_set(&unset, copy_env, argv) == 0)
-				break ;
-			unset.i++;
-		}
-		unset.l++;
+			new[i] = ft_strdup((*copy_env)[len]);
+			i++;
+		}		
+		len++;
 	}
+	new[i] = NULL;
+	free_args(*copy_env);
+	*copy_env = new;
 	return (0);
 }

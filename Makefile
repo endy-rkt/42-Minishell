@@ -4,7 +4,7 @@ PARSER_SRC = parser/cmd.c parser/cmd_creation.c parser/cmd_operation.c parser/cm
 
 EXECUTOR_SRC = executor/exec_builtin.c executor/exec_cmd.c executor/exec_pipeline.c executor/exec_pipeline_utils.c executor/executor.c  executor/executor_utils.c executor/get_path.c
 
-BUILTIN_SRC = builtin/builtin.c builtin/buildin_utils.c  builtin/chdir_utils.c builtin/chdir.c builtin/env_utils.c builtin/env_utils2.c builtin/env.c builtin/export.c builtin/export_utils.c builtin/export_utils2.c builtin/get_envp.c builtin/prompt.c builtin/unset.c builtin/ft_strncpy.c builtin/exit.c
+BUILTIN_SRC = builtin/builtin.c builtin/buildin_utils.c  builtin/chdir_utils.c builtin/chdir.c builtin/env_utils.c builtin/env_utils2.c builtin/env.c builtin/export.c  builtin/get_envp.c builtin/prompt.c builtin/unset.c builtin/ft_strncpy.c builtin/exit.c
 
 SRCS = main.c utils/process_loop.c  ${LEXER_SRC}  ${PARSER_SRC} ${BUILTIN_SRC} ${EXECUTOR_SRC}
 
@@ -35,6 +35,9 @@ all:		${NAME}
 
 val:		${NAME}
 			valgrind --suppressions=.readline.supp --leak-check=full --show-leak-kinds=all -s ./${NAME}
+
+vals:		${NAME}
+			valgrind --suppressions=.readline.supp --leak-check=full --show-leak-kinds=all  --trace-children=yes -s ./${NAME}
 
 clean:
 			${RM} ${OBJS}

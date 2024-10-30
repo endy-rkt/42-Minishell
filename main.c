@@ -6,13 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 12:22:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:44:41 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_sh_params	*init_sh_params(char **envp, int exit_status)
+t_sh_params	*init_sh_params(char **envp, char **genvp, int exit_status)
 {
 	t_sh_params	*shell_params;
 
@@ -24,6 +24,7 @@ t_sh_params	*init_sh_params(char **envp, int exit_status)
 	shell_params->exit_status = exit_status;
 	shell_params->my_envp = envp;
 	shell_params->cmd = NULL;
+	shell_params->globl_envp = genvp;
 	return (shell_params);
 }
 
@@ -56,14 +57,14 @@ int	run_shell(char *input, char ***envp, int prev_status)
 	t_sh_params	*shell_params;
 
 	exit_status = prev_status;
-	shell_params = init_sh_params(*envp, exit_status);
+	tmp_envp = ft_copy_env(*envp);
+	shell_params = init_sh_params(tmp_envp, *envp, exit_status);
 	parse(&shell_params, input);
 	if (shell_params->exit_status == 0 && shell_params->ast != NULL)
 		execute(&shell_params); 
 	exit_status = shell_params->exit_status;
-	tmp_envp = ft_copy_env(shell_params->my_envp);
 	free_args(*envp);
-	*envp = tmp_envp;
+	*envp = shell_params->my_envp;
 	clean_params(shell_params);
 	return (exit_status);
 }
