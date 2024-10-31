@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/25 09:36:56 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 09:26:49 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	execute(t_sh_params **shell_params)
 		if (exec_void_cmd(ast, shell_params))
 			return ;
 		if (is_builtin(ast->cmd))
-			exec_builtin(shell_params);
+			(*shell_params)->exit_status = exec_builtin(shell_params);
 		else
 			execute_cmd(shell_params);
 	}

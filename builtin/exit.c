@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 09:32:11 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/25 09:44:39 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 08:53:20 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ static void	free_paramas(t_sh_params **shell_params, int *tab_fd)
 {
 	free(tab_fd);
 	free_args((*shell_params)->my_envp);
+	free_args((*shell_params)->globl_envp);
 	cmd_clear(&((*shell_params)->cmd));
 	if (*shell_params)
 		free_sh_params(shell_params);
@@ -96,25 +97,23 @@ int	ft_exit(char **argv, char ***copy_env, t_sh_params **shell_params, int *tab_
 
 	if (argv[1] && argv[2] && valid_exit(argv[1]) == 1)
 	{
+		(*shell_params)->exit_status = 2;
 		write(2, "exit: too many arguments\n", 25);
-		return (1);
+		return (2);
 	}
 	else if (argv[1] && valid_exit(argv[1]) == 1)
 	{
-		//ft_exit_free(*copy_env);
 		status = ft_atol(argv[1]);
 		free_paramas(shell_params, tab_fd);
 		exit(status);
 	}
 	else if (!argv[1])
 	{
-		//ft_exit_free(*copy_env);
 		free_paramas(shell_params, tab_fd);
 		exit(0);
 	}
 	else
 	{
-		// ft_exit_free(*copy_env);
 		write(2, "numeric argument required\n", 26);
 		free_paramas(shell_params, tab_fd);
 		exit(2);

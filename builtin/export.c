@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:21:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/29 17:32:03 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 09:36:09 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	add_new_identifier(char *key, char *value,  char ***envp)
 	char	*new_val;
 	char	**new;
 
-	new_val = ft_substr(key, 0, ft_strlen(key) - 1);
+	new_val = ft_strdup(key);
 	if (value[0] == '+')
 		new_val = ft_strjoin(new_val, value + 1);
 	else
@@ -59,6 +59,19 @@ void	add_new_identifier(char *key, char *value,  char ***envp)
 	*envp = new;
 }
 
+int	export_match(char *str_env, char *key)
+{
+	int	key_len;
+
+	key_len = ft_strlen(key);
+	if (ft_strncmp(str_env, key, key_len) == 0)
+	{
+		if (str_env[key_len] == '\0' || str_env[key_len] == '=')
+			return (1);
+	}
+	return (0);
+}
+
 void	add_value(char *val, char ***envp)
 {
 	int		i;
@@ -67,27 +80,27 @@ void	add_value(char *val, char ***envp)
 	char	*new_val;
 
 	i = 0;
-	while (val[i] && val[i] != '=' && val[i] != '+')
+	while (val[i] && val[i] != '+' && val[i] != '=')
 		i++;
 	key = ft_substr(val, 0, i);
 	value = val + i;
-	i = 0;
-	key = ft_strjoin(key, "=");
 	while ((*envp)[i])
 	{
-		if (ft_strncmp(key, (*envp)[i], ft_strlen(key)) == 0)
+		if (export_match((*envp)[i], key))
 		{
 			if (value[0] == '+')
 			{
 				new_val = ft_strdup((*envp)[i]);
+				if ((*envp)[i][ft_strlen(key)] == '\0')
+					new_val = ft_strjoin(new_val, "=");
 				new_val = ft_strjoin(new_val, value + 2);
 				free((*envp)[i]);
 				(*envp)[i] = new_val;
 			}
 			if (value[0] == '=')
 			{
-				new_val = ft_substr(key, 0, ft_strlen(key) - 1);
-				new_val = ft_strjoin(new_val, value + 1);
+				new_val = ft_strdup(key);
+				new_val = ft_strjoin(new_val, value);
 				free((*envp)[i]);
 				(*envp)[i] = new_val;
 			}
