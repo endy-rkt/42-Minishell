@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:23:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 10:53:24 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:16:57 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,11 @@ int	cmd_is_pipe(t_cmd *cmd)
 
 void	print_one_cmd(t_cmd *cmd)
 {
+	int		i;
+	t_list	*assign;
+	t_list	*redir;
+	t_redir	*tmp;
+
 	if (cmd)
 	{
 		printf("----------------------------------------------------------------\n");
@@ -86,7 +91,7 @@ void	print_one_cmd(t_cmd *cmd)
 		}
 		if (cmd->args)
 		{
-			int i =0;
+			i = 0;
 			printf("args:\t");
 			while (cmd->args[i] != NULL)
 			{
@@ -97,19 +102,18 @@ void	print_one_cmd(t_cmd *cmd)
 		}
 		if (cmd->assign)
 		{
-			t_list *assign = cmd->assign;
+			assign = cmd->assign;
 			printf("assign:\t");
 			while (assign)
 			{
-				printf("{%s}\t", (char*)assign->content);
+				printf("{%s}\t", (char *)assign->content);
 				assign = assign->next;
 			}
 			printf("\n");
 		}
 		if (cmd->redir)
 		{
-			t_list *redir= cmd->redir;
-			t_redir *tmp;
+			redir = cmd->redir;
 			printf("redir:\t");
 			while (redir)
 			{

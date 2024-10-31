@@ -39,7 +39,7 @@ static char	*path_from_env(char **args, char **tmp, int *err_status)
 		path = ft_strjoin(path, args[0]);
 		*err_status = not_valid_path(path);
 		if (*err_status == 0)
-			break;
+			break ;
 		free(path);
 		path = NULL;
 		i++;
@@ -51,7 +51,7 @@ static char	*path_from_env(char **args, char **tmp, int *err_status)
 
 static int	only_slash(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -63,7 +63,7 @@ static int	only_slash(char *str)
 	return (1);
 }
 
-static	int check_local_path(char **args, int *err_status)
+static int	check_local_path(char **args, int *err_status)
 {
 	int	access_code;
 
@@ -82,10 +82,10 @@ static	int check_local_path(char **args, int *err_status)
 		}
 		return (1);
 	}
-	if (access_code == 126 && (args[0][0] =='.' && args[0][1]=='/'))
+	if (access_code == 126 && (args[0][0] == '.' && args[0][1] == '/'))
 	{
 		*err_status = access_code;
-			print_exec_error(args[0], "Permission denied\n");
+		print_exec_error(args[0], "Permission denied\n");
 		return (1);
 	}
 	return (0);

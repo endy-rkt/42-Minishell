@@ -17,7 +17,7 @@ void	exec_this(t_print_exp *exp, int fd)
 	int	j;
 
 	j = 0;
-	ft_putstr_fd("declare -x ", fd);	
+	ft_putstr_fd("declare -x ", fd);
 	while (exp->temp_env[exp->temp_i][j]
 		&& exp->temp_env[exp->temp_i][j] != '=')
 	{

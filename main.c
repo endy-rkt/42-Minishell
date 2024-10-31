@@ -38,7 +38,7 @@ void	delete_tmp_file(t_list *tmp_file)
 			file = tmp_file->content;
 		unlink(file);
 		tmp_file = tmp_file->next;
-	}	
+	}
 }
 
 void	clean_params(t_sh_params *shell_params)
@@ -61,7 +61,7 @@ int	run_shell(char *input, char ***envp, int prev_status)
 	shell_params = init_sh_params(tmp_envp, *envp, exit_status);
 	parse(&shell_params, input);
 	if (shell_params->exit_status == 0 && shell_params->ast != NULL)
-		execute(&shell_params); 
+		execute(&shell_params);
 	exit_status = shell_params->exit_status;
 	free_args(*envp);
 	*envp = shell_params->my_envp;

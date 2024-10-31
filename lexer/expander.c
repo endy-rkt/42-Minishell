@@ -12,7 +12,7 @@
 
 #include "lexer.h"
 
-static void	expand_word(t_token	**tk, t_sh_params *shell_params)
+static void	expand_word(t_token **tk, t_sh_params *shell_params)
 {
 	int		i;
 	char	*value;
@@ -30,7 +30,7 @@ static void	expand_word(t_token	**tk, t_sh_params *shell_params)
 		else if (value[i] == '\"')
 			i = expand_double_quote(value, &new_value, i, shell_params);
 		else if (value[i] == '$')
-			i += handle_params(&lst_word, value + i, &new_value, shell_params);	
+			i += handle_params(&lst_word, value + i, &new_value, shell_params);
 		else
 		{
 			new_value = join_char(new_value, value[i]);

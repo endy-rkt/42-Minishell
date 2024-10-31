@@ -6,14 +6,14 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:35:14 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/20 09:45:45 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:19:26 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-
-void	manage_heredoc(t_list	*lst_redir, t_cmd **cmd, char *file, t_sh_params **shell_params)
+void	manage_heredoc(t_list *lst_redir, t_cmd **cmd, char *file,
+		t_sh_params **shell_params)
 {
 	if (last_redir_in(lst_redir))
 		stored_heredoc(cmd, lst_redir, file, shell_params);
@@ -75,7 +75,7 @@ static void	format_delimiter(char *value, char **new_value, int i, int j)
 
 char	*take_delim(t_redir *rd)
 {
-	char	*delimiter;	
+	char	*delimiter;
 	char	*new_delim;
 
 	delimiter = rd->file;
@@ -110,4 +110,3 @@ char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *shell_params)
 	free(input);
 	return (new_input);
 }
-

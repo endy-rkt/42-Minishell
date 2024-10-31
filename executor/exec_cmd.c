@@ -6,13 +6,14 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 11:19:08 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/22 08:33:16 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:12:25 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static int	child_cmd(char **args, t_list *lst_redir, t_sh_params **shell_params)
+static int	child_cmd(char **args, t_list *lst_redir,
+		t_sh_params **shell_params)
 {
 	int		status;
 	char	*path;
@@ -37,10 +38,12 @@ static int	child_cmd(char **args, t_list *lst_redir, t_sh_params **shell_params)
 
 int	exec_cmd(char **args, t_list *lst_redir, t_sh_params **shell_params)
 {
-	int		status;
-	int		pid;
+	int	status;
+	int	pid;
 
 	pid = fork();
+	if (pid == -1)
+		return (1);
 	signal(SIGINT, child_sigint_handler);
 	if (pid == 0)
 		child_cmd(args, lst_redir, shell_params);

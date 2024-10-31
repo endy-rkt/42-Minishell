@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:01:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/25 09:51:28 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:14:36 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*my_getenv(char *var, t_sh_params *shell_params)
 	return (str);
 }
 
-static int	error_status(char *value, char **new_value, int i, t_sh_params *shell_params)
+static int	error_status(char **new_value, int i, t_sh_params *shell_params)
 {
 	char	*prev_error;
 
@@ -34,7 +34,7 @@ static int	error_status(char *value, char **new_value, int i, t_sh_params *shell
 	return (i + 1);
 }
 
-static int	void_expansion(char *value, char **new_value, int i, char *str)
+static int	void_expansion(char **new_value, int i, char *str)
 {
 	*new_value = ft_strjoin(*new_value, str);
 	return (i + 1);
@@ -51,7 +51,8 @@ static int	not_alpha_expansion(char *value, char **new_value, int i)
 	return (i + 1);
 }
 
-int	expand_params(char *value, char **new_value, int i, t_sh_params *shell_params)
+int	expand_params(char *value, char **new_value, int i,
+		t_sh_params *shell_params)
 {
 	char	*tmp;
 	char	*var_value;
@@ -60,11 +61,11 @@ int	expand_params(char *value, char **new_value, int i, t_sh_params *shell_param
 	if (value[i] == '\'' || value[i] == '\"')
 		return (i);
 	else if (value[i] == '\0' || ft_isspace(value[i]))
-		return (void_expansion(value, new_value, i - 1, "$"));
+		return (void_expansion(new_value, i - 1, "$"));
 	else if (value[i] == '?')
-		return (error_status(value, new_value, i, shell_params));
+		return (error_status(new_value, i, shell_params));
 	else if (ft_strchr("$!#*@-", value[i]) || ft_isdigit(value[i]))
-		return (void_expansion(value, new_value, i, ""));
+		return (void_expansion(new_value, i, ""));
 	else if (!(ft_isalpha(value[i]) || value[i] == '_'))
 		return (not_alpha_expansion(value, new_value, i));
 	tmp = ft_strdup("");

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:44 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/20 09:45:57 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:10:44 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 # define PARSER_H
 
 # include "../header.h"
-
 # include "../lexer/lexer.h"
 
-t_cmd	*create_cmd_list(t_token *tk, t_sh_params **shell_params);
+t_cmd	*create_cmd_list(t_token *tk);
 int		take_redir(t_token **tk, t_cmd **cmd);
 int		take_heredoc(t_token **tk, t_cmd **cmd);
 int		take_assign(t_token **tk, t_cmd **cmd);
@@ -40,7 +39,7 @@ void	parse(t_sh_params **shell_params, char *input);
 void	ast_clear(t_ast **ast);
 void	print_error(char *arg_name, char *message);
 void	free_sh_params(t_sh_params **shell_params);
-void	clean_alloc(t_cmd **cmd, char *file, t_sh_params **shell_params, t_cmd **lst_cmd);
+void	clean_alloc(char *file, t_sh_params **shell_params, t_cmd **lst_cmd);
 int		*redir_value(t_list *lst_redir);
 int		last_redir_in(t_list *lst_redir);
 int		last_redir_out(t_list *lst_redir);
@@ -48,12 +47,14 @@ t_list	*last_redirin(t_list *lst);
 void	invalid_fd(int fd, char *file);
 void	add_tmp_file(char *file, t_sh_params **shell_params, t_cmd **cmd);
 void	tmp_heredoc(t_list *lst_redir, t_sh_params *shell_params);
-void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char *file, t_sh_params **shell_params);
-void	hdoc_status(int status, int pid, t_sh_params **shell_params);
-void    process_heredoc(t_cmd **cmd, t_sh_params **shell_params);
+void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char *file,
+			t_sh_params **shell_params);
+void	hdoc_status(int pid, t_sh_params **shell_params);
+void	process_heredoc(t_cmd **cmd, t_sh_params **shell_params);
 char	*heredoc_value(t_redir *rd, t_sh_params *shell_params);
 char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *shell_params);
 char	*take_delim(t_redir *rd);
-void	manage_heredoc(t_list	*lst_redir, t_cmd **cmd, char *file, t_sh_params **shell_params);
+void	manage_heredoc(t_list *lst_redir, t_cmd **cmd, char *file,
+			t_sh_params **shell_params);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:12:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/29 18:47:21 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:21:26 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 
 int	get_status(int pid)
 {
-	int status;
+	int	status;
 
 	status = 0;
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-	    status = WEXITSTATUS(status);
-    else if (WIFSIGNALED(status))
+		status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
 	{
 		status = WTERMSIG(status) + 128;
-		// ft_putstr_fd("\n", 2);
 	}
 	return (status);
 }
@@ -82,5 +81,3 @@ void	exec_node(t_ast *ast_node, char **my_envp, t_sh_params **shell_params)
 			exec_pipeline(ast_node, my_envp, shell_params);
 	}
 }
-
-

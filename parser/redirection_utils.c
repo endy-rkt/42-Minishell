@@ -15,7 +15,7 @@
 t_list	*last_redirin(t_list *lst)
 {
 	t_list	*tmp;
-	t_redir *r;
+	t_redir	*r;
 
 	if (last_redir_in(lst))
 		return (lst);
@@ -23,7 +23,7 @@ t_list	*last_redirin(t_list *lst)
 	while (tmp != NULL)
 	{
 		if (last_redir_in(tmp))
-			break;
+			break ;
 		r = lst->content;
 		tmp = tmp->next;
 	}
@@ -47,14 +47,14 @@ void	add_tmp_file(char *file, t_sh_params **shell_params, t_cmd **cmd)
 	char	*tmp_str;
 	t_list	*last_lst;
 	t_list	**lst_redir;
-	t_redir **redir;
+	t_redir	**redir;
 	t_list	**tmp_file;
 
 	if (access(file, F_OK) != 0)
 		return ;
 	last_lst = last_redirin((*cmd)->redir);
 	lst_redir = &last_lst;
-	redir = (t_redir**) &((*lst_redir)->content);
+	redir = (t_redir **)&((*lst_redir)->content);
 	free((*redir)->file);
 	(*redir)->file = ft_strdup(file);
 	(*redir)->type = TK_REDIR_IN;
@@ -66,27 +66,28 @@ void	add_tmp_file(char *file, t_sh_params **shell_params, t_cmd **cmd)
 void	tmp_heredoc(t_list *lst_redir, t_sh_params *shell_params)
 {
 	char	*value;
-    t_redir *redir;
+	t_redir	*redir;
 
 	value = NULL;
-    redir = lst_redir->content;
-    if (redir->type != TK_HEREDOC)
-        return ;
+	redir = lst_redir->content;
+	if (redir->type != TK_HEREDOC)
+		return ;
 	value = heredoc_value(redir, shell_params);
 	if (value != NULL)
 		free(value);
 }
 
-void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char *file, t_sh_params **shell_params)
+void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char *file,
+		t_sh_params **shell_params)
 {
 	int		fd;
 	char	*value;
-    t_redir *redir;
+	t_redir	*redir;
 
-    redir = lst_redir->content;
+	redir = lst_redir->content;
 	value = NULL;
-    if (redir->type != TK_HEREDOC)
-        return ;
+	if (redir->type != TK_HEREDOC)
+		return ;
 	value = heredoc_value(redir, *shell_params);
 	fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0666);
 	if (value != NULL)

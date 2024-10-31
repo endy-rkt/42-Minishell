@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 10:59:44 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/29 18:55:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:10:35 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,16 @@ void	print_error(char *arg_name, char *message)
 	free(str);
 }
 
-void	hdoc_status(int status, int pid, t_sh_params **shell_params)
+void	hdoc_status(int pid, t_sh_params **shell_params)
 {
+	int	status;
+
+	status = 0;
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-	    status = WEXITSTATUS(status);
-    else if (WIFSIGNALED(status))
-	    status = WTERMSIG(status) + 128;
+		status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		status = WTERMSIG(status) + 128;
 	(*shell_params)->exit_status = status;
 }
 
@@ -48,7 +51,7 @@ void	ast_clear(t_ast **ast)
 			(*ast)->right_node = NULL;
 		}
 		free(*ast);
-		*ast =  NULL;
+		*ast = NULL;
 	}
 }
 
@@ -62,10 +65,10 @@ void	free_sh_params(t_sh_params **shell_params)
 	*shell_params = NULL;
 }
 
-void	clean_alloc(t_cmd **cmd, char *file, t_sh_params **shell_params, t_cmd **lst_cmd)
+void	clean_alloc(char *file, t_sh_params **shell_params, t_cmd **lst_cmd)
 {
 	if ((*shell_params)->globl_envp)
-		free_args(((*shell_params)->globl_envp));	
+		free_args(((*shell_params)->globl_envp));
 	if ((*shell_params)->my_envp)
 		free_args(((*shell_params)->my_envp));
 	cmd_clear(lst_cmd);

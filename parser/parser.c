@@ -6,13 +6,14 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 11:00:31 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:17:16 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static t_ast	*create_node(t_cmd *cmd, t_ast *left, t_ast *right, int node_type)
+static t_ast	*create_node(t_cmd *cmd, t_ast *left, t_ast *right,
+		int node_type)
 {
 	t_ast	*ast;
 
@@ -82,7 +83,7 @@ void	parse(t_sh_params **shell_params, char *input)
 	tk_error = check_tk_error(&tk, shell_params);
 	expand(&tk, *shell_params);
 	(*shell_params)->exit_status = tk_error;
-	cmd = create_cmd_list(tk, shell_params);
+	cmd = create_cmd_list(tk);
 	tk_clear(&tk);
 	if (error_in_lexing(tk_error, &cmd))
 		return ;
@@ -94,8 +95,8 @@ void	parse(t_sh_params **shell_params, char *input)
 
 void	print_ast(t_ast *ast)
 {
-	static int i=0;
-	
+	static int	i = 0;
+
 	if (ast)
 	{
 		if (ast->node_type == NODE_CMD)
@@ -110,5 +111,5 @@ void	print_ast(t_ast *ast)
 			print_ast(ast->right_node);
 			printf("************************\n");
 		}
-	}	
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 13:15:20 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:16:48 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,10 @@ static int	add_redir(t_token **tk, t_cmd **cmd, int type)
 
 int	take_redir(t_token **tk, t_cmd **cmd)
 {
-	int		type;
-	int		status;
-	char	*value;
+	int	type;
+	int	status;
 
 	type = (*tk)->type;
-	value = (*tk)->value;
 	status = add_redir(tk, cmd, type);
 	return (status);
 }
@@ -79,8 +77,6 @@ int	take_assign(t_token **tk, t_cmd **cmd)
 
 int	take_args(t_token **tk, t_cmd **cmd, int arg)
 {
-	char	**args;
-
 	if ((*tk)->type != TK_ASSIGN && (*tk)->type != TK_WORD)
 		return (0);
 	if ((*tk)->value == NULL)

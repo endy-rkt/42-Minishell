@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 09:14:28 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/29 18:28:13 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:28:58 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,30 @@ int	is_to_unset(char *str, char **argv)
 	return (0);
 }
 
-int	ft_unset(char **argv, char ***copy_env)
+int	env_length(char **env)
 {
-	int		nb_to_unset;
-	int		len;
-	int		i;
-	char	**new;
+	int	len;
 
 	len = 0;
-	while ((*copy_env)[len])
+	while (env[len])
 		len++;
+	return (len);
+}
+
+char	**unseted_env(char **argv, char ***copy_env)
+{
+	int		i;
+	int		len;
+	int		nb_to_unset;
+	char	**new;
+
 	nb_to_unset = unset_nb(argv, *copy_env);
 	if (nb_to_unset == 0)
 		return (0);
+	len = env_length(*copy_env);
 	new = malloc(sizeof(char *) * (len - nb_to_unset + 1));
+	if (!new)
+		return (NULL);
 	len = 0;
 	i = 0;
 	while ((*copy_env)[len])
@@ -87,10 +97,20 @@ int	ft_unset(char **argv, char ***copy_env)
 		{
 			new[i] = ft_strdup((*copy_env)[len]);
 			i++;
-		}		
+		}
 		len++;
 	}
 	new[i] = NULL;
+	return (new);
+}
+
+int	ft_unset(char **argv, char ***copy_env)
+{
+	char	**new;
+
+	new = unseted_env(argv, copy_env);
+	if (new == NULL)
+		return (0);
 	free_args(*copy_env);
 	*copy_env = new;
 	return (0);

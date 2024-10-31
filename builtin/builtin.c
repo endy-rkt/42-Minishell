@@ -12,14 +12,14 @@
 
 #include "buildin.h"
 
-char *ft_strcpy(char *dest, const char *src)
+char	*ft_strcpy(char *dest, const char *src)
 {
-    char *original_dest;
+	char	*original_dest;
 
 	original_dest = dest;
-    while ((*dest++ = *src++) != '\0')
+	while ((*dest++ = *src++) != '\0')
 		;
-    return (original_dest);
+	return (original_dest);
 }
 
 int	is_valid_flag(char *argv)
@@ -43,11 +43,11 @@ int	is_valid_flag(char *argv)
 		return (0);
 }
 
-int ft_echo(char **argv, int fd)
+int	ft_echo(char **argv, int fd)
 {
-    int i;
-	int j;
-    int nl;
+	int	i;
+	int	j;
+	int	nl;
 	int	index;
 
 	i = 1;
@@ -62,19 +62,19 @@ int ft_echo(char **argv, int fd)
 			nl = 0;
 		}
 		else
-			break;
+			break ;
 		i++;
 	}
-    while (argv[index])
-    {
+	while (argv[index])
+	{
 		ft_putstr_fd(argv[index], fd);
-        if (argv[index + 1])
-            ft_putchar_fd(' ', fd);
-        index++;
-    }
-    if (nl)
-        ft_putchar_fd('\n', fd);
-    return 0;
+		if (argv[index + 1])
+			ft_putchar_fd(' ', fd);
+		index++;
+	}
+	if (nl)
+		ft_putchar_fd('\n', fd);
+	return (0);
 }
 
 int	buildin(char **argv, t_sh_params **shell_params, int *tab_fd)

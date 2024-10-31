@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:18:54 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 12:25:07 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:12:55 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,11 @@ static int	redir_out2_error(t_token **tk)
 		redir_nb++;
 	}
 	if (redir_value[1] == '<')
-		return (my_perror(2, "minishell: syntax error near unexpected token `<'\n"));
+		return (my_perror(2,
+				"minishell: syntax error near unexpected token `<'\n"));
 	if (redir_nb > 2)
-		return (my_perror(2, "minishell: syntax error near unexpected token `>'\n"));
+		return (my_perror(2,
+				"minishell: syntax error near unexpected token `>'\n"));
 	if (redir_value[0] == '<' && redir_value[1] == '>')
 		redir_out2_to_in2(tk);
 	return (0);
@@ -58,14 +60,13 @@ static int	redir_out2_error(t_token **tk)
 
 int	redir_error(t_token **tk)
 {
-	int		i;
-	int		redir_nb;
-	char	*value;
-
 	if (!(*tk)->next)
-		return (my_perror(2, "minishell: syntax error near unexpected token `<'\n"));
-	if (is_redir((*tk)->next) || (*tk)->next->type == TK_HEREDOC || (*tk)->next->type == TK_PIPE)
-		return (my_perror(2, "minishell: syntax error near unexpected token `<'\n"));
+		return (my_perror(2,
+				"minishell: syntax error near unexpected token `<'\n"));
+	if (is_redir((*tk)->next) || (*tk)->next->type == TK_HEREDOC
+		|| (*tk)->next->type == TK_PIPE)
+		return (my_perror(2,
+				"minishell: syntax error near unexpected token `<'\n"));
 	if ((*tk)->type == TK_REDIR_APPEND)
 		return (redir_out2_error(tk));
 	return (0);

@@ -4,7 +4,7 @@ OBJS = ${SRCS:.c=.o}
 
 NAME = libft.a
 
-CC = gcc
+CC = cc
 
 RM = rm -f
 

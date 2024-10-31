@@ -16,7 +16,7 @@ int	last_redir_in(t_list *lst_redir)
 {
 	int		is_redirin;
 	t_list	*tmp;
-	t_redir *redir;
+	t_redir	*redir;
 
 	tmp = lst_redir->next;
 	while (tmp)
@@ -33,7 +33,7 @@ int	last_redir_in(t_list *lst_redir)
 int	last_redir_out(t_list *lst_redir)
 {
 	t_list	*tmp;
-	t_redir *redir;
+	t_redir	*redir;
 
 	tmp = lst_redir->next;
 	while (tmp)
@@ -56,7 +56,7 @@ static int	stdin_value(t_list *lst_redir)
 		return (STDIN_FILENO);
 	redir = lst_redir->content;
 	if (redir->type == TK_REDIR_IN2)
-		fd = open(redir->file,  O_RDWR | O_TRUNC |O_CREAT, 0666);
+		fd = open(redir->file, O_RDWR | O_TRUNC | O_CREAT, 0666);
 	else
 		fd = open(redir->file, O_RDONLY);
 	if (!last_redir_in(lst_redir))
@@ -91,7 +91,7 @@ int	*redir_value(t_list *lst_redir)
 	fd = malloc(sizeof(int) * 2);
 	if (!fd)
 		return (NULL);
-	fd[0] = STDIN_FILENO;	
+	fd[0] = STDIN_FILENO;
 	fd[1] = STDOUT_FILENO;
 	while (lst_redir)
 	{

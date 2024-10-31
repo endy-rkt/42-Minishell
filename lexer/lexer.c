@@ -58,7 +58,7 @@ int	take_word_len(char *str, int i)
 
 static int	handle_char(char *str, t_token **tk)
 {
-	int		len;
+	int	len;
 
 	len = 0;
 	len += take_word_len(str, len);

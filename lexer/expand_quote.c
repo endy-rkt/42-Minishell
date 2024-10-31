@@ -40,7 +40,8 @@ int	expand_single_quote(char *value, char **new_value, int i)
 	return (i);
 }
 
-int	expand_double_quote(char *value, char **new_value, int i, t_sh_params *shell_params)
+int	expand_double_quote(char *value, char **new_value, int i,
+		t_sh_params *shell_params)
 {
 	i++;
 	while (value[i] && value[i] != '\"')

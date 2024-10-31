@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:36:46 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/21 11:18:28 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:17:03 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ int	size_of_args(t_token *tk)
 	while (tk != NULL && tk->type != TK_PIPE)
 	{
 		if (tk->type == TK_WORD && tk->prev == NULL)
-			break;
-		else if (tk->type == TK_WORD && (tk->prev != NULL && !is_redir(tk->prev)))
+			break ;
+		else if (tk->type == TK_WORD && (tk->prev != NULL
+				&& !is_redir(tk->prev)))
 			break ;
 		tk = tk->next;
 	}
@@ -59,7 +60,7 @@ void	free_redir(void *redir)
 {
 	t_redir	*tmp_redir;
 
-	tmp_redir = (t_redir *) redir;
+	tmp_redir = (t_redir *)redir;
 	if (tmp_redir == NULL)
 		return ;
 	if (tmp_redir == NULL)
@@ -91,4 +92,3 @@ void	free_one_cmd(t_cmd **cmd)
 	free(*cmd);
 	*cmd = NULL;
 }
-

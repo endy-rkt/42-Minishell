@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:09:24 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 12:24:51 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:11:53 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_redir(t_token *tk)
 
 	is_redirin = (tk->type == TK_REDIR_IN || tk->type == TK_REDIR_IN2);
 	is_redirout = (tk->type == TK_REDIR_OUT || tk->type == TK_REDIR_APPEND);
-	return ( is_redirin || is_redirout) ;
+	return (is_redirin || is_redirout);
 }
 
 int	is_operator(char c)

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:21:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 09:36:09 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:37:42 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	validate_name(char *val)
 	return (1);
 }
 
-void	add_new_identifier(char *key, char *value,  char ***envp)
+void	add_new_identifier(char *key, char *value, char ***envp)
 {
 	int		i;
 	int		len;
@@ -72,6 +72,26 @@ int	export_match(char *str_env, char *key)
 	return (0);
 }
 
+char	*export_new_val(char *value, char *key, char *prev_val)
+{
+	char	*new_val;
+
+	new_val = NULL;
+	if (value[0] == '+')
+	{
+		new_val = ft_strdup(prev_val);
+		if (prev_val[ft_strlen(key)] == '\0')
+			new_val = ft_strjoin(new_val, "=");
+		new_val = ft_strjoin(new_val, value + 2);
+	}
+	if (value[0] == '=')
+	{
+		new_val = ft_strdup(key);
+		new_val = ft_strjoin(new_val, value);
+	}
+	return (new_val);
+}
+
 void	add_value(char *val, char ***envp)
 {
 	int		i;
@@ -86,24 +106,12 @@ void	add_value(char *val, char ***envp)
 	value = val + i;
 	while ((*envp)[i])
 	{
-		if (export_match((*envp)[i], key))
+		if (export_match((*envp)[i], key) && (value[0] == '+' || value[0] == '='
+				|| value[0] == '\0'))
 		{
-			if (value[0] == '+')
-			{
-				new_val = ft_strdup((*envp)[i]);
-				if ((*envp)[i][ft_strlen(key)] == '\0')
-					new_val = ft_strjoin(new_val, "=");
-				new_val = ft_strjoin(new_val, value + 2);
-				free((*envp)[i]);
-				(*envp)[i] = new_val;
-			}
-			if (value[0] == '=')
-			{
-				new_val = ft_strdup(key);
-				new_val = ft_strjoin(new_val, value);
-				free((*envp)[i]);
-				(*envp)[i] = new_val;
-			}
+			new_val = export_new_val(value, key, (*envp)[i]);
+			free((*envp)[i]);
+			(*envp)[i] = new_val;
 			free(key);
 			return ;
 		}
@@ -126,11 +134,9 @@ int	update_export(char **argv, char ***my_envp, int fd)
 	{
 		name_valid = validate_name(argv[i]);
 		if (!name_valid)
-		{
 			ft_putstr_fd("export: invalid identifier\n", 2);
-			return (1);
-		}
-		add_value(argv[i], my_envp);
+		else
+			add_value(argv[i], my_envp);
 		i++;
 	}
 	return (0);

@@ -30,7 +30,7 @@ int	exec_void_cmd(t_ast *ast, t_sh_params **shell_params)
 		{
 			fd = redir_value(cmd->redir);
 			if (fd[0] != -1 && fd[1] != -1)
-				(*shell_params)->exit_status = 0;	
+				(*shell_params)->exit_status = 0;
 			free(fd);
 			return (1);
 		}
@@ -79,7 +79,7 @@ static void	execute_cmd(t_sh_params **shell_params)
 	ast = (*shell_params)->ast;
 	my_envp = (*shell_params)->my_envp;
 	cmd = ast->cmd;
-	exit_status = exec_cmd(cmd->args, cmd->redir,shell_params);
+	exit_status = exec_cmd(cmd->args, cmd->redir, shell_params);
 	(*shell_params)->exit_status = exit_status;
 }
 

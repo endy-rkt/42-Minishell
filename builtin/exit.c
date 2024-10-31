@@ -91,7 +91,8 @@ static void	free_paramas(t_sh_params **shell_params, int *tab_fd)
 		free_sh_params(shell_params);
 }
 
-int	ft_exit(char **argv, char ***copy_env, t_sh_params **shell_params, int *tab_fd)
+int	ft_exit(char **argv, char ***copy_env, t_sh_params **shell_params,
+		int *tab_fd)
 {
 	int	status;
 

@@ -24,11 +24,11 @@ int	change_redir(t_list *lst_redir, int stdin, int stdout)
 	}
 	if (fd[0] != STDIN_FILENO)
 	{
-        dup2(fd[0], STDIN_FILENO);
+		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 	}
-    if (fd[1] != STDOUT_FILENO)
-    {
+	if (fd[1] != STDOUT_FILENO)
+	{
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}

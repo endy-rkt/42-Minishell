@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:13:08 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 13:15:05 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:15:26 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ static void	cmd_part_1(t_token **tk, t_cmd **cmd)
 	while ((*tk) != NULL && (*tk)->type != TK_PIPE)
 	{
 		if ((*tk)->type == TK_WORD && (*tk)->prev == NULL)
-			break;
-		else if ((*tk)->type == TK_WORD && ((*tk)->prev != NULL && !is_redir((*tk)->prev)))
+			break ;
+		else if ((*tk)->type == TK_WORD && ((*tk)->prev != NULL
+				&& !is_redir((*tk)->prev)))
 			break ;
 		take_assign(tk, cmd);
 		take_heredoc(tk, cmd);
@@ -37,12 +38,13 @@ static void	cmd_part_2(t_token **tk, t_cmd **cmd)
 	have_taken_arg = 0;
 	while ((*tk) != NULL && (*tk)->type != TK_PIPE)
 	{
-		if (((*tk)->prev != NULL && !is_redir((*tk)->prev)) || (*tk)->prev == NULL)
+		if (((*tk)->prev != NULL && !is_redir((*tk)->prev))
+			|| (*tk)->prev == NULL)
 		{
 			have_taken_arg = take_args(tk, cmd, arg_nb);
 			if (have_taken_arg)
 				arg_nb++;
-		}	
+		}
 		take_heredoc(tk, cmd);
 		take_redir(tk, cmd);
 		*tk = (*tk)->next;
@@ -65,17 +67,17 @@ static void	cmd_addvalue(t_token **tk, t_cmd **cmd)
 	cmd_part_2(tk, cmd);
 }
 
-static t_cmd	*create_one_cmd(t_token	**tk)
+static t_cmd	*create_one_cmd(t_token **tk)
 {
 	t_cmd	*cmd;
 
-	cmd	= cmd_initiate();
+	cmd = cmd_initiate();
 	if ((*tk)->type != TK_PIPE)
 		cmd_addvalue(tk, &cmd);
 	return (cmd);
 }
 
-t_cmd	*create_cmd_list(t_token *tk, t_sh_params **shell_params)
+t_cmd	*create_cmd_list(t_token *tk)
 {
 	t_cmd	*cmd;
 	t_cmd	*new_cmd;

@@ -14,9 +14,9 @@
 
 # define LEXER_H
 
+# include "../builtin/buildin.h"
 # include "../header.h"
 # include "../parser/parser.h"
-# include "../builtin/buildin.h"
 
 t_token	*lex(char *input, t_sh_params **shell_params);
 void	add_token(t_token **tk, token_type type, char *str, int len);
@@ -33,12 +33,16 @@ int		check_tk_error(t_token **tk, t_sh_params **shell_params);
 int		redir_error(t_token **tk);
 int		my_perror(int status, char *str);
 void	expand(t_token **tk, t_sh_params *shell_params);
-int		expand_params(char *value, char **new_value, int i, t_sh_params *shell_params);
+int		expand_params(char *value, char **new_value, int i,
+			t_sh_params *shell_params);
 int		expand_single_quote(char *value, char **new_value, int i);
-int		expand_double_quote(char *value, char **new_value, int i, t_sh_params *shell_params);
+int		expand_double_quote(char *value, char **new_value, int i,
+			t_sh_params *shell_params);
 char	*join_char(char *new_value, char c);
-void	update_tk(t_token **tk, t_list **lst_word, char **new_value, char **value);
-int		handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params *shell_params);
+void	update_tk(t_token **tk, t_list **lst_word, char **new_value,
+			char **value);
+int		handle_params(t_list **lst_word, char *value, char **new_value,
+			t_sh_params *shell_params);
 void	tk_print(t_token *tk);
 
 #endif

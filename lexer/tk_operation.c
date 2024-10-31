@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:48:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 13:11:15 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:45:14 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	tk_add_back(t_token **tk, t_token *tk_new)
 			tk_last(*tk)->next = tk_new;
 		else
 			*tk = tk_new;
-	}	
+	}
 }
 
 void	tk_clear(t_token **tk)
@@ -71,7 +71,7 @@ void	tk_clear(t_token **tk)
 	}
 }
 
-void	tk_print(t_token *tk) //to remove
+void	tk_print(t_token *tk) // to remove
 {
 	t_token	*tmp;
 
@@ -80,7 +80,8 @@ void	tk_print(t_token *tk) //to remove
 		if (!tk->next)
 			printf("value:{%s} type:{%d}\n", tk->value, tk->type);
 		else
-		printf("value:{%s} type:{%d} next:{%s}\n", tk->value, tk->type, tk->next->value);
+			printf("value:{%s} type:{%d} next:{%s}\n", tk->value, tk->type,
+				tk->next->value);
 	}
 	else
 		return ;
@@ -88,9 +89,11 @@ void	tk_print(t_token *tk) //to remove
 	while (tmp)
 	{
 		if (!tmp->next)
-			printf("value:{%s} type:{%d} prev:{%s}\n", tmp->value, tmp->type, tmp->prev->value);
+			printf("value:{%s} type:{%d} prev:{%s}\n", tmp->value, tmp->type,
+				tmp->prev->value);
 		else
-			printf("value:{%s} type:{%d} next:{%s} prev:{%s}\n", tmp->value, tmp->type, tmp->next->value, tmp->prev->value);
+			printf("value:{%s} type:{%d} next:{%s} prev:{%s}\n", tmp->value,
+				tmp->type, tmp->next->value, tmp->prev->value);
 		tmp = tmp->next;
 	}
 }

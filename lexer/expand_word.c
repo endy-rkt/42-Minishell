@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:12:15 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/21 10:25:53 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:45:41 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,13 @@ static void	expansion_lst(t_list **lst_word, char **split_value)
 	}
 }
 
-int	handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params *shell_params)
+int	handle_params(t_list **lst_word, char *value, char **new_value,
+		t_sh_params *shell_params)
 {
 	int		i;
 	int		new_val_len;
 	char	**split_value;
-	
+
 	i = expand_params(value, new_value, 0, shell_params);
 	split_value = ft_split(*new_value, ' ');
 	expansion_lst(lst_word, split_value);
@@ -54,10 +55,11 @@ int	handle_params(t_list **lst_word, char *value, char **new_value, t_sh_params 
 	*new_value = NULL;
 	if (value[i])
 		*new_value = ft_strdup("");
-	return (i);	
+	return (i);
 }
 
-static int	initial_check(t_token **tk, t_list **lst_word, char **new_value, char **value)
+static int	initial_check(t_token **tk, t_list **lst_word, char **new_value,
+		char **value)
 {
 	t_list	*last_lst;
 	char	*last_content;
@@ -70,17 +72,19 @@ static int	initial_check(t_token **tk, t_list **lst_word, char **new_value, char
 			(*tk)->value = *new_value;
 		return (1);
 	}
-	if (*lst_word && *new_value && (*lst_word)->content) 
+	if (*lst_word && *new_value && (*lst_word)->content)
 	{
 		last_lst = ft_lstlast(*lst_word);
 		last_content = last_lst->content;
-		ft_lstlast(*lst_word)->content = (void*) ft_strjoin(last_content, *new_value);
+		ft_lstlast(*lst_word)->content = (void *)ft_strjoin(last_content,
+			*new_value);
 	}
 	free(*new_value);
 	return (0);
 }
 
-void	update_tk(t_token **tk, t_list **lst_word, char **new_value, char **value)
+void	update_tk(t_token **tk, t_list **lst_word, char **new_value,
+		char **value)
 {
 	t_token	*next;
 	t_token	*new;
@@ -107,5 +111,3 @@ void	update_tk(t_token **tk, t_list **lst_word, char **new_value, char **value)
 	*tk = new;
 	ft_lstclear(lst_word, free_assign);
 }
-
-
