@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:12:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 16:21:26 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/01 07:41:45 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	exec_node(t_ast *ast_node, char **my_envp, t_sh_params **shell_params)
 	status = 0;
 	if (ast_node)
 	{
-		if (ast_node->node_type == NODE_CMD)
+		if (ast_node->t_node_type == NODE_CMD)
 		{
 			if (exec_void_cmd(ast_node, shell_params))
 			{

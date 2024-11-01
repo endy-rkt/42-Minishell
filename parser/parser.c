@@ -6,14 +6,14 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 16:17:16 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/01 07:41:45 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 static t_ast	*create_node(t_cmd *cmd, t_ast *left, t_ast *right,
-		int node_type)
+		int t_node_type)
 {
 	t_ast	*ast;
 
@@ -23,7 +23,7 @@ static t_ast	*create_node(t_cmd *cmd, t_ast *left, t_ast *right,
 	ast->cmd = cmd;
 	ast->left_node = left;
 	ast->right_node = right;
-	ast->node_type = node_type;
+	ast->t_node_type = t_node_type;
 	return (ast);
 }
 
@@ -99,13 +99,13 @@ void	print_ast(t_ast *ast)
 
 	if (ast)
 	{
-		if (ast->node_type == NODE_CMD)
+		if (ast->t_node_type == NODE_CMD)
 			print_one_cmd(ast->cmd);
-		if (ast->node_type == NODE_PIPELINE)
+		if (ast->t_node_type == NODE_PIPELINE)
 		{
 			printf("************************\n");
 			printf("left:\n");
-			printf("type:%d\n", ast->node_type);
+			printf("type:%d\n", ast->t_node_type);
 			print_ast(ast->left_node);
 			printf("right:\n");
 			print_ast(ast->right_node);

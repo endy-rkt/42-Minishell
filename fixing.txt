@@ -1,6 +1,0 @@
-
-1- link builtin like exit and get_env to main
-2- refactor export  and cd
-3- leak ??
-4- norminette
-5- series of test

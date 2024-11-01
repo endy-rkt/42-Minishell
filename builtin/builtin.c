@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:49 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/29 17:37:37 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/01 08:17:20 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,39 +43,90 @@ int	is_valid_flag(char *argv)
 		return (0);
 }
 
-int	ft_echo(char **argv, int fd)
-{
-	int	i;
-	int	j;
-	int	nl;
-	int	index;
 
-	i = 1;
-	nl = 1;
-	index = 1;
-	while (argv[i])
-	{
-		j = 1;
-		if (argv[1][0] == '-' && is_valid_flag(argv[i]) == 1)
-		{
-			index = i + 1;
-			nl = 0;
-		}
-		else
-			break ;
-		i++;
-	}
-	while (argv[index])
-	{
-		ft_putstr_fd(argv[index], fd);
-		if (argv[index + 1])
-			ft_putchar_fd(' ', fd);
-		index++;
-	}
-	if (nl)
-		ft_putchar_fd('\n', fd);
-	return (0);
+
+void my_ft_putchar_fd(char c, int fd) {
+    if (write(fd, &c, 1) == -1 && errno == EPIPE) {
+        // Handle broken pipe error
+        return; // Simply return to prevent further writes
+    }
 }
+
+void my_ft_putstr_fd(char *s, int fd) {
+    while (*s) {
+        if (write(fd, s, 1) == -1 && errno == EPIPE) {
+            // Handle broken pipe error
+            return; // Stop writing
+        }
+        s++;
+    }
+}
+
+int ft_echo(char **argv, int fd) {
+    int i = 1;
+    int j;
+    int nl = 1;
+    int index = 1;
+
+    while (argv[i]) {
+        j = 1;
+        if (argv[1][0] == '-' && is_valid_flag(argv[i]) == 1) {
+            index = i + 1;
+            nl = 0;
+        } else {
+            break;
+        }
+        i++;
+    }
+
+    while (argv[index]) {
+        my_ft_putstr_fd(argv[index], fd);
+        if (argv[index + 1])
+            my_ft_putchar_fd(' ', fd);
+        index++;
+    }
+
+    if (nl)
+        my_ft_putchar_fd('\n', fd);
+
+    return 0;
+}
+
+
+// int	ft_echo(char **argv, int fd)
+// {
+// 	int	i;
+// 	int	j;
+// 	int	nl;
+// 	int	index;
+
+// 	i = 1;
+// 	nl = 1;
+// 	index = 1;
+// 	while (argv[i])
+// 	{
+// 		j = 1;
+// 		if (argv[1][0] == '-' && is_valid_flag(argv[i]) == 1)
+// 		{
+// 			index = i + 1;
+// 			nl = 0;
+// 		}
+// 		else
+// 			break ;
+// 		i++;
+// 	}
+// 	ft_printf("------------fd=%d\n", fd);
+// 	while (argv[index])
+// 	{
+// 		my_ft_putstr_fd(argv[index], fd);
+// 		if (argv[index + 1])
+// 			my_ft_putchar_fd(' ', fd);
+// 		index++;
+// 	}
+// 	if (nl)
+// 		ft_putchar_fd('\n', fd);
+// 	return (0);
+// }
 
 int	buildin(char **argv, t_sh_params **shell_params, int *tab_fd)
 {

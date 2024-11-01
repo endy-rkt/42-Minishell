@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:14:39 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/29 18:43:10 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/01 07:41:51 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 # include "./libft/libft.h"
 
-typedef enum
+typedef enum e_token
 {
 	TK_WORD,
 	TK_ASSIGN,
@@ -26,12 +26,12 @@ typedef enum
 	TK_REDIR_OUT,
 	TK_REDIR_APPEND,
 	TK_HEREDOC
-}					token_type;
+}					t_token_type;
 
 typedef struct s_token
 {
 	char			*value;
-	token_type		type;
+	t_token_type	type;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -39,7 +39,7 @@ typedef struct s_token
 typedef struct s_redir
 {
 	char			*file;
-	token_type		type;
+	t_token_type	type;
 }					t_redir;
 
 typedef struct s_cmd
@@ -50,16 +50,16 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-typedef enum
+typedef enum e_node
 {
 	NODE_CMD,
 	NODE_PIPELINE,
-}					node_type;
+}					t_node_type;
 
 typedef struct s_ast
 {
 	t_cmd			*cmd;
-	int				node_type;
+	int				t_node_type;
 	struct s_ast	*left_node;
 	struct s_ast	*right_node;
 }					t_ast;

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:01:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 16:14:36 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/01 08:48:20 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,13 @@ static int	not_alpha_expansion(char *value, char **new_value, int i)
 	return (i + 1);
 }
 
+int	quote_and_dollar(char *value, char **new_value, int i)
+{
+	if (value[0] == '\'' || value[0] == '\"')
+		*new_value = ft_strjoin(*new_value, "$");
+	return (i);
+}
+
 int	expand_params(char *value, char **new_value, int i,
 		t_sh_params *shell_params)
 {
@@ -59,7 +66,7 @@ int	expand_params(char *value, char **new_value, int i,
 
 	i++;
 	if (value[i] == '\'' || value[i] == '\"')
-		return (i);
+		return (quote_and_dollar(value, new_value, i));
 	else if (value[i] == '\0' || ft_isspace(value[i]))
 		return (void_expansion(new_value, i - 1, "$"));
 	else if (value[i] == '?')

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 08:05:44 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/29 12:14:13 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/01 10:43:13 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ int	ft_cd(char **argv, char **copy_env)
 		status = change_to_path(argv[1], cwd, copy_env);
 		update_oldpwd("OLDPWD", cwd, copy_env);
 	}
-	write(1, "\n", 1);
 	getcwd(cwd, sizeof(cwd));
 	update_oldpwd("PWD", cwd, copy_env);
 	return (status);

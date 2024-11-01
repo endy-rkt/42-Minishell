@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 09:26:49 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/01 09:17:12 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	exec_void_cmd(t_ast *ast, t_sh_params **shell_params)
 	t_list	*redir;
 
 	if (ast->cmd == NULL)
-		return (1);
+		return (0);
 	cmd = ast->cmd;
 	if (cmd->args == NULL || cmd->args[0] == NULL)
 	{
@@ -107,7 +107,7 @@ void	execute(t_sh_params **shell_params)
 	ast = (*shell_params)->ast;
 	if (ast == NULL)
 		return ;
-	if (ast->node_type == NODE_CMD)
+	if (ast->t_node_type == NODE_CMD)
 	{
 		if (exec_void_cmd(ast, shell_params))
 			return ;

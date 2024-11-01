@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:58:21 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/29 18:38:42 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/01 09:51:16 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,21 +91,6 @@ static int	check_local_path(char **args, int *err_status)
 	return (0);
 }
 
-static int	path_not_set(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-			return (0);
-		i++;
-	}
-	ft_printf("minishell: path not set");
-	return (1);
-}
-
 char	*get_path(char **args, char **my_envp, int *err_status)
 {
 	int		i;
@@ -117,8 +102,6 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 		return (NULL);
 	if (!not_valid_path(args[0]))
 		return (ft_strdup(args[0]));
-	if (path_not_set(my_envp))
-		return (NULL);
 	i = 0;
 	while (my_envp[i] != NULL && ft_strnstr(my_envp[i], "PATH=", 5) == 0)
 		i++;

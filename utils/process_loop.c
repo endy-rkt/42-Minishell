@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 17:44:04 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/01 08:28:29 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	sigint_handler(int sig)
 static void	signal_handler(void)
 {
 	signal(SIGINT, sigint_handler);
+	signal(SIGPIPE, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
 

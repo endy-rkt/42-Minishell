@@ -6,13 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:35:10 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 10:25:19 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/01 07:41:28 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-void	add_token(t_token **tk, token_type type, char *str, int len)
+void	add_token(t_token **tk, t_token_type type, char *str, int len)
 {
 	char	*value;
 	t_token	*tk_tmp;
