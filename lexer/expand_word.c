@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:12:15 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 17:45:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 18:26:09 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static void	expansion_lst(t_list **lst_word, char **split_value)
 
 	if (!split_value || split_value[0] == NULL)
 		return ;
-	if (*lst_word && split_value[0] != NULL)
+	if (*lst_word != NULL && (*lst_word)->content != NULL && split_value[0] != NULL)
 	{
-		content = (*lst_word)->content;
-		(*lst_word)->content = ft_strjoin(content, split_value[0]);
+		content = ft_lstlast(*lst_word)->content;
+		ft_lstlast(*lst_word)->content = ft_strjoin(content, split_value[0]);
 	}
 	if (!*lst_word && split_value[0] != NULL)
 		*lst_word = ft_lstnew(ft_strdup(split_value[0]));
@@ -95,12 +95,12 @@ void	update_tk(t_token **tk, t_list **lst_word, char **new_value,
 	if (initial_check(tk, lst_word, new_value, value))
 		return ;
 	content = (*lst_word)->content;
-	new = tk_create(ft_strdup(content), TK_WORD, (*tk)->prev);
+	new = tk_create(ft_strdup(content), TK_E_WORD, (*tk)->prev);
 	tmp_lst = (*lst_word)->next;
 	while (tmp_lst)
 	{
 		content = ft_strdup(tmp_lst->content);
-		tk_add_back(&new, tk_create(content, TK_WORD, tk_last(new)));
+		tk_add_back(&new, tk_create(content, TK_E_WORD, tk_last(new)));
 		tmp_lst = tmp_lst->next;
 	}
 	next = (*tk)->next;

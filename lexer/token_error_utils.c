@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:18:54 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 14:23:32 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 17:14:50 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	redir_error(t_token **tk)
 {
 	if ((*tk)->next == NULL || (*tk)->next->value == NULL)
 		return (my_perror(2,
-				"minishell: syntax error near unexpected token `<'\n"));
+				"minishell: syntax error near unexpected token `newline'\n"));
 	if (is_redir((*tk)->next) || (*tk)->next->type == TK_HEREDOC
 		|| (*tk)->next->type == TK_PIPE)
 		return (my_perror(2,

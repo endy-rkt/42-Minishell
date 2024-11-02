@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:20 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/02 14:54:46 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 16:24:33 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,7 @@ void		update_oldpwd(char *line_read, char *cwd, char **copy_env);
 char		*search_envp(char *line_read, char **copy_env);
 int			change_to_home(char *cwd, char **copy_env, char *home);
 int			get_prefix_length(char *line_read);
-int			is_match(char *line_read, char **copy_env);
-int			change_to_oldpwd(char *cwd, char **copy_env);
-int			change_to_path(char *path, char *cwd, char **copy_env);
-int			ft_cd(char **argv, char **copy_env);
+int			ft_cd(char **argv, char ***copy_env);
 int			ft_pwd(int fd);
 int			ft_env(char **copy_env, char **argv, int fd);
 int			ft_export(char **command, char ***env, int fd);
@@ -107,6 +104,7 @@ char		*ft_strcpy(char *dest, const char *src);
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 int			buildin(char **argv, t_sh_params **shell_params, int *tab_fd);
 int			export_match(char *str_env, char *key);
+void		add_new_identifier(char *key, char *value, char ***envp);
 int			ft_exit(char **argv, char ***copy_env, t_sh_params **shell_params,
 				int *tab_fd);
 

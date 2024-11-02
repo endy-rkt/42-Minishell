@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:14:39 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/01 07:41:51 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 17:52:36 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 typedef enum e_token
 {
 	TK_WORD,
+	TK_E_WORD,
 	TK_ASSIGN,
 	TK_PIPE,
 	TK_REDIR_IN,

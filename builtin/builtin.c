@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:49 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/01 08:17:20 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 16:17:15 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,6 @@ int	is_valid_flag(char *argv)
 }
 
 
-
-void my_ft_putchar_fd(char c, int fd) {
-    if (write(fd, &c, 1) == -1 && errno == EPIPE) {
-        // Handle broken pipe error
-        return; // Simply return to prevent further writes
-    }
-}
-
-void my_ft_putstr_fd(char *s, int fd) {
-    while (*s) {
-        if (write(fd, s, 1) == -1 && errno == EPIPE) {
-            // Handle broken pipe error
-            return; // Stop writing
-        }
-        s++;
-    }
-}
-
 int ft_echo(char **argv, int fd) {
     int i = 1;
     int j;
@@ -80,14 +62,14 @@ int ft_echo(char **argv, int fd) {
     }
 
     while (argv[index]) {
-        my_ft_putstr_fd(argv[index], fd);
+        ft_putstr_fd(argv[index], fd);
         if (argv[index + 1])
-            my_ft_putchar_fd(' ', fd);
+            ft_putchar_fd(' ', fd);
         index++;
     }
 
     if (nl)
-        my_ft_putchar_fd('\n', fd);
+        ft_putchar_fd('\n', fd);
 
     return 0;
 }
@@ -118,9 +100,9 @@ int ft_echo(char **argv, int fd) {
 // 	ft_printf("------------fd=%d\n", fd);
 // 	while (argv[index])
 // 	{
-// 		my_ft_putstr_fd(argv[index], fd);
+// 		ft_putstr_fd(argv[index], fd);
 // 		if (argv[index + 1])
-// 			my_ft_putchar_fd(' ', fd);
+// 			ft_putchar_fd(' ', fd);
 // 		index++;
 // 	}
 // 	if (nl)
@@ -138,7 +120,7 @@ int	buildin(char **argv, t_sh_params **shell_params, int *tab_fd)
 	fd = tab_fd[1];
 	copy_env = &((*shell_params)->my_envp);
 	if (ft_strcmp(argv[0], "cd") == 0)
-		status = ft_cd(argv, *copy_env);
+		status = ft_cd(argv, copy_env);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		status = ft_pwd(fd);
 	else if (ft_strcmp(argv[0], "env") == 0)

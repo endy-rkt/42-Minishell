@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 14:25:50 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 18:27:13 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ static void	recursive_expansion(t_token **tk, t_sh_params *shell_params)
 				expand_word(tk, shell_params);
 			}
 		}
+		if ((*tk)->type == TK_E_WORD)
+			(*tk)->type = TK_WORD;
 		if (is_redir(*tk))
 			expand_redir(tk);
 		if ((*tk)->next)

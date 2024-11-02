@@ -253,7 +253,7 @@ test_from_file() {
 			echo -n "enable -n .$NL$INPUT" | bash 2>tmp_err_bash >tmp_out_bash
 			exit_bash=$?
 			echo -ne "\033[1;34mSTD_OUT:\033[m "
-			< tmp_out_minishell grep -vE ^">" | grep -vE ^"heredoc> " > out_minishell
+			< tmp_out_minishell grep -vE ^">" | grep -v ^"heredoc> " > out_minishell
 			if ! diff -q out_minishell tmp_out_bash >/dev/null ;
 			then
 				# echo $INPUT

@@ -5,129 +5,90 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 08:05:44 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/01 10:43:13 by trazanad         ###   ########.fr       */
+/*   Created: 2024/11/02 15:43:23 by trazanad          #+#    #+#             */
+/*   Updated: 2024/11/02 16:38:31 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
 
-int	this_func(t_oldpwd *var, char **copy_env, char *cwd)
+static void	update_env(char *key, char *value, char ***env)
 {
-	var->new_value = malloc((var->len + 2 + ft_strlen(cwd) + 1) * sizeof(char));
-	if (var->new_value == NULL)
-		return (0);
-	copy_env[var->i] = ft_strjoin(copy_env[var->i], "=");
-	ft_strncpy(var->new_value, copy_env[var->i], var->len + 2);
-	ft_strcpy(var->new_value + var->len + 1, cwd);
-	free(copy_env[var->i]);
-	copy_env[var->i] = var->new_value;
-	return (1);
+	char	*val;
+	char	**args;
+
+	args = malloc(sizeof(char *) * 3);
+	if (!args)
+		return ;
+	val = ft_strdup(key);
+	val = ft_strjoin(val, "=");
+	val = ft_strjoin(val, value);
+	args[0] = ft_strdup("export");
+	args[1] = val;
+	args[2] = NULL;
+	ft_export(args, env, 1);
+	free_args(args);
 }
 
-int	that_func(t_oldpwd *var, char **copy_env, char *cwd)
+int	navigate_to_path(char *path, char ***env)
 {
-	var->new_value = malloc((var->len + 1 + ft_strlen(cwd) + 1) * sizeof(char));
-	if (var->new_value == NULL)
-		return (0);
-	ft_strncpy(var->new_value, copy_env[var->i], var->len + 1);
-	ft_strcpy(var->new_value + var->len + 1, cwd);
-	free(copy_env[var->i]);
-	copy_env[var->i] = var->new_value;
-	return (1);
-}
+	char	current_dir[4096];
 
-void	update_oldpwd(char *line_read, char *cwd, char **copy_env)
-{
-	t_oldpwd	var;
-
-	var.len = 0;
-	while (line_read[var.len] && line_read[var.len] != '=')
-		var.len++;
-	var.i = 0;
-	while (copy_env[var.i])
-	{
-		if (ft_strncmp(copy_env[var.i], line_read, var.len) == 0
-			&& (copy_env[var.i][var.len] == '='
-				|| copy_env[var.i][var.len] == '\0'))
-		{
-			if (copy_env[var.i][var.len] == '\0')
-			{
-				if (this_func(&var, copy_env, cwd) == 0)
-					return ;
-			}
-			else if (that_func(&var, copy_env, cwd) == 0)
-				return ;
-			break ;
-		}
-		var.i++;
-	}
-}
-
-int	change_to_path(char *path, char *cwd, char **copy_env)
-{
-	char	*home;
-
-	home = get_env_value("HOME", copy_env);
-	if (path[0] == '~' && (path[1] == '\0' || (path[1] == '/'
-				&& path[2] == '\0')))
-	{
-		if (change_to_home(cwd, copy_env, home) == 1)
-			return (1);
-	}
-	else if (path[0] == '~')
-	{
-		if (!chdir(home))
-		{
-			perror("cd");
-			return (1);
-		}
-		if (chdir(path + 2) == 0)
-			update_oldpwd("OLDPWD", cwd, copy_env);
-		else
-		{
-			chdir(cwd);
-			perror("cd");
-			return (1);
-		}
-	}
-	else if (chdir(path) == 0)
-		;
-	else
+	if (chdir(path))
 	{
 		perror("cd");
 		return (1);
 	}
+	getcwd(current_dir, sizeof(current_dir));
+	update_env("PWD", current_dir, env);
 	return (0);
 }
 
-int	ft_cd(char **argv, char **copy_env)
+int	navigate_to_home(char ***env)
+{
+	char	*home_path;
+
+	home_path = get_env_value("HOME", *env);
+	if (home_path == NULL)
+	{
+		ft_putstr_fd("cd : Home not set\n", 2);
+		return (1);
+	}
+	return (navigate_to_path(home_path, env));
+}
+
+int	navigate_to_oldpwd(char ***env)
+{
+	char	*oldpwd;
+
+	oldpwd = get_env_value("OLDPWD", *env);
+	if (oldpwd == NULL)
+	{
+		ft_putstr_fd("cd : OLDPWD not set\n", 2);
+		return (1);
+	}
+	return (navigate_to_path(oldpwd, env));
+}
+
+int	ft_cd(char **argv, char ***env)
 {
 	int		status;
-	char	cwd[4096];
-	char	*home;
+	char	start_dir[4096];
 
 	status = 0;
-	getcwd(cwd, sizeof(cwd));
+	getcwd(start_dir, sizeof(start_dir));
 	if (argv[1] == NULL)
-	{
-		home = get_env_value("HOME", copy_env);
-		if (change_to_home(cwd, copy_env, home) == 1)
-			return (1);
-	}
+		status = navigate_to_home(env);
 	else if (argv[1] != NULL && argv[2] != NULL)
 	{
-		status = 1;
-		write(2, "too many arguments\n", 19);
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		return (1);
 	}
-	else if (argv[1] && argv[1][0] == '-' && argv[1][1] == '\0')
-		status = change_to_oldpwd(cwd, copy_env);
-	else
-	{
-		status = change_to_path(argv[1], cwd, copy_env);
-		update_oldpwd("OLDPWD", cwd, copy_env);
-	}
-	getcwd(cwd, sizeof(cwd));
-	update_oldpwd("PWD", cwd, copy_env);
+	else if (ft_strcmp(argv[1], "-") == 0)
+		status = navigate_to_oldpwd(env);
+	else 
+		status = navigate_to_path(argv[1], env);
+	if (status == 0)
+		update_env("OLDPWD", start_dir, env);
 	return (status);
 }
