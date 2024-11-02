@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/01 08:28:29 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 15:15:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int	process_loop(int (*run_shell)(char *, char ***, int), char **envp)
 	int			prev_status;
 	char		*input;
 	char		**global_envp;
-	static char	*prompt = "\033[0;35m❯ \033[0m";
+	// static char	*prompt = "\033[0;35m❯ \033[0m";
+	static char	*prompt = ">";
 
 	no_exit = 1;
 	prev_status = 0;

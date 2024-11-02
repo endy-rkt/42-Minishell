@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 09:14:28 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/31 17:28:58 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 13:59:58 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ int	unset_nb(char **argv, char **env)
 	count = 0;
 	while (argv[i])
 	{
+		if (argv[i][0] == '\0')
+		{
+			if (argv[i + 1] == NULL)
+				break ;
+			else
+				i++;
+		}
 		tmp = ft_strdup(argv[i]);
 		tmp = ft_strjoin(tmp, "=");
 		j = 0;
@@ -108,6 +115,8 @@ int	ft_unset(char **argv, char ***copy_env)
 {
 	char	**new;
 
+	if (argv[0] == NULL || argv[1] == NULL)
+		return (0);
 	new = unseted_env(argv, copy_env);
 	if (new == NULL)
 		return (0);

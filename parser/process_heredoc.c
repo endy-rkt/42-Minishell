@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/01 10:33:03 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 15:15:43 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*heredoc_value(t_redir *rd, t_sh_params *shell_params)
 	input = NULL;
 	while (1)
 	{
-		ft_printf("heredoc>");
+		ft_printf("heredoc> ");
 		input = get_next_line(0);
 		if (break_loop(&input, delimiter))
 			break ;

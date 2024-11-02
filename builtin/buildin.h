@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:20 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/25 11:27:39 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 14:54:46 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void		bubble_sort(char **array, int length);
 char		*ft_strcpy(char *dest, const char *src);
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 int			buildin(char **argv, t_sh_params **shell_params, int *tab_fd);
+int			export_match(char *str_env, char *key);
 int			ft_exit(char **argv, char ***copy_env, t_sh_params **shell_params,
 				int *tab_fd);
 

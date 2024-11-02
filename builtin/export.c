@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:21:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 17:37:42 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 14:53:45 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	export_match(char *str_env, char *key)
 	return (0);
 }
 
-char	*export_new_val(char *value, char *key, char *prev_val)
+char	*export_new_val(char *value, char **key, char *prev_val)
 {
 	char	*new_val;
 
@@ -80,15 +80,19 @@ char	*export_new_val(char *value, char *key, char *prev_val)
 	if (value[0] == '+')
 	{
 		new_val = ft_strdup(prev_val);
-		if (prev_val[ft_strlen(key)] == '\0')
+		if (prev_val[ft_strlen(*key)] == '\0')
 			new_val = ft_strjoin(new_val, "=");
 		new_val = ft_strjoin(new_val, value + 2);
 	}
-	if (value[0] == '=')
+	else if (value[0] == '=')
 	{
-		new_val = ft_strdup(key);
+		new_val = ft_strdup(*key);
 		new_val = ft_strjoin(new_val, value);
 	}
+	else
+		new_val = ft_strdup(prev_val);
+	free(*key);
+	*key = NULL;
 	return (new_val);
 }
 
@@ -104,15 +108,15 @@ void	add_value(char *val, char ***envp)
 		i++;
 	key = ft_substr(val, 0, i);
 	value = val + i;
+	i = 0;
 	while ((*envp)[i])
 	{
 		if (export_match((*envp)[i], key) && (value[0] == '+' || value[0] == '='
 				|| value[0] == '\0'))
 		{
-			new_val = export_new_val(value, key, (*envp)[i]);
+			new_val = export_new_val(value, &key, (*envp)[i]);
 			free((*envp)[i]);
 			(*envp)[i] = new_val;
-			free(key);
 			return ;
 		}
 		i++;
@@ -126,20 +130,25 @@ int	update_export(char **argv, char ***my_envp, int fd)
 	int	i;
 	int	name_valid;
 	int	is_in_env;
+	int	status;
 
 	i = 1;
 	name_valid = 0;
 	is_in_env = 0;
+	status = 0;
 	while (argv[i])
 	{
 		name_valid = validate_name(argv[i]);
 		if (!name_valid)
+		{
+			status = 1;
 			ft_putstr_fd("export: invalid identifier\n", 2);
+		}
 		else
 			add_value(argv[i], my_envp);
 		i++;
 	}
-	return (0);
+	return (status);
 }
 
 int	ft_export(char **argv, char ***my_envp, int fd)

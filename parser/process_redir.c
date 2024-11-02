@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:17:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/19 13:43:16 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 13:44:30 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,23 @@ static int	stdin_value(t_list *lst_redir)
 	return (fd);
 }
 
+int is_directory(char *args)
+{
+    struct stat sb;
+
+    if (args == NULL)
+        return 0;
+    if (lstat(args, &sb) == 0)
+	{
+        if (S_ISDIR(sb.st_mode)) 
+		{
+			print_exec_error(args, "Is a directory\n");
+            return (1);
+        }
+    }
+    return (0);
+}
+
 static int	stdout_value(t_list *lst_redir)
 {
 	int		fd;
@@ -77,9 +94,12 @@ static int	stdout_value(t_list *lst_redir)
 		fd = open(redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	else
 		fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
-	if (!last_redir_out(lst_redir))
+	if (fd != -1 && !last_redir_out(lst_redir))
 		close(fd);
-	invalid_fd(fd, redir->file);
+	if (!is_directory(redir->file))
+		invalid_fd(fd, redir->file);
+	else
+		return (-1);
 	return (fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:58:21 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/01 09:51:16 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 13:19:01 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,16 @@ char	*get_path(char **args, char **my_envp, int *err_status)
 	i = 0;
 	while (my_envp[i] != NULL && ft_strnstr(my_envp[i], "PATH=", 5) == 0)
 		i++;
+	// if (/*unset_path*/)
+	// {
+	// 	print_exec_error(args[0], "No such file or directory\n");
+	// 	*err_status = 127;
+	// 	return (NULL);	
+	// }
 	if (my_envp[i] == NULL)
 	{
 		print_exec_error(args[0], "Command not found\n");
+		*err_status = 127;
 		return (NULL);
 	}
 	tmp = ft_split(my_envp[i] + 5, ':');

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/01 07:41:45 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/02 14:47:26 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,21 @@ static int	error_in_lexing(int tk_error, t_cmd **cmd)
 	return (0);
 }
 
+int	check_void_redir(t_token *tk, t_sh_params **shell_params)
+{
+	while (tk)
+	{
+		if (is_redir(tk))
+		{
+			if (tk->next == NULL || tk->next->value == NULL)
+				return (my_perror(2,
+					"minishell: syntax error near unexpected token `<'\n"));
+		}
+		tk = tk->next;
+	}
+	return (0);
+}
+
 void	parse(t_sh_params **shell_params, char *input)
 {
 	t_token	*tk;
@@ -81,7 +96,20 @@ void	parse(t_sh_params **shell_params, char *input)
 	if (!tk)
 		return ;
 	tk_error = check_tk_error(&tk, shell_params);
+	if (tk_error != 0)
+	{
+		(*shell_params)->exit_status = tk_error;
+		tk_clear(&tk);
+		return ;
+	}
 	expand(&tk, *shell_params);
+	tk_error = check_void_redir(tk, shell_params);
+	if (tk_error != 0)
+	{
+		(*shell_params)->exit_status = tk_error;
+		tk_clear(&tk);
+		return ;
+	}
 	(*shell_params)->exit_status = tk_error;
 	cmd = create_cmd_list(tk);
 	tk_clear(&tk);
