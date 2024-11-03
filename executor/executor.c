@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:06:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/01 09:17:12 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:18:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	exec_void_cmd(t_ast *ast, t_sh_params **shell_params)
 {
 	int		*fd;
 	t_cmd	*cmd;
-	t_list	*redir;
 
 	if (ast->cmd == NULL)
 		return (0);
@@ -72,12 +71,10 @@ static void	execute_cmd(t_sh_params **shell_params)
 {
 	t_ast	*ast;
 	t_cmd	*cmd;
-	char	**my_envp;
 	int		exit_status;
 
 	exit_status = 0;
 	ast = (*shell_params)->ast;
-	my_envp = (*shell_params)->my_envp;
 	cmd = ast->cmd;
 	exit_status = exec_cmd(cmd->args, cmd->redir, shell_params);
 	(*shell_params)->exit_status = exit_status;
@@ -100,9 +97,7 @@ static void	execute_pipeline(t_sh_params **shell_params)
 
 void	execute(t_sh_params **shell_params)
 {
-	int		void_cmd_status;
 	t_ast	*ast;
-	char	**args;
 
 	ast = (*shell_params)->ast;
 	if (ast == NULL)

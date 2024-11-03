@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 09:10:55 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/29 17:00:01 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:11:13 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,6 @@ char	**ft_copy_env_content(char **envp, char **copy, int len)
 	copy[len] = NULL;
 	return (copy);
 }
-
-// char	**ft_copy_env(char **envp)
-// {
-// 	int		len;
-// 	char	**copy;
-
-// 	copy = ft_allocate_env_copy(envp, &len);
-// 	if (copy == NULL)
-// 		return (NULL);
-// 	return (ft_copy_env_content(envp, copy, len));
-// }
 
 char	**ft_copy_env(char **envp)
 {

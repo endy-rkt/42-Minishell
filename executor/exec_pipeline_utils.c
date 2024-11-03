@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:12:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 13:51:28 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:16:59 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	exec_node(t_ast *ast_node, char **my_envp, t_sh_params **shell_params)
 				exit(status);
 			}
 			if (is_builtin(ast_node->cmd))
-				exec_piped_builtin(ast_node, my_envp, shell_params);
+				exec_piped_builtin(ast_node, shell_params);
 			else
 				launch_child(ast_node, my_envp, shell_params);
 		}

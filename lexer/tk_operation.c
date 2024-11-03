@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:48:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/01 07:41:28 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:45:34 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,32 +68,5 @@ void	tk_clear(t_token **tk)
 				tmp = tk_next;
 			}
 		}
-	}
-}
-
-void	tk_print(t_token *tk) // to remove
-{
-	t_token	*tmp;
-
-	if (tk)
-	{
-		if (!tk->next)
-			printf("value:{%s} type:{%d}\n", tk->value, tk->type);
-		else
-			printf("value:{%s} type:{%d} next:{%s}\n", tk->value, tk->type,
-				tk->next->value);
-	}
-	else
-		return ;
-	tmp = tk->next;
-	while (tmp)
-	{
-		if (!tmp->next)
-			printf("value:{%s} type:{%d} prev:{%s}\n", tmp->value, tmp->type,
-				tmp->prev->value);
-		else
-			printf("value:{%s} type:{%d} next:{%s} prev:{%s}\n", tmp->value,
-				tmp->type, tmp->next->value, tmp->prev->value);
-		tmp = tmp->next;
 	}
 }

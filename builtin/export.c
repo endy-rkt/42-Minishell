@@ -6,29 +6,11 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:21:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 14:53:45 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:14:20 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
-
-int	validate_name(char *val)
-{
-	int	i;
-
-	if (val[0] != '_' && !ft_isalpha(val[0]))
-		return (0);
-	i = 1;
-	while (val[i] && val[i] != '=' && val[i] != '+')
-	{
-		if (val[i] != '_' && !ft_isalnum(val[i]))
-			return (0);
-		i++;
-	}
-	if (val[i] == '+' && val[i + 1] != '=')
-		return (0);
-	return (1);
-}
 
 void	add_new_identifier(char *key, char *value, char ***envp)
 {
@@ -57,19 +39,6 @@ void	add_new_identifier(char *key, char *value, char ***envp)
 	free_args(*envp);
 	*envp = NULL;
 	*envp = new;
-}
-
-int	export_match(char *str_env, char *key)
-{
-	int	key_len;
-
-	key_len = ft_strlen(key);
-	if (ft_strncmp(str_env, key, key_len) == 0)
-	{
-		if (str_env[key_len] == '\0' || str_env[key_len] == '=')
-			return (1);
-	}
-	return (0);
 }
 
 char	*export_new_val(char *value, char **key, char *prev_val)
@@ -125,16 +94,14 @@ void	add_value(char *val, char ***envp)
 	free(key);
 }
 
-int	update_export(char **argv, char ***my_envp, int fd)
+int	update_export(char **argv, char ***my_envp)
 {
 	int	i;
 	int	name_valid;
-	int	is_in_env;
 	int	status;
 
 	i = 1;
 	name_valid = 0;
-	is_in_env = 0;
 	status = 0;
 	while (argv[i])
 	{
@@ -163,6 +130,6 @@ int	ft_export(char **argv, char ***my_envp, int fd)
 		print_export(*my_envp, fd);
 		return (status);
 	}
-	status = update_export(argv, my_envp, fd);
+	status = update_export(argv, my_envp);
 	return (status);
 }

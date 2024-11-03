@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:30:03 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/29 18:44:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:04:58 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	run_shell(char *input, char ***envp, int prev_status)
 
 int	main(int argc, char **argv, char **envp)
 {
+	(void)argv;
 	if (argc != 1)
 	{
 		ft_putstr_fd("minishell: minishell need no argument", 2);

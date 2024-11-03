@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:03:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 17:48:11 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:04:17 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "../header.h"
 # include "../parser/parser.h"
 
+char	*path_from_env(char **args, char **my_envp, int *err_status);
 char	*get_path(char **args, char **my_envp, int *err_status);
 int		change_redir(t_list *lst_redir, int stdin, int stdout);
 void	print_exec_error(char *arg_name, char *message);
@@ -27,8 +28,7 @@ int		exec_builtin(t_sh_params **shell_params);
 int		exec_void_cmd(t_ast *ast, t_sh_params **shell_params);
 int		exec_cmd(char **args, t_list *lst_redir, t_sh_params **shell_params);
 int		is_builtin(t_cmd *cmd);
-int		exec_piped_builtin(t_ast *ast, char **my_envp,
-			t_sh_params **shell_params);
+int		exec_piped_builtin(t_ast *ast, t_sh_params **shell_params);
 int		exec_pipeline(t_ast *ast, char **my_envp, t_sh_params **shell_params);
 int		get_status(int pid);
 void	exec_node(t_ast *ast_node, char **my_envp, t_sh_params **shell_params);

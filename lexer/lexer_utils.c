@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:09:24 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 16:11:53 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:47:39 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,16 @@ int	idx_of_first(char *str, char c)
 		i++;
 	}
 	return (1);
+}
+
+char	*my_getenv(char *var, t_sh_params *shell_params)
+{
+	char	*str;
+
+	if (!var)
+		return ("");
+	str = get_env_value(var, shell_params->my_envp);
+	if (!str)
+		return ("");
+	return (str);
 }

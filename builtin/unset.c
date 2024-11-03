@@ -6,47 +6,11 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 09:14:28 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/02 13:59:58 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:12:19 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
-
-int	unset_nb(char **argv, char **env)
-{
-	int		i;
-	int		j;
-	int		count;
-	char	*tmp;
-
-	i = 0;
-	count = 0;
-	while (argv[i])
-	{
-		if (argv[i][0] == '\0')
-		{
-			if (argv[i + 1] == NULL)
-				break ;
-			else
-				i++;
-		}
-		tmp = ft_strdup(argv[i]);
-		tmp = ft_strjoin(tmp, "=");
-		j = 0;
-		while (env[j])
-		{
-			if (ft_strncmp(argv[i], env[j], ft_strlen(argv[i])) == 0)
-			{
-				count++;
-				break ;
-			}
-			j++;
-		}
-		free(tmp);
-		i++;
-	}
-	return (count);
-}
 
 int	is_to_unset(char *str, char **argv)
 {

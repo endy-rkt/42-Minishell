@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:44 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 17:10:44 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:00:57 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ void	free_one_cmd(t_cmd **cmd);
 void	free_args(char **args);
 void	free_assign(void *value);
 void	free_redir(void *redir);
-void	print_one_cmd(t_cmd *cmd);
-void	print_single_cmd(t_cmd *cmd);
-void	print_ast(t_ast *ast);
 void	parse(t_sh_params **shell_params, char *input);
 void	ast_clear(t_ast **ast);
 void	print_error(char *arg_name, char *message);
@@ -47,14 +44,17 @@ t_list	*last_redirin(t_list *lst);
 void	invalid_fd(int fd, char *file);
 void	add_tmp_file(char *file, t_sh_params **shell_params, t_cmd **cmd);
 void	tmp_heredoc(t_list *lst_redir, t_sh_params *shell_params);
-void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char *file,
+void	stored_heredoc(t_list *lst_redir, char *file,
 			t_sh_params **shell_params);
 void	hdoc_status(int pid, t_sh_params **shell_params);
 void	process_heredoc(t_cmd **cmd, t_sh_params **shell_params);
 char	*heredoc_value(t_redir *rd, t_sh_params *shell_params);
 char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *shell_params);
 char	*take_delim(t_redir *rd);
-void	manage_heredoc(t_list *lst_redir, t_cmd **cmd, char *file,
+int		lex_and_expand(t_token **tk, t_sh_params **shell_params);
+int		check_void_redir(t_token *tk);
+int		is_directory(char *args);
+void	manage_heredoc(t_list *lst_redir, char *file,
 			t_sh_params **shell_params);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 09:32:11 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/31 08:53:20 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:15:36 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static void	free_paramas(t_sh_params **shell_params, int *tab_fd)
 		free_sh_params(shell_params);
 }
 
-int	ft_exit(char **argv, char ***copy_env, t_sh_params **shell_params,
+int	ft_exit(char **argv, t_sh_params **shell_params,
 		int *tab_fd)
 {
 	int	status;

@@ -6,17 +6,17 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:35:14 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 16:19:26 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:09:35 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	manage_heredoc(t_list *lst_redir, t_cmd **cmd, char *file,
+void	manage_heredoc(t_list *lst_redir, char *file,
 		t_sh_params **shell_params)
 {
 	if (last_redir_in(lst_redir))
-		stored_heredoc(cmd, lst_redir, file, shell_params);
+		stored_heredoc(lst_redir, file, shell_params);
 	else
 		tmp_heredoc(lst_redir, *shell_params);
 }

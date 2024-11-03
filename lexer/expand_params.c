@@ -6,23 +6,11 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:01:07 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 13:24:12 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:47:10 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
-
-static char	*my_getenv(char *var, t_sh_params *shell_params)
-{
-	char	*str;
-
-	if (!var)
-		return ("");
-	str = get_env_value(var, shell_params->my_envp);
-	if (!str)
-		return ("");
-	return (str);
-}
 
 static int	error_status(char **new_value, int i, t_sh_params *shell_params)
 {
@@ -51,7 +39,7 @@ static int	not_alpha_expansion(char *value, char **new_value, int i)
 	return (i + 1);
 }
 
-int	quote_and_dollar(char *value, char **new_value, int i)
+static int	quote_and_dollar(char *value, char **new_value, int i)
 {
 	if (value[0] == '\'' || value[0] == '\"' || (value[0] == '$' && i != 1))
 		*new_value = ft_strjoin(*new_value, "$");

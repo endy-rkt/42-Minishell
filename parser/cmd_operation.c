@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:23:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 16:16:57 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:50:13 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,67 +73,4 @@ int	cmd_is_pipe(t_cmd *cmd)
 	if (cmd == NULL)
 		return (1);
 	return (!cmd->args && !cmd->assign && !cmd->redir);
-}
-
-void	print_one_cmd(t_cmd *cmd)
-{
-	int		i;
-	t_list	*assign;
-	t_list	*redir;
-	t_redir	*tmp;
-
-	if (cmd)
-	{
-		printf("----------------------------------------------------------------\n");
-		if (!cmd->args && !cmd->assign && !cmd->redir)
-		{
-			printf("pipe\n");
-		}
-		if (cmd->args)
-		{
-			i = 0;
-			printf("args:\t");
-			while (cmd->args[i] != NULL)
-			{
-				printf("{%s}\t", cmd->args[i]);
-				i++;
-			}
-			printf("\n");
-		}
-		if (cmd->assign)
-		{
-			assign = cmd->assign;
-			printf("assign:\t");
-			while (assign)
-			{
-				printf("{%s}\t", (char *)assign->content);
-				assign = assign->next;
-			}
-			printf("\n");
-		}
-		if (cmd->redir)
-		{
-			redir = cmd->redir;
-			printf("redir:\t");
-			while (redir)
-			{
-				tmp = (t_redir *)redir->content;
-				printf("{%s}{%d}\t", tmp->file, tmp->type);
-				redir = redir->next;
-			}
-			printf("\n");
-		}
-		// printf("args:%s\n");
-		// printf("assign:%s\n");
-		// printf("redir:%s\n");
-	}
-}
-
-void	print_single_cmd(t_cmd *cmd)
-{
-	while (cmd)
-	{
-		print_one_cmd(cmd);
-		cmd = cmd->next;
-	}
 }

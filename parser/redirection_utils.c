@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 11:08:02 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/20 07:55:31 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:09:19 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_list	*last_redirin(t_list *lst)
 {
 	t_list	*tmp;
-	t_redir	*r;
 
 	if (last_redir_in(lst))
 		return (lst);
@@ -24,10 +23,8 @@ t_list	*last_redirin(t_list *lst)
 	{
 		if (last_redir_in(tmp))
 			break ;
-		r = lst->content;
 		tmp = tmp->next;
 	}
-	r = tmp->content;
 	return (tmp);
 }
 
@@ -77,7 +74,7 @@ void	tmp_heredoc(t_list *lst_redir, t_sh_params *shell_params)
 		free(value);
 }
 
-void	stored_heredoc(t_cmd **cmd, t_list *lst_redir, char *file,
+void	stored_heredoc(t_list *lst_redir, char *file,
 		t_sh_params **shell_params)
 {
 	int		fd;

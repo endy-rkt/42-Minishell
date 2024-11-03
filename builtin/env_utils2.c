@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 09:30:37 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/18 08:21:25 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:11:35 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 int	ft_env(char **copy_env, char **argv, int fd)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 0;
 	if (argv[1] != NULL)
 	{
 		write(2, "env: too many arguments\n", 24);

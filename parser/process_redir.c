@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:17:47 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 13:44:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:00:34 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,6 @@ static int	stdin_value(t_list *lst_redir)
 		close(fd);
 	invalid_fd(fd, redir->file);
 	return (fd);
-}
-
-int	is_directory(char *args)
-{
-	struct stat	sb;
-
-	if (args == NULL)
-		return (0);
-	if (lstat(args, &sb) == 0)
-	{
-		if (S_ISDIR(sb.st_mode))
-		{
-			print_exec_error(args, "Is a directory\n");
-			return (1);
-		}
-	}
-	return (0);
 }
 
 static int	stdout_value(t_list *lst_redir)

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 11:23:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 17:13:17 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:16:13 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	is_builtin(t_cmd *cmd)
 	return (0);
 }
 
-int	exec_piped_builtin(t_ast *ast, char **my_envp, t_sh_params **shell_params)
+int	exec_piped_builtin(t_ast *ast, t_sh_params **shell_params)
 {
 	t_cmd	*cmd;
 	t_list	*lst_redir;

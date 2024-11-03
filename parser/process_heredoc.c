@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 15:15:43 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:10:07 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static void	handle_heredoc(t_cmd **cmd, char *file, t_sh_params **shell_params,
 		{
 			if (g_sig)
 				break ;
-			manage_heredoc(lst_redir, cmd, file, shell_params);
+			manage_heredoc(lst_redir, file, shell_params);
 			lst_redir = lst_redir->next;
 		}
 		clean_alloc(file, shell_params, lst_cmd);

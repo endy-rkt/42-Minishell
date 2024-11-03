@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:35:02 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 14:25:56 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:48:08 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ void	update_tk(t_token **tk, t_list **lst_word, char **new_value,
 			char **value);
 int		handle_params(t_list **lst_word, char *value, char **new_value,
 			t_sh_params *shell_params);
-void	tk_print(t_token *tk);
+char	*my_getenv(char *var, t_sh_params *shell_params);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:49 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/03 13:09:26 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:18:45 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 char	*ft_strcpy(char *dest, const char *src)
 {
+	int		i;
 	char	*original_dest;
 
+	i = 0;
 	original_dest = dest;
-	while ((*dest++ = *src++) != '\0')
-		;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
 	return (original_dest);
 }
 
@@ -43,28 +48,8 @@ int	is_valid_flag(char *argv)
 		return (0);
 }
 
-int	ft_echo(char **argv, int fd)
+void	print_nl(char **argv, int fd, int index, int nl)
 {
-	int	i;
-	int	j;
-	int	nl;
-	int	index;
-
-	i = 1;
-	nl = 1;
-	index = 1;
-	while (argv[i])
-	{
-		j = 1;
-		if (argv[1][0] == '-' && is_valid_flag(argv[i]) == 1)
-		{
-			index = i + 1;
-			nl = 0;
-		}
-		else
-			break ;
-		i++;
-	}
 	while (argv[index])
 	{
 		ft_putstr_fd(argv[index], fd);
@@ -74,6 +59,29 @@ int	ft_echo(char **argv, int fd)
 	}
 	if (nl)
 		ft_putchar_fd('\n', fd);
+}
+
+int	ft_echo(char **argv, int fd)
+{
+	int	i;
+	int	nl;
+	int	index;
+
+	i = 1;
+	nl = 1;
+	index = 1;
+	while (argv[i])
+	{
+		if (argv[1][0] == '-' && is_valid_flag(argv[i]) == 1)
+		{
+			index = i + 1;
+			nl = 0;
+		}
+		else
+			break ;
+		i++;
+	}
+	print_nl(argv, fd, index, nl);
 	return (0);
 }
 
@@ -99,6 +107,6 @@ int	buildin(char **argv, t_sh_params **shell_params, int *tab_fd)
 	else if (ft_strcmp(argv[0], "echo") == 0)
 		status = ft_echo(argv, fd);
 	else if (ft_strcmp(argv[0], "exit") == 0)
-		status = ft_exit(argv, copy_env, shell_params, tab_fd);
+		status = ft_exit(argv, shell_params, tab_fd);
 	return (status);
 }

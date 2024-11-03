@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/03 12:59:27 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:58:50 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,32 +59,24 @@ static t_ast	*create_ast(t_cmd *cmd)
 	return (ast);
 }
 
-static int	error_in_lexing(int tk_error, t_cmd **cmd)
+int	lex_and_expand(t_token **tk, t_sh_params **shell_params)
 {
-	if (tk_error)
+	int	tk_error;
+
+	tk_error = check_tk_error(tk, shell_params);
+	if (tk_error != 0)
 	{
-		cmd_clear(cmd);
+		(*shell_params)->exit_status = tk_error;
 		return (1);
 	}
-	return (0);
-}
-
-int	check_void_redir(t_token *tk, t_sh_params **shell_params)
-{
-	char	msg[100];
-
-	ft_strcpy(msg, "minishell: syntax error near unexpected token `newline'\n");
-	while (tk)
+	expand(tk, *shell_params);
+	tk_error = check_void_redir(*tk);
+	if (tk_error != 0)
 	{
-		if (is_redir(tk))
-		{
-			if (tk->next == NULL)
-				return (my_perror(2, msg));
-			if (tk->next->value == NULL)
-				return (my_perror(1, "minishell: ambiguous redirect\n"));
-		}
-		tk = tk->next;
+		(*shell_params)->exit_status = tk_error;
+		return (1);
 	}
+	(*shell_params)->exit_status = tk_error;
 	return (0);
 }
 
@@ -99,49 +91,16 @@ void	parse(t_sh_params **shell_params, char *input)
 	tk = lex(input, shell_params);
 	if (!tk)
 		return ;
-	tk_error = check_tk_error(&tk, shell_params);
-	if (tk_error != 0)
+	tk_error = lex_and_expand(&tk, shell_params);
+	if (tk_error)
 	{
-		(*shell_params)->exit_status = tk_error;
 		tk_clear(&tk);
 		return ;
 	}
-	expand(&tk, *shell_params);
-	tk_error = check_void_redir(tk, shell_params);
-	if (tk_error != 0)
-	{
-		(*shell_params)->exit_status = tk_error;
-		tk_clear(&tk);
-		return ;
-	}
-	(*shell_params)->exit_status = tk_error;
 	cmd = create_cmd_list(tk);
 	tk_clear(&tk);
-	if (error_in_lexing(tk_error, &cmd))
-		return ;
 	process_heredoc(&cmd, shell_params);
 	ast = create_ast(cmd);
 	(*shell_params)->cmd = cmd;
 	(*shell_params)->ast = ast;
-}
-
-void	print_ast(t_ast *ast)
-{
-	static int	i = 0;
-
-	if (ast)
-	{
-		if (ast->t_node_type == NODE_CMD)
-			print_one_cmd(ast->cmd);
-		if (ast->t_node_type == NODE_PIPELINE)
-		{
-			printf("************************\n");
-			printf("left:\n");
-			printf("type:%d\n", ast->t_node_type);
-			print_ast(ast->left_node);
-			printf("right:\n");
-			print_ast(ast->right_node);
-			printf("************************\n");
-		}
-	}
 }
