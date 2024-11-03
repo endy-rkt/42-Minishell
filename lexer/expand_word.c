@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:12:15 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 18:26:09 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 12:49:30 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static void	expansion_lst(t_list **lst_word, char **split_value)
 
 	if (!split_value || split_value[0] == NULL)
 		return ;
-	if (*lst_word != NULL && (*lst_word)->content != NULL && split_value[0] != NULL)
+	if (*lst_word != NULL && (*lst_word)->content != NULL
+		&& split_value[0] != NULL)
 	{
 		content = ft_lstlast(*lst_word)->content;
 		ft_lstlast(*lst_word)->content = ft_strjoin(content, split_value[0]);

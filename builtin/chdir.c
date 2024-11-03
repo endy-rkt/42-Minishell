@@ -86,7 +86,7 @@ int	ft_cd(char **argv, char ***env)
 	}
 	else if (ft_strcmp(argv[1], "-") == 0)
 		status = navigate_to_oldpwd(env);
-	else 
+	else
 		status = navigate_to_path(argv[1], env);
 	if (status == 0)
 		update_env("OLDPWD", start_dir, env);

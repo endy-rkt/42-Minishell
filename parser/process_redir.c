@@ -65,21 +65,21 @@ static int	stdin_value(t_list *lst_redir)
 	return (fd);
 }
 
-int is_directory(char *args)
+int	is_directory(char *args)
 {
-    struct stat sb;
+	struct stat	sb;
 
-    if (args == NULL)
-        return 0;
-    if (lstat(args, &sb) == 0)
+	if (args == NULL)
+		return (0);
+	if (lstat(args, &sb) == 0)
 	{
-        if (S_ISDIR(sb.st_mode)) 
+		if (S_ISDIR(sb.st_mode))
 		{
 			print_exec_error(args, "Is a directory\n");
-            return (1);
-        }
-    }
-    return (0);
+			return (1);
+		}
+	}
+	return (0);
 }
 
 static int	stdout_value(t_list *lst_redir)

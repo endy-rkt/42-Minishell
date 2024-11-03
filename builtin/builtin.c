@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:49 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/02 16:17:15 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 13:09:26 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,72 +43,39 @@ int	is_valid_flag(char *argv)
 		return (0);
 }
 
+int	ft_echo(char **argv, int fd)
+{
+	int	i;
+	int	j;
+	int	nl;
+	int	index;
 
-int ft_echo(char **argv, int fd) {
-    int i = 1;
-    int j;
-    int nl = 1;
-    int index = 1;
-
-    while (argv[i]) {
-        j = 1;
-        if (argv[1][0] == '-' && is_valid_flag(argv[i]) == 1) {
-            index = i + 1;
-            nl = 0;
-        } else {
-            break;
-        }
-        i++;
-    }
-
-    while (argv[index]) {
-        ft_putstr_fd(argv[index], fd);
-        if (argv[index + 1])
-            ft_putchar_fd(' ', fd);
-        index++;
-    }
-
-    if (nl)
-        ft_putchar_fd('\n', fd);
-
-    return 0;
+	i = 1;
+	nl = 1;
+	index = 1;
+	while (argv[i])
+	{
+		j = 1;
+		if (argv[1][0] == '-' && is_valid_flag(argv[i]) == 1)
+		{
+			index = i + 1;
+			nl = 0;
+		}
+		else
+			break ;
+		i++;
+	}
+	while (argv[index])
+	{
+		ft_putstr_fd(argv[index], fd);
+		if (argv[index + 1])
+			ft_putchar_fd(' ', fd);
+		index++;
+	}
+	if (nl)
+		ft_putchar_fd('\n', fd);
+	return (0);
 }
-
-
-// int	ft_echo(char **argv, int fd)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	nl;
-// 	int	index;
-
-// 	i = 1;
-// 	nl = 1;
-// 	index = 1;
-// 	while (argv[i])
-// 	{
-// 		j = 1;
-// 		if (argv[1][0] == '-' && is_valid_flag(argv[i]) == 1)
-// 		{
-// 			index = i + 1;
-// 			nl = 0;
-// 		}
-// 		else
-// 			break ;
-// 		i++;
-// 	}
-// 	ft_printf("------------fd=%d\n", fd);
-// 	while (argv[index])
-// 	{
-// 		ft_putstr_fd(argv[index], fd);
-// 		if (argv[index + 1])
-// 			ft_putchar_fd(' ', fd);
-// 		index++;
-// 	}
-// 	if (nl)
-// 		ft_putchar_fd('\n', fd);
-// 	return (0);
-// }
 
 int	buildin(char **argv, t_sh_params **shell_params, int *tab_fd)
 {
@@ -135,34 +102,3 @@ int	buildin(char **argv, t_sh_params **shell_params, int *tab_fd)
 		status = ft_exit(argv, copy_env, shell_params, tab_fd);
 	return (status);
 }
-
-// int	main(int argc, char *argv[], char *envp[])
-// {
-// 	char	*line_read;
-// 	char	**copy_env;
-// 	char	**args;
-
-// 	(void)argc;
-// 	(void)argv;
-// 	line_read = NULL;
-// 	copy_env = ft_copy_env(envp);
-// 	args = malloc(sizeof(char *));
-// 	while (1)
-// 	{
-// 		if (line_read)
-// 		{
-// 			free(line_read);
-// 			line_read = NULL;
-// 		}
-// 		pwd_prompt();
-// 		line_read = readline("\n\033[0;35m❯ \033[0m");
-// 		add_history(line_read);
-// 		args = ft_split(line_read, ' ');
-// 		//int fd = open("test", O_RDWR | O_TRUNC);
-// 		buildin(args, &copy_env, 1);
-// 	}
-// 	for (int i = 0; copy_env[i]; i++)
-// 		free(copy_env[i]);
-// 	free(copy_env);
-// 	return (0);
-// }

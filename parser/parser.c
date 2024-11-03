@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:03:52 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 18:29:30 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 12:59:27 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,17 @@ static int	error_in_lexing(int tk_error, t_cmd **cmd)
 
 int	check_void_redir(t_token *tk, t_sh_params **shell_params)
 {
+	char	msg[100];
+
+	ft_strcpy(msg, "minishell: syntax error near unexpected token `newline'\n");
 	while (tk)
 	{
 		if (is_redir(tk))
 		{
 			if (tk->next == NULL)
-				return (my_perror(2,
-					"minishell: syntax error near unexpected token `newline'\n"));
-			if	(tk->next->value == NULL)
-				return (my_perror(1,
-					"minishell: ambiguous redirect\n"));
+				return (my_perror(2, msg));
+			if (tk->next->value == NULL)
+				return (my_perror(1, "minishell: ambiguous redirect\n"));
 		}
 		tk = tk->next;
 	}
