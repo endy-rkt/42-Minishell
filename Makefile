@@ -16,7 +16,7 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS = -Wall -Wextra -Werror #-g
+CFLAGS = -Wall -Wextra -Werror
 
 LIBFT_PATH = ./libft
 
@@ -34,11 +34,7 @@ ${LIBFT}:
 all:		${NAME}
 
 val:		${NAME}
-			valgrind --suppressions=.readline.supp --leak-check=full --show-leak-kinds=all -s ./${NAME}
-
-vals:		${NAME}
-			valgrind --suppressions=.readline.supp --leak-check=full --show-leak-kinds=all  --trace-children=yes -s ./${NAME}
-
+			valgrind --suppressions=.readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./${NAME}
 clean:
 			${RM} ${OBJS}
 			make -C ${LIBFT_PATH} clean

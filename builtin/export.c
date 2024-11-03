@@ -6,11 +6,23 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:21:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/03 15:14:20 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:58:10 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
+
+static char	*get_new_value(char *key, char *value)
+{
+	char	*new_val;
+
+	new_val = ft_strdup(key);
+	if (value[0] == '+')
+		new_val = ft_strjoin(new_val, value + 1);
+	else
+		new_val = ft_strjoin(new_val, value);
+	return (new_val);
+}
 
 void	add_new_identifier(char *key, char *value, char ***envp)
 {
@@ -19,16 +31,14 @@ void	add_new_identifier(char *key, char *value, char ***envp)
 	char	*new_val;
 	char	**new;
 
-	new_val = ft_strdup(key);
-	if (value[0] == '+')
-		new_val = ft_strjoin(new_val, value + 1);
-	else
-		new_val = ft_strjoin(new_val, value);
 	i = 0;
 	len = 0;
+	new_val = get_new_value(key, value);
 	while ((*envp)[len])
 		len++;
 	new = malloc(sizeof(char *) * (len + 2));
+	if (!new)
+		return ;
 	while ((*envp)[i])
 	{
 		new[i] = ft_strdup((*envp)[i]);
@@ -39,30 +49,6 @@ void	add_new_identifier(char *key, char *value, char ***envp)
 	free_args(*envp);
 	*envp = NULL;
 	*envp = new;
-}
-
-char	*export_new_val(char *value, char **key, char *prev_val)
-{
-	char	*new_val;
-
-	new_val = NULL;
-	if (value[0] == '+')
-	{
-		new_val = ft_strdup(prev_val);
-		if (prev_val[ft_strlen(*key)] == '\0')
-			new_val = ft_strjoin(new_val, "=");
-		new_val = ft_strjoin(new_val, value + 2);
-	}
-	else if (value[0] == '=')
-	{
-		new_val = ft_strdup(*key);
-		new_val = ft_strjoin(new_val, value);
-	}
-	else
-		new_val = ft_strdup(prev_val);
-	free(*key);
-	*key = NULL;
-	return (new_val);
 }
 
 void	add_value(char *val, char ***envp)

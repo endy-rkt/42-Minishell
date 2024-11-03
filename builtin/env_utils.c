@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferafano <ferafano@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:57:20 by ferafano          #+#    #+#             */
-/*   Updated: 2024/10/10 09:31:17 by ferafano         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:49:38 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

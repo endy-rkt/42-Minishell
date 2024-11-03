@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 12:54:27 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/22 08:28:08 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:53:44 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ int	change_redir(t_list *lst_redir, int stdin, int stdout)
 	}
 	if (fd[0] != STDIN_FILENO)
 	{
-		dup2(fd[0], STDIN_FILENO);
+		if (dup2(fd[0], STDIN_FILENO) == -1)
+			return (0);
 		close(fd[0]);
 	}
 	if (fd[1] != STDOUT_FILENO)
 	{
-		dup2(fd[1], STDOUT_FILENO);
+		if (dup2(fd[1], STDOUT_FILENO) == -1)
+			return (0);
 		close(fd[1]);
 	}
 	free(fd);

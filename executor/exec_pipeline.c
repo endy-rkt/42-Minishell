@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 11:20:45 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/03 13:05:18 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:52:46 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static int	pipe_status(int fd_0, int fd_1, int pid_0, int pid_1)
 static void	update_fileno(int to_close_fd, int to_dup_fd, int fd)
 {
 	close(to_close_fd);
-	dup2(to_dup_fd, fd);
+	if (dup2(to_dup_fd, fd) == -1)
+		return ;
 	close(to_dup_fd);
 }
 

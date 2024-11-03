@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:20 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/03 15:14:42 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:58:51 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int			buildin(char **argv, t_sh_params **shell_params, int *tab_fd);
 int			export_match(char *str_env, char *key);
 void		add_new_identifier(char *key, char *value, char ***envp);
 int			unset_nb(char **argv, char **env);
-int			ft_exit(char **argv, t_sh_params **shell_params,
-				int *tab_fd);
+char		*export_new_val(char *value, char **key, char *prev_val);
+int			ft_exit(char **argv, t_sh_params **shell_params, int *tab_fd);
 
 #endif

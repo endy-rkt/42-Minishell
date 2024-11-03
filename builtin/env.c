@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 09:10:55 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/03 14:11:13 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:50:23 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ char	**ft_copy_env(char **envp)
 	while (envp[envp_len])
 		envp_len++;
 	cpy_enpv = malloc(sizeof(char *) * (envp_len + 1));
+	if (!cpy_enpv)
+		return (NULL);
 	i = 0;
 	while (envp[i])
 	{

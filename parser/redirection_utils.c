@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 11:08:02 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/03 14:09:19 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:54:52 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	stored_heredoc(t_list *lst_redir, char *file,
 		return ;
 	value = heredoc_value(redir, *shell_params);
 	fd = open(file, O_RDWR | O_TRUNC | O_CREAT, 0666);
+	if (fd == -1)
+		return ;
 	if (value != NULL)
 		write(fd, value, ft_strlen(value));
 	if (value != NULL)

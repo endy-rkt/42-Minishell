@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 15:11:43 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/03 15:21:07 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:58:30 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,30 @@ int	validate_name(char *val)
 	if (val[i] == '+' && val[i + 1] != '=')
 		return (0);
 	return (1);
+}
+
+char	*export_new_val(char *value, char **key, char *prev_val)
+{
+	char	*new_val;
+
+	new_val = NULL;
+	if (value[0] == '+')
+	{
+		new_val = ft_strdup(prev_val);
+		if (prev_val[ft_strlen(*key)] == '\0')
+			new_val = ft_strjoin(new_val, "=");
+		new_val = ft_strjoin(new_val, value + 2);
+	}
+	else if (value[0] == '=')
+	{
+		new_val = ft_strdup(*key);
+		new_val = ft_strjoin(new_val, value);
+	}
+	else
+		new_val = ft_strdup(prev_val);
+	free(*key);
+	*key = NULL;
+	return (new_val);
 }
 
 int	update_unset_count(char *str, char **env)
