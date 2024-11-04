@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:12:15 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/04 10:17:00 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 16:42:18 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,20 @@ int	handle_params(t_list **lst_word, char *value, char **new_value,
 	int		i;
 	int		new_val_len;
 	char	**split_value;
+	char	*prev_val;
+	char	*next;
+	char	*next_val;
 
+	prev_val = ft_strdup(*new_value);
 	i = expand_params(value, new_value, 0, shell_params);
-	split_value = ft_split(*new_value, ' ');
+	next = ft_strnstr(*new_value, prev_val, ft_strlen(prev_val));
+	next_val = ft_strdup(next + 1);
+	split_value = ft_split(next_val, ' ');
+	if (split_value && split_value[0] && prev_val)
+	{
+		ft_printf("{%s} {%s}  {%s}\n", next_val, split_value[0], prev_val);
+		split_value[0] = ft_strjoin(prev_val, split_value[0]);
+	}
 	expansion_lst(lst_word, split_value);
 	if (*new_value)
 		new_val_len = ft_strlen(*new_value);
