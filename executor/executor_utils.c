@@ -6,13 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 12:54:27 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/03 15:53:44 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 07:57:54 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-int	change_redir(t_list *lst_redir, int stdin, int stdout)
+int	change_redir(t_list *lst_redir)
 {
 	int	*fd;
 

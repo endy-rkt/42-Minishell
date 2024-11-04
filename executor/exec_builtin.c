@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 11:23:16 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/03 14:16:13 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 07:58:02 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ int	exec_piped_builtin(t_ast *ast, t_sh_params **shell_params)
 
 	cmd = ast->cmd;
 	lst_redir = cmd->redir;
+	status = 0;
 	fd = malloc(2 * sizeof(int));
 	if (!fd)
 		exit(1);
 	fd[0] = STDIN_FILENO;
 	fd[1] = STDOUT_FILENO;
-	if (change_redir(lst_redir, STDIN_FILENO, STDOUT_FILENO))
+	if (change_redir(lst_redir))
 		status = buildin(cmd->args, shell_params, fd);
 	clear_and_close(shell_params);
 	free(fd);

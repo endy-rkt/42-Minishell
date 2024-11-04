@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 11:19:08 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/31 17:12:25 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 07:59:28 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	child_cmd(char **args, t_list *lst_redir,
 	status = 0;
 	path = NULL;
 	signal(SIGQUIT, SIG_DFL);
-	if (change_redir(lst_redir, STDIN_FILENO, STDOUT_FILENO))
+	if (change_redir(lst_redir))
 	{
 		path = get_path(args, (*shell_params)->my_envp, &status);
 		if (status == 0)

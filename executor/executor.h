@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:03:37 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/03 15:04:17 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 07:58:56 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 char	*path_from_env(char **args, char **my_envp, int *err_status);
 char	*get_path(char **args, char **my_envp, int *err_status);
-int		change_redir(t_list *lst_redir, int stdin, int stdout);
+int		change_redir(t_list *lst_redir);
 void	print_exec_error(char *arg_name, char *message);
 int		not_valid_path(char *path);
 void	execute(t_sh_params **shell_params);
