@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:49 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/03 15:18:45 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 09:25:21 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	buildin(char **argv, t_sh_params **shell_params, int *tab_fd)
 	fd = tab_fd[1];
 	copy_env = &((*shell_params)->my_envp);
 	if (ft_strcmp(argv[0], "cd") == 0)
-		status = ft_cd(argv, copy_env);
+		status = ft_cd(argv, copy_env, *shell_params);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		status = ft_pwd(fd);
 	else if (ft_strcmp(argv[0], "env") == 0)

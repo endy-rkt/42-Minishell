@@ -6,39 +6,11 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 09:32:11 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/03 14:15:36 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:20:06 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
-
-long	ft_atol(char *nptr)
-{
-	int		paire;
-	long	nb;
-
-	nb = 0;
-	paire = nb;
-	while ((*nptr >= 9 && *nptr <= 13) || *nptr == 32)
-		nptr++;
-	while (*nptr == '+' || *nptr == '-')
-	{
-		if (*nptr == '-')
-			paire++;
-		nptr++;
-		if (*nptr == '+' || *nptr == '-')
-			return (0);
-	}
-	while (*nptr >= 48 && *nptr <= 57)
-	{
-		nb *= 10;
-		nb += *nptr - 48;
-		nptr++;
-	}
-	if (!(paire % 2))
-		return (nb);
-	return (-nb);
-}
 
 int	valid_exit(char *str)
 {
@@ -91,16 +63,24 @@ static void	free_paramas(t_sh_params **shell_params, int *tab_fd)
 		free_sh_params(shell_params);
 }
 
+int	check_many_args(char **argv, t_sh_params **shell_params)
+{
+	if (argv[1] && argv[2] && valid_exit(argv[1]) == 1)
+	{
+		(*shell_params)->exit_status = 1;
+		write(2, "exit: too many arguments\n", 25);
+		return (1);
+	}
+	return (0);
+}
+
 int	ft_exit(char **argv, t_sh_params **shell_params, int *tab_fd)
 {
 	int	status;
 
-	if (argv[1] && argv[2] && valid_exit(argv[1]) == 1)
-	{
-		(*shell_params)->exit_status = 2;
-		write(2, "exit: too many arguments\n", 25);
-		return (2);
-	}
+	exit_trim(argv);
+	if (check_many_args(argv, shell_params))
+		return (1);
 	else if (argv[1] && valid_exit(argv[1]) == 1)
 	{
 		status = ft_atol(argv[1]);

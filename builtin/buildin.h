@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 08:53:20 by ferafano          #+#    #+#             */
-/*   Updated: 2024/11/03 15:58:51 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:20:27 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ typedef struct s_unset
 	char	*delimiter;
 }			t_unset;
 
+long		ft_atol(char *nptr);
+void		exit_trim(char **argv);
 int			ft_check_size(char *s, char c);
 int			ft_check_size_array(char *s, char c, int array_indice);
 char		**ft_fill_array(char **new_r, char *s, char c);
@@ -78,7 +80,7 @@ int			is_null(char **new_1, int i);
 void		ft_copy(char *str, char *dest);
 char		**ft_copy_env(char **envp);
 char		*get_env_value(char *line_read, char **copy_env);
-int			ft_cd(char **argv, char ***copy_env);
+int			ft_cd(char **argv, char ***copy_env, t_sh_params *shell_params);
 int			ft_pwd(int fd);
 int			ft_env(char **copy_env, char **argv, int fd);
 int			ft_export(char **command, char ***env, int fd);

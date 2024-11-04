@@ -6,15 +6,13 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:14:05 by trazanad          #+#    #+#             */
-/*   Updated: 2024/10/16 10:56:25 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 09:39:49 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADER_H
 
 # define HEADER_H
-
-# include <stdio.h>
 
 # include <stdlib.h>
 
@@ -31,10 +29,6 @@
 # include <sys/wait.h>
 
 # include <sys/stat.h>
-
-# include <dirent.h>
-
-# include <termios.h>
 
 # include <readline/readline.h>
 

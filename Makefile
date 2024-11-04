@@ -4,7 +4,7 @@ PARSER_SRC = parser/cmd.c parser/cmd_creation.c parser/cmd_operation.c parser/cm
 
 EXECUTOR_SRC = executor/exec_builtin.c executor/exec_cmd.c executor/exec_pipeline.c executor/exec_pipeline_utils.c executor/executor.c  executor/executor_utils.c executor/get_path.c executor/get_path_utils.c
 
-BUILTIN_SRC = builtin/builtin.c builtin/buildin_utils.c   builtin/chdir.c builtin/env_utils.c builtin/env_utils2.c builtin/env.c builtin/export.c  builtin/get_envp.c builtin/prompt.c builtin/unset.c builtin/ft_strncpy.c builtin/exit.c builtin/export_unset_utils.c
+BUILTIN_SRC = builtin/builtin.c builtin/buildin_utils.c   builtin/chdir.c builtin/env_utils.c builtin/env_utils2.c builtin/env.c builtin/export.c  builtin/get_envp.c builtin/prompt.c builtin/unset.c builtin/ft_strncpy.c builtin/exit.c builtin/export_unset_utils.c builtin/exit_utils.c
 
 SRCS = main.c utils/process_loop.c  ${LEXER_SRC}  ${PARSER_SRC} ${BUILTIN_SRC} ${EXECUTOR_SRC}
 
@@ -33,8 +33,6 @@ ${LIBFT}:
 
 all:		${NAME}
 
-val:		${NAME}
-			valgrind --suppressions=.readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./${NAME}
 clean:
 			${RM} ${OBJS}
 			make -C ${LIBFT_PATH} clean

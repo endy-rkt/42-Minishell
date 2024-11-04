@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 15:43:23 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 16:38:31 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 09:29:15 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,14 @@ int	navigate_to_oldpwd(char ***env)
 	return (navigate_to_path(oldpwd, env));
 }
 
-int	ft_cd(char **argv, char ***env)
+int	ft_cd(char **argv, char ***env, t_sh_params *shell_params)
 {
-	int		status;
-	char	start_dir[4096];
+	int			status;
+	char		start_dir[4096];
+	char		*tmp;
 
 	status = 0;
+	tmp = ft_strdup(my_getenv("PWD", shell_params));
 	getcwd(start_dir, sizeof(start_dir));
 	if (argv[1] == NULL)
 		status = navigate_to_home(env);
@@ -89,6 +91,9 @@ int	ft_cd(char **argv, char ***env)
 	else
 		status = navigate_to_path(argv[1], env);
 	if (status == 0)
-		update_env("OLDPWD", start_dir, env);
+	{
+		update_env("OLDPWD", tmp, env);
+		free(tmp);
+	}
 	return (status);
 }
