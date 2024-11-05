@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:46:26 by trazanad          #+#    #+#             */
-/*   Updated: 2024/08/02 12:06:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:13:53 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*ft_retire_space(char *str)
 
 	if (!str)
 		return (NULL);
+	if (str[0] == '\0' || ft_is_blank(str))
+		return (ft_strdup(""));
 	i = 0;
 	len = ft_strlen(str) - 1;
 	if (len < 0)

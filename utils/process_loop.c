@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:16:41 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/04 13:29:55 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:58:34 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	process_loop(int (*run_shell)(char *, char ***, int), char **envp)
 	int			prev_status;
 	char		*input;
 	char		**global_envp;
-	static char	*prompt = "minishell$";
+	static char	*prompt = "minishell$ ";
 
 	no_exit = 1;
 	prev_status = 0;

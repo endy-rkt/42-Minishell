@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:21:48 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/04 10:18:41 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:56:56 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static void	expand_word(t_token **tk, t_sh_params *shell_params)
 {
-	int		i;
-	char	*value;
-	char	*new_value;
-	t_list	*lst_word;
+	int			i;
+	char		*value;
+	char		*new_value;
+	t_list		*lst_word;
 
 	i = 0;
 	value = (*tk)->value;

@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:19:02 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/04 10:20:12 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:43:46 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	exit_trim(char **argv)
 	tmp = NULL;
 	while (argv[i])
 	{
-		if (ft_strcmp(argv[i], ""))
+		if (ft_strcmp(argv[i], "") || !ft_is_blank(argv[i]))
 		{
 			tmp = ft_retire_space(argv[i]);
 			free(argv[i]);

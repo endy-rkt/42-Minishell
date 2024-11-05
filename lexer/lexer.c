@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 14:35:10 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/02 14:09:34 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:42:28 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_token	*lex(char *input, t_sh_params **shell_params)
 	char	*str;
 	t_token	*tk;
 
-	if (input[0] == '\n')
+	if (input[0] == '\0' || ft_is_blank(input))
 		return (NULL);
 	if ((input[0] == '\'' || input[0] == '\"') && input[1] == '\n')
 	{

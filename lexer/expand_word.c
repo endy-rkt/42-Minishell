@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 16:12:15 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/04 16:42:18 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:56:55 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,34 @@ static void	expansion_lst(t_list **lst_word, char **split_value)
 	}
 }
 
+static char	**splitted_value(char *prev_val, char *new_value, t_list **lst_word)
+{
+	int		len;
+	char	*content;
+	char	*tmp;
+	char	**tab;
+
+	len = 0;
+	tab = NULL;
+	if (prev_val)
+		len = ft_strlen(prev_val);
+	tmp = new_value + len;
+	tab = ft_split(new_value + len, ' ');
+	if (prev_val != NULL && ft_strcmp(prev_val, "") != 0)
+	{
+		if (!*lst_word)
+			ft_lstadd_back(lst_word, ft_lstnew(ft_strdup(prev_val)));
+		else
+		{
+			content = ft_lstlast(*lst_word)->content;
+			ft_lstlast(*lst_word)->content = ft_strjoin(content, prev_val);
+		}
+	}
+	if (new_value && tmp[0] == ' ' && !ft_is_blank(tmp))
+		ft_lstadd_back(lst_word, ft_lstnew(ft_strdup("")));
+	return (tab);
+}
+
 int	handle_params(t_list **lst_word, char *value, char **new_value,
 		t_sh_params *shell_params)
 {
@@ -43,19 +71,12 @@ int	handle_params(t_list **lst_word, char *value, char **new_value,
 	int		new_val_len;
 	char	**split_value;
 	char	*prev_val;
-	char	*next;
-	char	*next_val;
 
 	prev_val = ft_strdup(*new_value);
 	i = expand_params(value, new_value, 0, shell_params);
-	next = ft_strnstr(*new_value, prev_val, ft_strlen(prev_val));
-	next_val = ft_strdup(next + 1);
-	split_value = ft_split(next_val, ' ');
-	if (split_value && split_value[0] && prev_val)
-	{
-		ft_printf("{%s} {%s}  {%s}\n", next_val, split_value[0], prev_val);
-		split_value[0] = ft_strjoin(prev_val, split_value[0]);
-	}
+	split_value = splitted_value(prev_val, *new_value, lst_word);
+	if (prev_val)
+		free(prev_val);
 	expansion_lst(lst_word, split_value);
 	if (*new_value)
 		new_val_len = ft_strlen(*new_value);
