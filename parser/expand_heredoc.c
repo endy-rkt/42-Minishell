@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:35:14 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/03 14:09:35 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/11 08:35:50 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ static void	format_delimiter(char *value, char **new_value, int i, int j)
 		i++;
 	}
 	(*new_value)[j] = '\0';
-	*new_value = ft_strjoin(*new_value, "\n");
 }
 
 char	*take_delim(t_redir *rd)
@@ -94,7 +93,7 @@ char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *shell_params)
 
 	delimiter = rd->file;
 	if (ft_strchr(delimiter, '\"') || ft_strchr(delimiter, '\''))
-		return (input);
+		return (ft_strdup(input));
 	new_input = ft_strdup("");
 	i = 0;
 	while (input[i])
@@ -107,6 +106,5 @@ char	*hdoc_new_val(t_redir *rd, char *input, t_sh_params *shell_params)
 			i++;
 		}
 	}
-	free(input);
 	return (new_input);
 }

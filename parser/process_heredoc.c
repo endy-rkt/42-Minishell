@@ -6,7 +6,7 @@
 /*   By: trazanad <trazanad@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 15:10:34 by trazanad          #+#    #+#             */
-/*   Updated: 2024/11/03 14:10:07 by trazanad         ###   ########.fr       */
+/*   Updated: 2024/11/11 09:13:32 by trazanad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static void	sigint_handler(int sig)
 	close(STDIN_FILENO);
 }
 
-static int	break_loop(char **input, char *delimiter)
+static int	break_loop(char *input, char *delimiter)
 {
-	if (*input == NULL)
+	if (input == NULL)
 	{
 		if (g_sig == 130)
 			ft_putstr_fd("\n", 2);
@@ -31,16 +31,10 @@ static int	break_loop(char **input, char *delimiter)
 			ft_putstr_fd("\nminishell: heredoc warning\n", 2);
 		return (1);
 	}
-	if (*input != NULL && ft_strcmp(*input, delimiter) == 0)
-	{
-		free(*input);
+	if (input != NULL && ft_strcmp(input, delimiter) == 0)
 		return (1);
-	}
 	if (g_sig == 130)
-	{
-		free(*input);
 		return (1);
-	}
 	return (0);
 }
 
@@ -49,19 +43,22 @@ char	*heredoc_value(t_redir *rd, t_sh_params *shell_params)
 	char	*value;
 	char	*input;
 	char	*delimiter;
+	char	*tmp_input;
 
 	delimiter = take_delim(rd);
 	value = NULL;
 	input = NULL;
+	tmp_input = NULL;
 	while (1)
 	{
-		ft_printf("heredoc> ");
-		input = get_next_line(0);
-		if (break_loop(&input, delimiter))
+		input = readline("heredoc> ");
+		if (break_loop(input, delimiter))
 			break ;
 		input = hdoc_new_val(rd, input, shell_params);
 		value = ft_strjoin(value, input);
+		value = ft_strjoin(value, "\n");
 		free(input);
+		input = NULL;
 	}
 	free(delimiter);
 	return (value);
